@@ -1,0 +1,27 @@
+
+gde_bez:			Gemeindebezeichnung: zusammenfassung der Felder Gemeindetyp und 
+
+hhj:				Haushaltsjahr für das ein Vorbericht erstellt wird
+
+gde_typ:			Ortsgemeinde, Stadt, Verbandsgemeinde
+
+bm_typ:				Ortsbürgermeister, Stadtbürgermeister, Bürgermeister
+
+hhj-1:				Vorjahr der Haushaltsplanung
+
+EW_akt:				Aktuelle Einwohnerzahl
+
+img_einwohnerentwicklung:	Graph der Einwohnerentwicklung der letzten 10 Jahre
+
+img_altersstruktur:		Graph, Alterspyramide der Einwohner/Bürger
+
+img_struktur_altersgruppebis20: Graph der Einwohnerentwicklung bis 20 Jahre
+
+quelleewdaten:			Woher stammen die Einwohnerdaten
+
+flaeche:			Gesamtfläche der Gemeinde in km²
+
+img_flaeche:			Graph der Flächennutzung
+
+quelleflaeche:			Woher stammen die Flächendaten
+
