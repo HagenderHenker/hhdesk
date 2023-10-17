@@ -185,94 +185,138 @@ def get_steuern(df, dferl):
    #print(dferl)
    dfnew = pd.merge(teildf, dferl, how = "left", left_on= ["produkt", "sk"], right_on=["produkt", "sk"])
    dfnew = dfnew.drop(["hh", "mn_y", "erlNr", "erlTyp", "nicht uebertragbar"], axis=1)
+   dfnew["erl"] = dfnew["erl"].fillna(0)
    #print(dfnew)
    st = dfnew[["hhs","sk", "produkt", "bez", "anshhj", "ansvj", "rgergvvj", "erl"]].to_dict('records')
    return st
 
 def get_umlagen(df, dferl, mindiff=0):
+   """
+   Gibt ein dictionary zurück 
+   """
+
    df["ansdiff"] = df["anshhj"] - df["ansvj"]
    dferl = dferl.drop("hhs", axis=1)
    teildf = df.loc[(df["sk"]<420000) & (df["sk"]>410000)]
-   teildf = teildf.loc[(teildf["ansdiff"] > mindiff) | (teildf["ansdiff"]) < mindiff*-1 ]
+
+   teildf = teildf.loc[(teildf["ansdiff"] > mindiff) | (teildf["ansdiff"] < mindiff*-1) ]
+   teildf.info()
    #print(dferl)
    dferl["sk"] = dferl["sk"].fillna(0).astype("int")
    #print(dferl)
    dfnew = pd.merge(teildf, dferl, how = "left", left_on= ["produkt", "sk"], right_on=["produkt", "sk"])
+   #print(dfnew)
    dfnew = dfnew.drop(["hh", "mn_y", "erlNr", "erlTyp", "nicht uebertragbar"], axis=1)
+   dfnew["erl"] = dfnew["erl"].fillna(0)
    #print(dfnew)
    st = dfnew[["hhs","sk", "produkt", "bez", "anshhj", "ansvj", "rgergvvj", "erl"]].to_dict('records')
+   #print(st)
    return st
 
-def get_sozE(df, dferl):
+def get_sozE(df, dferl, mindiff=0):
+   df["ansdiff"] = df["anshhj"] - df["ansvj"]  
+   dferl = dferl.drop("hhs", axis=1)
    teildf = df.loc[(df["sk"]<430000) & (df["sk"]>420000)]
+   teildf = teildf.loc[(teildf["ansdiff"] > mindiff) | (teildf["ansdiff"] < mindiff*-1) ]
    dferl = dferl.drop("hhs", axis=1)
    #print(dferl)
    dferl["sk"] = dferl["sk"].fillna(0).astype("int")
    #print(dferl)
    dfnew = pd.merge(teildf, dferl, how = "left", left_on= ["produkt", "sk"], right_on=["produkt", "sk"])
    dfnew = dfnew.drop(["hh", "mn_y", "erlNr", "erlTyp", "nicht uebertragbar"], axis=1)
+   dfnew["erl"] = dfnew["erl"].fillna(0)
    #print(dfnew)
    st = dfnew[["hhs","sk", "produkt", "bez", "anshhj", "ansvj", "rgergvvj", "erl"]].to_dict('records')
    return st
 
-def get_oerE(df, dferl):
+def get_oerE(df, dferl, mindiff=0):
+   df["ansdiff"] = df["anshhj"] - df["ansvj"]  
+   dferl = dferl.drop("hhs", axis=1)
    teildf = df.loc[(df["sk"]<440000) & (df["sk"]>430000)]
-   dferl = dferl.drop("hhs", axis=1)
-      #print(dferl)
+   teildf = teildf.loc[(teildf["ansdiff"] > mindiff) | (teildf["ansdiff"] < mindiff*-1) ]
+   teildf.info()
+   #print(dferl)
    dferl["sk"] = dferl["sk"].fillna(0).astype("int")
    #print(dferl)
    dfnew = pd.merge(teildf, dferl, how = "left", left_on= ["produkt", "sk"], right_on=["produkt", "sk"])
+   #print(dfnew)
    dfnew = dfnew.drop(["hh", "mn_y", "erlNr", "erlTyp", "nicht uebertragbar"], axis=1)
+   dfnew["erl"] = dfnew["erl"].fillna(0)
    #print(dfnew)
    st = dfnew[["hhs","sk", "produkt", "bez", "anshhj", "ansvj", "rgergvvj", "erl"]].to_dict('records')
+   #print(st)
    return st
 
-def get_prE(df, dferl):
+def get_prE(df, dferl, mindiff=0):
+   df["ansdiff"] = df["anshhj"] - df["ansvj"] 
+   dferl = dferl.drop("hhs", axis=1) 
    teildf = df.loc[(df["sk"]<442000) & (df["sk"]>440000)]
-   dferl = dferl.drop("hhs", axis=1)
-      #print(dferl)
+   teildf = teildf.loc[(teildf["ansdiff"] > mindiff) | (teildf["ansdiff"] < mindiff*-1) ]
+   teildf.info()
+   #print(dferl)
    dferl["sk"] = dferl["sk"].fillna(0).astype("int")
    #print(dferl)
    dfnew = pd.merge(teildf, dferl, how = "left", left_on= ["produkt", "sk"], right_on=["produkt", "sk"])
+   #print(dfnew)
    dfnew = dfnew.drop(["hh", "mn_y", "erlNr", "erlTyp", "nicht uebertragbar"], axis=1)
+   dfnew["erl"] = dfnew["erl"].fillna(0)
    #print(dfnew)
    st = dfnew[["hhs","sk", "produkt", "bez", "anshhj", "ansvj", "rgergvvj", "erl"]].to_dict('records')
+   #print(st)
    return st
 
-def get_kostE(df, dferl):
+def get_kostE(df, dferl, mindiff=0):
+   df["ansdiff"] = df["anshhj"] - df["ansvj"] 
+   dferl = dferl.drop("hhs", axis=1) 
    teildf = df.loc[(df["sk"]<450000) & (df["sk"]>442000)]
-   dferl = dferl.drop("hhs", axis=1)
-      #print(dferl)
+   teildf = teildf.loc[(teildf["ansdiff"] > mindiff) | (teildf["ansdiff"] < mindiff*-1) ]
+   teildf.info()
+   #print(dferl)
    dferl["sk"] = dferl["sk"].fillna(0).astype("int")
    #print(dferl)
    dfnew = pd.merge(teildf, dferl, how = "left", left_on= ["produkt", "sk"], right_on=["produkt", "sk"])
+   #print(dfnew)
    dfnew = dfnew.drop(["hh", "mn_y", "erlNr", "erlTyp", "nicht uebertragbar"], axis=1)
+   dfnew["erl"] = dfnew["erl"].fillna(0)
    #print(dfnew)
    st = dfnew[["hhs","sk", "produkt", "bez", "anshhj", "ansvj", "rgergvvj", "erl"]].to_dict('records')
+   #print(st)
    return st
 
-def get_sonstE(df, dferl):
+def get_sonstE(df, dferl, mindiff=0):
+   df["ansdiff"] = df["anshhj"] - df["ansvj"] 
+   dferl = dferl.drop("hhs", axis=1) 
    teildf = df.loc[(df["sk"]<470000) & (df["sk"]>460000)]
-   dferl = dferl.drop("hhs", axis=1)
-      #print(dferl)
+   teildf = teildf.loc[(teildf["ansdiff"] > mindiff) | (teildf["ansdiff"] < mindiff*-1) ]
+   teildf.info()
+   #print(dferl)
    dferl["sk"] = dferl["sk"].fillna(0).astype("int")
    #print(dferl)
    dfnew = pd.merge(teildf, dferl, how = "left", left_on= ["produkt", "sk"], right_on=["produkt", "sk"])
+   #print(dfnew)
    dfnew = dfnew.drop(["hh", "mn_y", "erlNr", "erlTyp", "nicht uebertragbar"], axis=1)
+   dfnew["erl"] = dfnew["erl"].fillna(0)
    #print(dfnew)
    st = dfnew[["hhs","sk", "produkt", "bez", "anshhj", "ansvj", "rgergvvj", "erl"]].to_dict('records')
+   #print(st)
    return st
 
-def get_finE(df, dferl):
+def get_finE(df, dferl, mindiff=0):
+   df["ansdiff"] = df["anshhj"] - df["ansvj"] 
+   dferl = dferl.drop("hhs", axis=1) 
    teildf = df.loc[(df["sk"]<480000) & (df["sk"]>470000)]
-   dferl = dferl.drop("hhs", axis=1)
-      #print(dferl)
+   teildf = teildf.loc[(teildf["ansdiff"] > mindiff) | (teildf["ansdiff"] < mindiff*-1) ]
+   teildf.info()
+   #print(dferl)
    dferl["sk"] = dferl["sk"].fillna(0).astype("int")
    #print(dferl)
    dfnew = pd.merge(teildf, dferl, how = "left", left_on= ["produkt", "sk"], right_on=["produkt", "sk"])
+   #print(dfnew)
    dfnew = dfnew.drop(["hh", "mn_y", "erlNr", "erlTyp", "nicht uebertragbar"], axis=1)
+   dfnew["erl"] = dfnew["erl"].fillna(0)
    #print(dfnew)
    st = dfnew[["hhs","sk", "produkt", "bez", "anshhj", "ansvj", "rgergvvj", "erl"]].to_dict('records')
+   #print(st)
    return st
 
 def get_persA(df, dferl):

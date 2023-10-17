@@ -61,7 +61,9 @@ if __name__ == "__main__":
 
     #dfliqkredentwicklung
 
-
+    #dfsteuerentwicklung
+    fstkraft = di.readlfag_stkberechnung(xlsfile=grunddaten, gdenr=gde, hhj=hhj)
+    print("... Steuereinnahmen")
 
     # build "Haushaltssatzung"
     """
@@ -106,7 +108,7 @@ if __name__ == "__main__":
 
     
     vorb05tpl_instanz = docbuilder.create_tpl_instance(vorb05tpl)
-    contextvorb05 = ctx.hh_vorbericht_06_Ertraege(df=dfbew, dferl=dferl, mindiff=5000)
+    contextvorb05 = ctx.hh_vorbericht_06_Ertraege(df=dfbew, dferl=dferl, mindiff=env.mindiff)
     print("Daten für Vorbericht 06 'Veränderungen in den Erträgen' sind zusammengestellt ")
     docbuilder.builddocx(tpl=vorb05tpl_instanz, context=contextvorb05, filename="06-Vorb_Ertraege", gde=gde, hhj=hhj)
     print(f"Vorbericht 06 - Veränderung in den Erträgen: 'Ausgabe/{gde}/{hhj}")

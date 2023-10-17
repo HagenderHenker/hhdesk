@@ -117,15 +117,25 @@ def hh_vorbericht_06_Ertraege(df, dferl, mindiff):
 
     steuertbl = erg.get_steuern(df=df, dferl=dferl)
     transfertbl = erg.get_umlagen(df=df, dferl=dferl, mindiff=mindiff)
+    oerlegtbl = erg.get_oerE(df=df, dferl=dferl, mindiff=mindiff)
+    privattbl = erg.get_prE(df=df, dferl=dferl, mindiff=mindiff)
+    kostetbl = erg.get_kostE(df=df, dferl=dferl, mindiff=mindiff)
+    sonstetbl = erg.get_sonstE(df=df, dferl=dferl, mindiff=mindiff)
+    finetbl = erg.get_finE(df=df, dferl=dferl)
+
+
     hhj = env.hhj
     gde = env.gde
-    abweichung = env.abweichung
-
+   
     ertrdict = {"steuertbl" : steuertbl,
                 "transfertbl" : transfertbl,
+                "oerlegtbl" : oerlegtbl,
+                "privattbl" : privattbl,
+                "kostetbl" : kostetbl,
+                "sonstetbl" : sonstetbl,
+                "finetbl" : finetbl,
                 "hhj" : hhj,
                 "hhj-1" : hhj-1, }
-
 
     return ertrdict
 

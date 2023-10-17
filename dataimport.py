@@ -135,6 +135,11 @@ def readlfag_stkberechnung(xlsfile, gdenr, hhj):
     df = pd.read_excel(xlsfile, sheet_name="STKRAFT") 
     return df
 
+def readsteuerertraege(xlsfile, gdenr, hhj):
+    df = pd.read_excel(xlsfile, sheet_name="Steuer") 
+    return df
+
+
 if __name__ == "main": 
     #df = readewstatistik_wohn(xlsfile=str(pathlib.Path.cwd() / "hhdaten/grunddaten.xlsx"), gdenr=60, jahr=2022)
     #print(df)
