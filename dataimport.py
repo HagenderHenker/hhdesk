@@ -110,7 +110,7 @@ def readflaechenstatistik(xlsfile, gdenr, hhj):
 
 def readhebesatzentwicklung(xlsfile, gdenr):
     df = pd.read_excel(xlsfile, sheet_name="hebesatze")
-    df = df.loc[(df.gdenr == gdenr) ][["gdenr", "grsta", "grstb", "gewst"]]
+    df = df.loc[(df.gdenr == gdenr) ][["hhj", "gdenr", "grsta", "grstb", "gewst"]]
     return df
 
 def readhundesteuersatzentwicklung(xlsfile, gdenr):
@@ -136,8 +136,18 @@ def readlfag_stkberechnung(xlsfile, gdenr, hhj):
     return df
 
 def readsteuerertraege(xlsfile, gdenr, hhj):
-    df = pd.read_excel(xlsfile, sheet_name="Steuer") 
+    df = pd.read_excel(xlsfile, sheet_name="steuer") 
     return df
+
+def readergebnisEKstat(xlsfile, gdenr, hhj):
+    df = pd.read_excel(xlsfile, sheet_name="ertrag")
+    return df
+
+def readffsfinstatistik(xlsfile, gdenr, hhj):
+    df = pd.read_excel(xlsfile, sheet_name="ffs")
+    return df
+
+
 
 
 if __name__ == "main": 
