@@ -81,6 +81,11 @@ def plot_flaechenentwicklung(df):
     plt.savefig(str(pathlib.Path.cwd() / "hhdaten/plots/flaechennutzung.png"))
 
 
+
+
+
+
+
 if __name__ == "__main__":
     #plot_gr_popdev(xlsfile=str(pathlib.Path.cwd() / "hhdaten/grunddaten.xlsx"), gde=60, hhj=2023)
     plot_flaechenentwicklung(di.readflaechenstatistik(xlsfile=str(pathlib.Path.cwd() / "hhdaten/grunddaten.xlsx"), gdenr=60, hhj=2023))

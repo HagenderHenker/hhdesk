@@ -3,6 +3,7 @@ import contextbuilder as ctx
 import docbuilder
 import pathlib
 import enviromentvar as env
+import graphplotter 
 
 gde = env.gde
 hhj = env.hhj
@@ -49,21 +50,47 @@ if __name__ == "__main__":
     print("... Flächenstatistik")
     dfstkraft = di.readlfag_stkberechnung(xlsfile=grunddaten, gdenr=gde, hhj=hhj)
     print("... Steuerkraft")
-    #dfekentwicklung = 
-
-    #dfergebnisentwicklung =
-
+    #dfekentwicklung und ergebnisentwicklung =
+    dfergebnis = di.readergebnisEKstat(xlsfile=grunddaten, gdenr=gde, hhj=hhj)
+    print("... Statistik der Jahresergebnisse und Eigenkapitalentwicklung")
     #dffinanzentwicklung = 
+    dffinanz = di.readffsfinstatistik(xlsfile=grunddaten, gdenr=gde, hhj=hhj)
+    print("... Statistik der freien Finanzspitze und der Finanzrechnungsdaten")
+    dfhebesaetze = di.readhebesatzentwicklung(xlsfile=grunddaten, gdenr=gde)
+    print("... Statistik der festgesetzten Hebesätze der Gemeinde")
+    dfsteuer = di.readsteuerertraege
 
     #dfschuldenentwicklung
+    
 
     #dfinvkredentwicklung
 
     #dfliqkredentwicklung
 
     #dfsteuerentwicklung
-    fstkraft = di.readlfag_stkberechnung(xlsfile=grunddaten, gdenr=gde, hhj=hhj)
+    dfstkraft = di.readlfag_stkberechnung(xlsfile=grunddaten, gdenr=gde, hhj=hhj)
     print("... Steuereinnahmen")
+
+    # plotting graphs
+
+       
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     # build "Haushaltssatzung"
     """

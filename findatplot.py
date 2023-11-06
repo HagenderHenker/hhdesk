@@ -5,6 +5,7 @@ import data_09_statistik as stat
 import pandas as pd 
 import numpy as np
 
+
 def hebesatzentwicklung(df):
     ''' 
     Entwicklung der Hebesätze
@@ -117,3 +118,4 @@ def ertragsstruktur(df):
     ax.set_xlabel("Ertragsart", size= 14)
     ax.set_ylabel("Volumen in Mio€", size = 14 )
     ax.set_title("Erträge", size = 20)
+
