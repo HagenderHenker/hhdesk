@@ -1,9 +1,10 @@
 import dataimport as di 
 import contextbuilder as ctx
+import data_04_statistics as stat
 import docbuilder
 import pathlib
 import enviromentvar as env
-import graphplotter 
+import graphplotter as plot
 
 gde = env.gde
 hhj = env.hhj
@@ -58,8 +59,8 @@ if __name__ == "__main__":
     print("... Statistik der freien Finanzspitze und der Finanzrechnungsdaten")
     dfhebesaetze = di.readhebesatzentwicklung(xlsfile=grunddaten, gdenr=gde)
     print("... Statistik der festgesetzten Hebesätze der Gemeinde")
-    dfsteuer = di.readsteuerertraege
-
+    dfsteuer = di.readsteuerertraege(xlsfile=grunddaten, gdenr=gde, hhj=hhj)
+    print("... Statistik der Steuererträge der Gemeinde Vorjahre")
     #dfschuldenentwicklung
     
 
@@ -72,23 +73,31 @@ if __name__ == "__main__":
     print("... Steuereinnahmen")
 
     # plotting graphs
+    print("")
+    print("===============================================")
+    print("Start plotting")
+    print("===============================================")
+    print("")
+    
+    plot.plot_gr_popdev(stat.ewstatistic(dfewentw, gde=gde, hhj=hhj), gde=gde, hhj=hhj)
+    print("... Einwohnerentwicklung Plot aufbereitet")
+    #plot.plot_gr_altersgruppen(stat.ewstatistic(dfewentw, gde=gde, hhj=hhj), gde=gde, hhj=hhj)
+    #print("... Einwohnerentwicklung Plot aufbereitet")
+    #U20
+    plot.plot_flaechenentwicklung(dfflaeche)
+    print("... Flächenentwicklung, Plot aufbereitet")
+    #
+        
+    plot.plot_ekentwicklung(stat.ekstat(bewegungsdaten=dfbew, grunddaten=dfergebnis, hhj=hhj, gde=gde))
+    print("... Eigenkapitalentwickklung, Plot aufbereitet")
 
-       
+    plot.plot_ergebnisentwicklung(stat.ergstat(bewegungsdaten=dfbew, grunddaten=dfergebnis, hhj=hhj, gde=gde))
+    print("... Entwicklung der Jahresergebnisse, Plot aufbereitet")
+
+    plot.plot_hebesatzentwicklung(dfhebesaetze=dfhebesaetze)
+    print("... Entwicklung der Hebesätze, Plot aufbereitet")
 
     
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

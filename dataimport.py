@@ -136,11 +136,13 @@ def readlfag_stkberechnung(xlsfile, gdenr, hhj):
     return df
 
 def readsteuerertraege(xlsfile, gdenr, hhj):
-    df = pd.read_excel(xlsfile, sheet_name="steuer") 
+    df = pd.read_excel(xlsfile, sheet_name="steuer")
+    df = df.loc[(df.gdenr == gdenr)]
     return df
 
 def readergebnisEKstat(xlsfile, gdenr, hhj):
     df = pd.read_excel(xlsfile, sheet_name="ertrag")
+    df = df.loc[(df.gdenr == gdenr)]
     return df
 
 def readffsfinstatistik(xlsfile, gdenr, hhj):

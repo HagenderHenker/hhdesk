@@ -58,7 +58,7 @@ def hh_vorbericht_01_Allgemeines(dfhhs, dfgdegrunddaten, dfewentwicklung, dfewal
     #print(type(ew_akt))
     flaeche = dfflaeche["km²"].sum()
     bild1 = str(pathlib.Path.cwd() / "hhdaten/plots/bev-entw.png")
-    print(bild1)
+    #print(bild1)
     conhh_vorb_allg = {
     "gde_bez" : dfgdegrunddaten.gde_bez.values[0], 	#Gemeindebezeichnung: zusammenfassung der Felder Gemeindetyp und 
     "hhj" : hhj,				                    #Haushaltsjahr für das ein Vorbericht erstellt wird

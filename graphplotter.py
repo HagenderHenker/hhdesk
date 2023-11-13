@@ -3,46 +3,34 @@ import numpy as np
 import dataimport as di
 import pathlib
 import datetime as dt
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 import seaborn as sns  
 import data_04_statistics as statdf 
 
+mpl.rcParams['lines.linewidth']=2
+mpl.rcParams['axes.labelcolor']="darkgreen"
+mpl.rcParams['axes.titlecolor']="darkgreen"
+mpl.rcParams['axes.edgecolor']="darkgreen"
+mpl.rcParams['xtick.color']="darkgreen"
+mpl.rcParams['xtick.labelcolor']="darkgreen"
+mpl.rcParams['ytick.color']="darkgreen"
+mpl.rcParams['ytick.labelcolor']="darkgreen"
 
-def gr_populationdevelopment(xlsfile, gde, hhj):
-    data = di.readewstatistik_wohn(xlsfile=xlsfile, gdenr=gde, jahr=hhj-1)
-    data["gesamt"] =  data["maennl"] + data["weibl"]
-    data["jahr"] = pd.to_datetime(data["datum"]).dt.year
-
-
+def plot_gr_popdev(data, gde, hhj):
+        
     #print(data)
-    dn = data[["jahr", "gesamt"]].loc[data["wohnstatus"] == "Einwohner mit Hauptwohnung"]
-    dn = dn.set_index("jahr", drop=True)
-    return dn
-
-"""
-def plot_gr_popdev(xlsfile, gde, hhj):
-    data = gr_populationdevelopment(xlsfile=xlsfile, gde=gde, hhj=hhj)
-    fig = px.line(data_frame=data             )
-    fig.show()
-"""
-
-def plot_gr_popdev(xlsfile, gde, hhj):
-    data = gr_populationdevelopment(xlsfile=xlsfile, gde=gde, hhj=hhj)
     
-    print(data)
-    
-    plt.plot(data['gesamt'], color='blue', marker='o')
-    plt.title('Bevölkerungsentwicklung', fontsize=14)
-    plt.xlabel('Jahr', fontsize=12)
+    plt.plot(data['gesamt'], color='darkgreen', marker='o')
+    plt.title('Bevölkerungsentwicklung')
+    plt.xlabel('Jahr')
     plt.yticks(np.arange(3000, 5000, step = 1000))
     plt.ylabel('Anzahl Einwohner', fontsize=12)
-    plt.grid(True)
-
-
+ 
     for year in np.sort(data.index):
         plt.annotate(str(data.loc[year]["gesamt"]), xy=(year, data.loc[year]["gesamt"]), xytext=(year, (data.loc[year]["gesamt"])-120))
 
-   
+  
     plt.savefig(str(pathlib.Path.cwd() / "hhdaten/plots/bev-entw.png"))
     plt.show()
 
@@ -83,10 +71,21 @@ def plot_flaechenentwicklung(df):
 
 
 
-def plot_ekentwicklung(dfertaufek, dfbew, gde, hhj):
+# FINANZDADTENPLOTS
+'''
+The following plots are primarily Plots from the /hhdaten/bewegungsdaten.xlsx
+mixed with some of the Grunddaten.xlsx dataframes
+'''
+def plot_ekentwicklung(dfek):
 
-    dfek = statdf.ekstat()
+    '''
+    Takes 
+    dfertaufek: 
+    dfbek:  Dataframe from data_04_statistics.py
+    gde:    municipal corpus from config
+    hhj:    budgetary year from config
 
+    '''
 
     highest = int(int((dfek.max()[1].item())/1000000)*1000000)+1000000
     lowest = int(int((dfek.min()[1].item())/1000000)*1000000)-1000000
@@ -104,13 +103,20 @@ def plot_ekentwicklung(dfertaufek, dfbew, gde, hhj):
     ax1.set_yticks(y)
     ax1.set_xticklabels(dfek["hhj"], rotation = 40)
     ax1.set_yticklabels([x/1000000 for x in y])
-    plt.savefig("img_ek_entwicklung.png")
+
+    plt.savefig(str(pathlib.Path.cwd() / "hhdaten/plots/img_ek_entwicklung.png"))
 
 
 
 
 def plot_hebesatzentwicklung(dfhebesaetze):
-    
+    ''' 
+    Entwicklung der Hebesätze
+    this function creates a lineplot of the development of the taxrates (Realsteuerhebesätze)
+    for Grundsteuer A, Grundsteuer B and Gewerbesteuer
+    It takes a Dataframe created in "data_09_statistik.py" from the /hhdaten/grunddaten.xlsx
+    '''
+
     font = {"family" : "sans-serif",
         "color" : "darkgreen",
         "size" : 8
@@ -118,9 +124,9 @@ def plot_hebesatzentwicklung(dfhebesaetze):
 
     fig, ax1 = plt.subplots(figsize = ( 6, 3.6))
 
-    grsta = ax1.plot(dfhebesaetze["hs_grsta"], color="darkgreen", marker="^", zorder=3, label="Grundsteuer A")
-    grstb = ax1.plot(dfhebesaetze["hs_grstb"], color="limegreen", marker="o", zorder=1, label="Grundsteuer B")
-    gewst = ax1.plot(dfhebesaetze["hs_gewst"], color="yellowgreen", marker="*", zorder=2, label="Gewerbesteuer")
+    grsta = ax1.plot(dfhebesaetze["grsta"], color="darkgreen", marker="^", zorder=3, label="Grundsteuer A")
+    grstb = ax1.plot(dfhebesaetze["grstb"], color="limegreen", marker="o", zorder=1, label="Grundsteuer B")
+    gewst = ax1.plot(dfhebesaetze["gewst"], color="yellowgreen", marker="*", zorder=2, label="Gewerbesteuer")
     ax1.set_title("Entwicklung der Realsteuerhebesätze")
     ax1.set_ylabel("Hebesatz in %")
     ax1.set_xlabel("Haushaltsjahr")
@@ -130,14 +136,86 @@ def plot_hebesatzentwicklung(dfhebesaetze):
     ax1.set_xticklabels(dfhebesaetze["hhj"], rotation = 40, fontdict=font)
     ax1.legend([grsta, grstb, gewst], labels=["Grundsteuer A", "Grundsteuer B", "Gewerbesteuer"])
     #ax1.set_yticklabels([x/1000000 for x in y])
-    plt.savefig("img_hebesatz_entwicklung.png")
+    plt.savefig(str(pathlib.Path.cwd() / "hhdaten/plots/img_hebesatz_entwicklung.png"))
+
+def plot_ergebnisentwicklung(dfergebnis):
+    def colorizer(jevalue):
+        if jevalue > 0:
+            s = "lawngreen"
+        elif jevalue == 0:
+            s = "black"
+        else:
+            s = "darkgreen"
+        return s
+
+    highest = int(int((dfergebnis[['Gesamtbetrag Erträge', 'Gesamtbetrag Aufwendungen']].max()[1].item())/1000000)*1000000)+1000000
+    
 
 
+    # Entwicklung Jahresergebnisse
+    dfergebnis.dropna(axis=0, how="any", inplace=True)
 
 
+    xmarken = ([x for x in range(len(dfergebnis["hhj"].index))])
+    #print(xmarken)
+    dfergebnis.index = xmarken
+    #print(dfergebnis)
+
+    dfertaufw = dfergebnis[["hhj", "Gesamtbetrag Erträge", "Gesamtbetrag Aufwendungen"]]
+    #dfertaufw = dfertaufw.dropna(axis=0, how="any", inplace=True)
+
+    dfergsaldo = dfergebnis[["hhj","Jahresergebnis"]]
+    #dfertaufw
+
+    fig, ax1 = plt.subplots(figsize = ( 6, 3.6))
+    ax2 = ax1.twinx()
+
+    custompalette = []
+
+    dfergsaldo["color"] = dfergsaldo["Jahresergebnis"].apply(func=colorizer, )
+    #print(dfergsaldo)
+    custompalette = dfergsaldo["color"].tolist()
+    sns.barplot(data = dfergsaldo, x="hhj", y="Jahresergebnis", palette = custompalette, zorder = 3)
+
+    #wo fängt plan an?
+    #vlinex = dfergebnis[dfergebnis.p_e == "p"].iloc[0].hhj
+    #plt.vlines(x=5, color = "forestgreen", ymin=0, ymax=1)
 
 
+    #print(plt.subplot())
+    #q = sns.pointplot(data=dfertaufw, x="hhj", y="Gesamtbetrag Erträge", color="lawngreen", ax = ax1)
+    #r = sns.pointplot(data=dfertaufw, x="hhj", y="Gesamtbetrag Aufwendungen", color="darkgreen", ax = ax1)
 
+    ax1.plot(dfertaufw["Gesamtbetrag Erträge"], color="lawngreen", marker="o", zorder=1)
+    ax1.plot(dfertaufw["Gesamtbetrag Aufwendungen"], color="darkgreen", marker="^", zorder=2)
+
+
+    ax1.set_title("Entwicklung der Jahresergebnisse")
+    ax1.set_ylabel("Ertrag und Aufwand in Mio €")
+    ax1.set_xlabel("Haushaltsjahr")
+    ax1.set_ylim(top=highest, bottom=0)
+    ax1.set_xticks(xmarken)
+    ax1.set_xticklabels(dfergsaldo["hhj"], rotation = 30)
+
+    ax2.set_ylabel("Jahresergebnis in Mio €", )
+    ax2.set_ylim(top=6000000)
+
+
+    #wo fängt plan an?
+    try:
+        vlinex = dfergebnis[dfergebnis.p_e == "p"].index[0]
+        plt.axvline(x=vlinex-0.5, color = "forestgreen", label="Planwerte")
+        ax2.annotate("Planwerte", xy= (vlinex, 5000000), )
+    except:
+        pass
+
+
+    ax2.set_xticks(xmarken)
+    plt.axhline(y=0, color="black")
+    plt.ticklabel_format(style='sci', axis='y', useMathText="True", )
+
+    plt.savefig(str(pathlib.Path.cwd() / "hhdaten/plots/img_je_entwicklung.png"))
+    plt.show()
 
 
 if __name__ == "__main__":

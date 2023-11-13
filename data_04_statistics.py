@@ -7,14 +7,22 @@ Provide the statistics Data needed for the document
 Datamangling for the graphplotter.py 
 """
 
-def ewstatistic(xlsfile, gde, hhj):
-   pass 
+def ewstatistic(data, gde, hhj):
+   # data = di.readewstatistik_wohn(xlsfile=xlsfile, gdenr=gde, jahr=hhj-1)
+   data["gesamt"] =  data["maennl"] + data["weibl"]
+   data["jahr"] = pd.to_datetime(data["datum"]).dt.year
+
+
+    #print(data)
+   dn = data[["jahr", "gesamt"]].loc[data["wohnstatus"] == "Einwohner mit Hauptwohnung"]
+   dn = dn.set_index("jahr", drop=True)
+   return dn
 
 
 
 
 
-def ekstat(grunddaten, bewegungsdaten, hhj, gde):
+def ergstat(grunddaten, bewegungsdaten, hhj, gde):
    
    dfergebnis = grunddaten
    
@@ -46,11 +54,59 @@ def ekstat(grunddaten, bewegungsdaten, hhj, gde):
       dfergebnis.loc[len(dfergebnis.index)] = [gde, hhj+3, df2.plan3, df3.plan3, (df2.plan3-df3.plan3), (eK+(df2.plan3-df3.plan3)).item(), "p"]
       eK = eK+(df2.plan3-df3.plan3)
 
-   dfek = dfergebnis[["hhj", "EK"]]
+   return dfergebnis
 
+def ekstat(grunddaten, bewegungsdaten, hhj, gde):
+   dfergebnis = ergstat(grunddaten=grunddaten, bewegungsdaten=bewegungsdaten, hhj=hhj, gde=gde)
+   dfek = dfergebnis[["hhj", "EK"]]
    return dfek
 
 
+def steuerstat(dfsteuer, bewegungsdaten, hhj, gde):
+   '''
+   takes dfsteuer = Dataframe from grunddaten.xlsx steuer roster.
+   takes bewegungsdaten = Dataframe from bewegungsdaten.xlsx
+   takes hhj = fiscal year from config
+   takes gde = municipal corpus from config
+   '''
+
+   dfs = dfsteuer.set_index('jahr').drop("gde", axis=1)
+
+   steuerarten = dfs.columns.values.tolist()
+   steuerarten.append("e_p")
+   sksteuern = [401100, 401200, 401300, 402100, 402200, 403300, 405210]
+   dictsteuern = {steuerarten[i]:sksteuern[i] for i in range(len(sksteuern))}
+
+   dfs['e_p'] = "e"
+
+   #print(dfs)
+   #print(dictsteuern)
+
+   jahre = [i for i in range(hhj-2, hhj+4)]
+   #print(jahre)
+
+   dfs2 = pd.DataFrame(columns=steuerarten, index=jahre)
+
+
+   for steuerart in dictsteuern:
+      dfz=bewegungsdaten.loc[bewegungsdaten['sk']==dictsteuern[steuerart]]
+      #print(dfz)
+      dfs2.loc[hhj-2, steuerart] = dfz.iloc[0]['rgergvvj']
+      dfs2.loc[hhj-2]['e_p'] = "e"
+      dfs2.loc[hhj-1, steuerart] = dfz.iloc[0]['ansvj']
+      dfs2.loc[hhj-1]['e_p'] = "p"
+      dfs2.loc[hhj, steuerart] = dfz.iloc[0]['anshhj']
+      dfs2.loc[hhj]['e_p'] = "p"
+      dfs2.loc[hhj+1, steuerart] = dfz.iloc[0]['plan1']
+      dfs2.loc[hhj+1]['e_p'] = "p"
+      dfs2.loc[hhj+2, steuerart] = dfz.iloc[0]['plan2']
+      dfs2.loc[hhj+2]['e_p'] = "p"
+      dfs2.loc[hhj+3, steuerart] = dfz.iloc[0]['plan3']
+      dfs2.loc[hhj+3]['e_p'] = "p"
+
+   dfs = pd.concat([dfs,dfs2], axis=0)
+
+   return dfs
 
 
 
@@ -67,6 +123,57 @@ def ekstat(grunddaten, bewegungsdaten, hhj, gde):
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+"""
 def get_steuern(df, dferl):
    teildf = df.loc[df["sk"] < 410000]   
    #print(dferl)
@@ -258,3 +365,4 @@ def get_ilfA(df, dferl):
 
 print(get_steuern(df= di.hhdata_excelimport(xlsxfile= str(pathlib.Path.cwd() / "hhdaten/bewegungsdaten.xlsx")), dferl=di.erl_excelimport(xlsxfile= str(pathlib.Path.cwd() / "hhdaten/bewegungsdaten.xlsx"))))
 #print(get_umlagen(di.hhdata_excelimport(xlsxfile= str(pathlib.Path.cwd() / "hhdaten/bewegungsdaten.xlsx"))))
+"""
