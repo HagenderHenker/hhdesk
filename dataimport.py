@@ -142,15 +142,18 @@ def readsteuerertraege(xlsfile, gdenr, hhj):
 
 def readergebnisEKstat(xlsfile, gdenr, hhj):
     df = pd.read_excel(xlsfile, sheet_name="ertrag")
-    df = df.loc[(df.gdenr == gdenr)]
+    df = df.loc[(df.gde == gdenr)]
     return df
 
 def readffsfinstatistik(xlsfile, gdenr, hhj):
     df = pd.read_excel(xlsfile, sheet_name="ffs")
+    df = df.loc[(df.gde == gdenr)]
     return df
 
-
-
+def readkred(xlsfile, gdenr, hhj):
+    df = pd.read_excel(xlsfile, sheet_name="kred")
+    df = df.loc[(df.gde == gdenr)]
+    return df
 
 if __name__ == "main": 
     #df = readewstatistik_wohn(xlsfile=str(pathlib.Path.cwd() / "hhdaten/grunddaten.xlsx"), gdenr=60, jahr=2022)

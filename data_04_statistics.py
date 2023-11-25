@@ -108,6 +108,101 @@ def steuerstat(dfsteuer, bewegungsdaten, hhj, gde):
 
    return dfs
 
+def kredbestandstatistic(dfkred, df):
+   # Liquidität DF aufbauen
+
+   dfkred['e_p'] = ""
+
+
+   if not dfkred.loc[dfkred['e_p'] == "p"].empty:
+      dfkred.loc[dfkred['e_p'] == "p"].drop(axis=1, inplace=True)
+
+   dfkred['e_p']='e'
+
+   last_e = dfkred['hhj'].max()
+   first_plan = last_e + 1
+
+   # Ermittlung Nettokreditaufnahme Investiv
+
+   ikA= df.loc[(df['sk'] > 690000) & (df['sk']< 700000) & (df['produkt'] == '6.1.2.1' )&(df['sk'] !=694440)&(df['sk'] !=694442)][['rgergvvj', 'ansvj', 'anshhj', 'plan1', 'plan2', 'plan3']].sum()
+   ikTil = df.loc[(df['sk'] > 790000) & (df['sk']< 800000) & (df['produkt'] == '6.1.2.1' )&(df['sk'] !=796440)&(df['sk'] !=794430)][['rgergvvj', 'ansvj', 'anshhj', 'plan1', 'plan2', 'plan3']].sum()
+   nettokrA = pd.DataFrame(data={'rgergvvj' : (ikA['rgergvvj'] - ikTil['rgergvvj']),  'ansvj' : (ikA['ansvj'] - ikTil['ansvj']), 'anshhj' : (ikA['anshhj'] - ikTil['anshhj']), 'plan1' : (ikA['plan1'] - ikTil['plan1']), 'plan2' : (ikA['plan2'] - ikTil['plan2']), 'plan3' : (ikA['plan3'] - ikTil['plan3'])  }, index=[0])
+   # Ermittlung Bestandsveränderung
+
+   ezohnelv = df.loc[(df['sk'] > 600000) & (df['sk']< 700000) & (df['sk']!= 694440) & (df['sk'] !=694442)][['rgergvvj', 'ansvj', 'anshhj', 'plan1', 'plan2', 'plan3']].sum()
+   azohnelv = df.loc[(df['sk'] > 700000) & (df['sk']< 800000) & (df['sk'] !=796440) & (df['sk'] !=794430)][['rgergvvj', 'ansvj', 'anshhj', 'plan1', 'plan2', 'plan3']].sum()
+   zsaldo_woliq = pd.DataFrame(data={'rgergvvj' : (ezohnelv['rgergvvj'] - azohnelv['rgergvvj']),  'ansvj' : (ezohnelv['ansvj'] - azohnelv['ansvj']), 'anshhj' : (ezohnelv['anshhj'] - azohnelv['anshhj']), 'plan1' : (ezohnelv['plan1'] - azohnelv['plan1']), 'plan2' : (ezohnelv['plan2'] - azohnelv['plan2']), 'plan3' : (ezohnelv['plan3'] - azohnelv['plan3'])  }, index=[0])
+   kontrollezaz = df.loc[(df['sk']== 694440) | (df['sk'] ==694442 ) | (df['sk'] ==796440) | (df['sk'] ==794430)]
+
+   if not dfkred.loc[dfkred['e_p'] == "p"].empty:
+      dfkred.loc[dfkred['e_p'] == "p"].drop(axis=1, inplace=True)
+
+   print(dfkred)
+
+   if first_plan - hhj == -1:
+      dfkred.append({'gdenr':gde,
+                  'hhj':first_plan,
+                     'invkred': int(nettokrA['ansvj'])+int(dfkred.loc[dfkred['hhj'] == hhj-2]['invkred'].values),
+                     'bestand': int(dfkred.loc[dfkred['hhj'] == hhj - 2]['bestand']) + int(zsaldo_woliq['ansvj']),
+                     'liqkred' : int(dfkred.loc[dfkred['hhj'] == hhj - 2]['bestand']) + int(zsaldo_woliq['ansvj'])*-1 if int(dfkred.loc[dfkred['hhj'] == hhj - 2]['bestand']) + int(zsaldo_woliq['ansvj']) <0 else 0 ,
+                     'vbkggvgkasse' : int(dfkred.loc[dfkred['hhj'] == hhj - 2]['bestand']) + int(zsaldo_woliq['ansvj']) if int(dfkred.loc[dfkred['hhj'] == hhj - 2]['bestand']) + int(zsaldo_woliq['ansvj']) <0 else 0 ,
+                     'fordggvgkasse' : int(dfkred.loc[dfkred['hhj'] == hhj - 2]['bestand']) + int(zsaldo_woliq['ansvj']) if int(dfkred.loc[dfkred['hhj'] == hhj - 2]['bestand']) + int(zsaldo_woliq['ansvj']) >0 else 0 ,
+                     'Einwohner' : dfkred.loc['Einwohner'][hhj-2],
+                     'e_p' : 'p'}, ignore_index = True)
+
+   dfkred = dfkred.append({'gdenr':gde,
+                  'hhj':hhj,
+                  'invkred': int(nettokrA['anshhj'])+int(dfkred.loc[dfkred['hhj'] == hhj-1]['invkred'].values),
+                  'bestand': int(dfkred.loc[dfkred['hhj'] == hhj - 1]['bestand']) + int(zsaldo_woliq['anshhj']),
+                  'liqkred' : int(dfkred.loc[dfkred['hhj'] == hhj - 1]['bestand']) + int(zsaldo_woliq['anshhj'])*-1 if int(dfkred.loc[dfkred['hhj'] == hhj - 1]['bestand']) + int(zsaldo_woliq['anshhj']) <0 else 0 ,
+                  'vbkggvgkasse' : int(dfkred.loc[dfkred['hhj'] == hhj - 1]['bestand']) + int(zsaldo_woliq['anshhj']) if int(dfkred.loc[dfkred['hhj'] == hhj - 1]['bestand']) + int(zsaldo_woliq['anshhj']) <0 else 0 ,
+                  'fordggvgkasse' : int(dfkred.loc[dfkred['hhj'] == hhj - 1]['bestand']) + int(zsaldo_woliq['anshhj']) if int(dfkred.loc[dfkred['hhj'] == hhj - 1]['bestand']) + int(zsaldo_woliq['anshhj']) >0 else 0 ,
+                  'Einwohner' : dfkred.loc[dfkred['hhj'] == hhj-1]['Einwohner'].values[0],
+                  'e_p' : 'p'}, ignore_index = True)
+
+   dfkred = dfkred.append({'gdenr':gde,
+                  'hhj':hhj+1,
+                  'invkred': int(nettokrA['plan1'])+int(dfkred.loc[dfkred['hhj'] == hhj]['invkred'].values),
+                  'bestand': int(dfkred.loc[dfkred['hhj'] == hhj ]['bestand']) + int(zsaldo_woliq['plan1']),
+                  'liqkred' : int(dfkred.loc[dfkred['hhj'] == hhj ]['bestand']) + int(zsaldo_woliq['plan1'])*-1 if int(dfkred.loc[dfkred['hhj'] == hhj ]['bestand']) + int(zsaldo_woliq['plan1']) <0 else 0 ,
+                  'vbkggvgkasse' : int(dfkred.loc[dfkred['hhj'] == hhj ]['bestand']) + int(zsaldo_woliq['plan1']) if int(dfkred.loc[dfkred['hhj'] == hhj ]['bestand']) + int(zsaldo_woliq['plan1']) <0 else 0 ,
+                  'fordggvgkasse' : int(dfkred.loc[dfkred['hhj'] == hhj ]['bestand']) + int(zsaldo_woliq['plan1']) if int(dfkred.loc[dfkred['hhj'] == hhj ]['bestand']) + int(zsaldo_woliq['plan1']) >0 else 0 ,
+                  'Einwohner' :  dfkred.loc[dfkred['hhj'] == hhj-1]['Einwohner'].values[0],
+                  'e_p' : 'p'}, ignore_index = True)
+
+   dfkred = dfkred.append({'gdenr':gde,
+                  'hhj':hhj+2,
+                  'invkred': int(nettokrA['plan2'])+int(dfkred.loc[dfkred['hhj'] == hhj+1]['invkred'].values),
+                  'bestand': int(dfkred.loc[dfkred['hhj'] == hhj +1]['bestand']) + int(zsaldo_woliq['plan2']),
+                  'liqkred' : int(dfkred.loc[dfkred['hhj'] == hhj +1]['bestand']) + int(zsaldo_woliq['plan2'])*-1 if int(dfkred.loc[dfkred['hhj'] == hhj +1]['bestand']) + int(zsaldo_woliq['plan2']) <0 else 0 ,
+                  'vbkggvgkasse' : int(dfkred.loc[dfkred['hhj'] == hhj +1]['bestand']) + int(zsaldo_woliq['plan2']) if int(dfkred.loc[dfkred['hhj'] == hhj +1]['bestand']) + int(zsaldo_woliq['plan2']) <0 else 0 ,
+                  'fordggvgkasse' : int(dfkred.loc[dfkred['hhj'] == hhj +1]['bestand']) + int(zsaldo_woliq['plan2']) if int(dfkred.loc[dfkred['hhj'] == hhj +1]['bestand']) + int(zsaldo_woliq['plan2']) >0 else 0 ,
+                  'Einwohner' :  dfkred.loc[dfkred['hhj'] == hhj-1]['Einwohner'].values[0],
+                  'e_p' : 'p'}, ignore_index = True)
+
+   dfkred = dfkred.append({'gdenr':gde,
+                  'hhj':hhj+3,
+                  'invkred': int(nettokrA['plan3'])+int(dfkred.loc[dfkred['hhj'] == hhj+2]['invkred'].values),
+                  'bestand': int(dfkred.loc[dfkred['hhj'] == hhj + 2]['bestand']) + int(zsaldo_woliq['plan3']),
+                  'liqkred' : int(dfkred.loc[dfkred['hhj'] == hhj + 2]['bestand']) + int(zsaldo_woliq['plan3'])*-1 if int(dfkred.loc[dfkred['hhj'] == hhj + 2]['bestand']) + int(zsaldo_woliq['plan3']) <0 else 0 ,
+                  'vbkggvgkasse' : int(dfkred.loc[dfkred['hhj'] == hhj + 2]['bestand']) + int(zsaldo_woliq['plan3']) if int(dfkred.loc[dfkred['hhj'] == hhj + 2]['bestand']) + int(zsaldo_woliq['plan3']) <0 else 0 ,
+                  'fordggvgkasse' : int(dfkred.loc[dfkred['hhj'] == hhj + 2]['bestand']) + int(zsaldo_woliq['plan3']) if int(dfkred.loc[dfkred['hhj'] == hhj + 2]['bestand']) + int(zsaldo_woliq['plan3']) >0 else 0 ,
+                  'Einwohner' :  dfkred.loc[dfkred['hhj'] == hhj-1]['Einwohner'].values[0],
+                  'e_p' : 'p'}, ignore_index = True)
+      
+   return dfkred
+
+def kredstat(dfkred, dfbew, hhj):
+
+   df = kredbestandstatistic(dfkred, dfbew, hhj)
+   df = df[['hhj','invkred', 'liqkred']]
+   return df
+
+def bestandsstat(dfkred, dfbew, hhj):
+   df = kredbestandstatistic(dfkred, dfbew, hhj)
+   df = df[['hhj','bestand']]
+   return df
+
 
 
 

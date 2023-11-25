@@ -217,7 +217,11 @@ def plot_ergebnisentwicklung(dfergebnis):
     plt.savefig(str(pathlib.Path.cwd() / "hhdaten/plots/img_je_entwicklung.png"))
     plt.show()
 
+def plot_steuerentwicklung(dfsteuer):
+
+    pass
 
 if __name__ == "__main__":
     #plot_gr_popdev(xlsfile=str(pathlib.Path.cwd() / "hhdaten/grunddaten.xlsx"), gde=60, hhj=2023)
-    plot_flaechenentwicklung(di.readflaechenstatistik(xlsfile=str(pathlib.Path.cwd() / "hhdaten/grunddaten.xlsx"), gdenr=60, hhj=2023))
+    #plot_flaechenentwicklung(di.readflaechenstatistik(xlsfile=str(pathlib.Path.cwd() / "hhdaten/grunddaten.xlsx"), gdenr=60, hhj=2023))
+    pass

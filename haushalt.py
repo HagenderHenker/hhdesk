@@ -61,6 +61,8 @@ if __name__ == "__main__":
     print("... Statistik der festgesetzten Hebesätze der Gemeinde")
     dfsteuer = di.readsteuerertraege(xlsfile=grunddaten, gdenr=gde, hhj=hhj)
     print("... Statistik der Steuererträge der Gemeinde Vorjahre")
+    dfkred = di.readkred(xlsfile=grunddaten, gdenr=gde, hhj=hhj)
+    print("... Schulden und Kassenbestände")
     #dfschuldenentwicklung
     
 
@@ -96,9 +98,18 @@ if __name__ == "__main__":
 
     plot.plot_hebesatzentwicklung(dfhebesaetze=dfhebesaetze)
     print("... Entwicklung der Hebesätze, Plot aufbereitet")
+#
+    plot.plot_steuerentwicklung(dfsteuer=stat.steuerstat(dfsteuer=dfsteuer, bewegungsdaten=dfbew, hhj=hhj, gde=gde) )
+    print("... Entwicklung der Steuererträge")
 
+    plot.plot_liquiditaet(dfliq=stat.bestandsstat(dfbew=dfbew, dfkred=dfkred, hhj=hhj))
+    print("... Entwicklung der Bestände")
     
+    plot.plot_schuldenentwicklung(dfschulden=dfschulden)
+    print("... Entwicklung der Schulden")
 
+    plot.plot_prokopfverschuldung(dfschulden=dfschulden)
+    print("... Entwicklung der pro Kopf Verschuldung")
 
 
     # build "Haushaltssatzung"
