@@ -158,7 +158,7 @@ def kredbestandstatistic(dfkred, df, hhj, gde):
                         'vbkggvgkasse' : int(dfkred.loc[dfkred['hhj'] == hhj - 2]['vbkggvgkasse']) + int(zsaldo_woliq['ansvj']) if int(dfkred.loc[dfkred['hhj'] == hhj - 2]['bestand']) + int(zsaldo_woliq['ansvj']) <0 else 0 ,
                         'fordggvgkasse' : int(dfkred.loc[dfkred['hhj'] == hhj - 2]['fordggvgkasse']) + int(zsaldo_woliq['ansvj']) if int(dfkred.loc[dfkred['hhj'] == hhj - 2]['bestand']) + int(zsaldo_woliq['ansvj']) >0 else 0 ,
                         'Einwohner' : dfkred.loc['Einwohner'][hhj-2],
-                        'e_p' : 'p'})], 
+                        'e_p' : 'p'}, index=[len(dfkred.index)+1])], 
                         ignore_index = True)
 
    dfkred = pd.concat([dfkred, pd.DataFrame(
@@ -170,7 +170,8 @@ def kredbestandstatistic(dfkred, df, hhj, gde):
                'vbkggvgkasse' : int(dfkred.loc[dfkred['hhj'] == hhj - 1]['vbkggvgkasse']) + int(zsaldo_woliq['anshhj']) if int(dfkred.loc[dfkred['hhj'] == hhj - 1]['bestand']) + int(zsaldo_woliq['anshhj']) <0 else 0 ,
                'fordggvgkasse' : int(dfkred.loc[dfkred['hhj'] == hhj - 1]['fordggvgkasse']) + int(zsaldo_woliq['anshhj']) if int(dfkred.loc[dfkred['hhj'] == hhj - 1]['bestand']) + int(zsaldo_woliq['anshhj']) >0 else 0 ,
                'Einwohner' : dfkred.loc[dfkred['hhj'] == hhj-1]['Einwohner'].values[0],
-               'e_p' : 'p'})], 
+               'e_p' : 'p'},
+               index = [len(dfkred.index)+1] )], 
                ignore_index = True)
 
    dfkred = pd.concat([dfkred, pd.DataFrame(
@@ -182,7 +183,8 @@ def kredbestandstatistic(dfkred, df, hhj, gde):
                'vbkggvgkasse' : int(dfkred.loc[dfkred['hhj'] == hhj ]['vbkggvgkasse']) + int(zsaldo_woliq['plan1']) if int(dfkred.loc[dfkred['hhj'] == hhj ]['bestand']) + int(zsaldo_woliq['plan1']) <0 else 0 ,
                'fordggvgkasse' : int(dfkred.loc[dfkred['hhj'] == hhj ]['fordggvgkasse']) + int(zsaldo_woliq['plan1']) if int(dfkred.loc[dfkred['hhj'] == hhj ]['bestand']) + int(zsaldo_woliq['plan1']) >0 else 0 ,
                'Einwohner' :  dfkred.loc[dfkred['hhj'] == hhj-1]['Einwohner'].values[0],
-               'e_p' : 'p'})], 
+               'e_p' : 'p'},
+               index=[len(dfkred.index) + 1])], 
                ignore_index = True)
 
    dfkred = pd.concat([dfkred, pd.DataFrame(
@@ -194,7 +196,8 @@ def kredbestandstatistic(dfkred, df, hhj, gde):
                'vbkggvgkasse' : int(dfkred.loc[dfkred['hhj'] == hhj +1]['vbkggvgkasse']) + int(zsaldo_woliq['plan2']) if int(dfkred.loc[dfkred['hhj'] == hhj +1]['bestand']) + int(zsaldo_woliq['plan2']) <0 else 0 ,
                'fordggvgkasse' : int(dfkred.loc[dfkred['hhj'] == hhj +1]['fordggvgkasse']) + int(zsaldo_woliq['plan2']) if int(dfkred.loc[dfkred['hhj'] == hhj +1]['bestand']) + int(zsaldo_woliq['plan2']) >0 else 0 ,
                'Einwohner' :  dfkred.loc[dfkred['hhj'] == hhj-1]['Einwohner'].values[0],
-               'e_p' : 'p'})]
+               'e_p' : 'p'},
+               index=[len(dfkred.index) + 1])]
                , ignore_index = True)
 
    dfkred = pd.concat([dfkred, pd.DataFrame(
@@ -206,7 +209,8 @@ def kredbestandstatistic(dfkred, df, hhj, gde):
                'vbkggvgkasse' : int(dfkred.loc[dfkred['hhj'] == hhj + 2]['vbkggvgkasse']) + int(zsaldo_woliq['plan3']) if int(dfkred.loc[dfkred['hhj'] == hhj + 2]['bestand']) + int(zsaldo_woliq['plan3']) <0 else 0 ,
                'fordggvgkasse' : int(dfkred.loc[dfkred['hhj'] == hhj + 2]['fordggvgkasse']) + int(zsaldo_woliq['plan3']) if int(dfkred.loc[dfkred['hhj'] == hhj + 2]['bestand']) + int(zsaldo_woliq['plan3']) >0 else 0 ,
                'Einwohner' :  dfkred.loc[dfkred['hhj'] == hhj-1]['Einwohner'].values[0],
-               'e_p' : 'p'})], 
+               'e_p' : 'p'},
+               index=[len(dfkred.index) + 1])], 
                ignore_index = True)
       
    return dfkred
