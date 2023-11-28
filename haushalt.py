@@ -99,16 +99,16 @@ if __name__ == "__main__":
     plot.plot_hebesatzentwicklung(dfhebesaetze=dfhebesaetze)
     print("... Entwicklung der Hebesätze, Plot aufbereitet")
 #
-    plot.plot_steuerentwicklung(dfsteuer=stat.steuerstat(dfsteuer=dfsteuer, bewegungsdaten=dfbew, hhj=hhj, gde=gde) )
+    plot.plot_steuerentwicklung(dfs=stat.steuerstat(dfsteuer=dfsteuer, bewegungsdaten=dfbew, hhj=hhj, gde=gde) )
     print("... Entwicklung der Steuererträge")
 
-    plot.plot_liquiditaet(dfliq=stat.bestandsstat(dfbew=dfbew, dfkred=dfkred, hhj=hhj))
+    plot.plot_liquiditaet(dfliq=stat.bestandsstat(dfbew=dfbew, dfkred=dfkred, hhj=hhj, gde=gde))
     print("... Entwicklung der Bestände")
     
-    plot.plot_schuldenentwicklung(dfschulden=dfschulden)
+    plot.plot_schuldenentwicklung(dfschulden=stat.kredstat(dfbew=dfbew, dfkred=dfkred, hhj=hhj, gde=gde))
     print("... Entwicklung der Schulden")
 
-    plot.plot_prokopfverschuldung(dfschulden=dfschulden)
+    plot.plot_schuldenprokopf(dfschulden=stat.kredstatprokopf(dfbew=dfbew, dfkred=dfkred, hhj=hhj, gde=gde))
     print("... Entwicklung der pro Kopf Verschuldung")
 
 

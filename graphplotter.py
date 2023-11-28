@@ -217,9 +217,122 @@ def plot_ergebnisentwicklung(dfergebnis):
     plt.savefig(str(pathlib.Path.cwd() / "hhdaten/plots/img_je_entwicklung.png"))
     plt.show()
 
-def plot_steuerentwicklung(dfsteuer):
+def plot_steuerentwicklung(dfs):
 
-    pass
+    fdlabelsmall = {"family" : "sans-serif",
+        "color" : "darkgreen",
+        "size" : 8
+        }
+
+    fdaxlabel = {"family" : "sans-serif",
+            "color" : "darkgreen",
+            "size" : 12
+    }
+
+    fdtitle = {"family" : "sans-serif",
+            "color" : "darkgreen",
+            "size" : 16
+    }
+
+    firstplan = dfs["e_p"].loc[dfs["e_p"]== "p"]
+    xplan = firstplan.index.min()
+    xplan = xplan-0.5
+
+    ind = dfs.index
+
+    counter=0
+
+    for i in ind:
+        counter = counter+1
+        if i > xplan:
+            break
+
+
+
+    ax = dfs.plot(kind="bar",
+                stacked=True,
+                colormap="Greens",
+                figsize = (6, 5),
+
+                )
+    ax.legend(loc="lower center", ncols=4, bbox_to_anchor=(0.5 , -0.4),  labelcolor ="darkgreen"   )
+
+    ax.spines[["left", "top", "bottom", "right"]].set_color("darkgreen")
+
+    plt.title("Entwicklung der Steuererträge", fontdict=fdtitle)
+    plt.xlabel(xlabel="Haushaltsjahr", fontdict=fdaxlabel)
+    plt.ylabel(ylabel="Volumen in Mio €", fontdict=fdaxlabel)
+    plt.xticks(rotation = 30, color="darkgreen" )
+    plt.yticks(color="darkgreen")
+    plt.axvline(x=counter-1.5 , color = "forestgreen", label="Planwerte")
+    plt.tight_layout()
+
+    plt.savefig(str(pathlib.Path.cwd() / "hhdaten/plots/img_steuer_entwicklung.png"))
+
+def plot_liquiditaet(dfliq):
+    firstplan = dfliq["e_p"].loc[dfliq["e_p"]== "p"]
+    xplan = firstplan.index.min()
+    xplan = xplan-0.5
+
+    #fig, ax1 = plt.subplots(figsize = ( 6, 3.6))
+
+    ymax = round(dfliq.bestand.max()/100000)*100000+100000
+    ymin = round(dfliq.bestand.min()/100000)*100000-100000
+
+    y = [value for value in range(ymin, ymax, 100000)]
+    x = list(dfliq.hhj)
+    yticklabels = [value/1000 for value in y]
+    annotation = list(dfliq.bestand)
+
+    ax = dfliq.bestand.plot(x=x, y=y, kind='bar', stacked=False, title='Bestände bei der Verbandsgemeindekasse', color='darkgreen')
+    plt.xlabel(xlabel='Haushaltsjahr')
+    plt.xticks(dfliq.index,labels=x, rotation=30)
+    plt.ylabel(ylabel='Bestand in Tsd€')
+    plt.yticks(y, labels=yticklabels)
+    plt.axvline(x=xplan, color = "forestgreen")
+    plt.text(x=xplan + 0.3, y=max(y)-50000, s='Planwerte'  )
+
+    plt.savefig(str(pathlib.Path.cwd() / "hhdaten/plots/img_liquiditaetsentwicklung.png"))
+
+def plot_schuldenentwicklung(dfschulden):
+    firstplan = dfschulden["e_p"].loc[dfschulden["e_p"]== "p"]
+    xplan = firstplan.index.min()
+    xplan = xplan-0.5
+
+    #fig, ax1 = plt.subplots(figsize = ( 6, 3.6))
+
+    #print(dfschulden[['invkred', 'liqkred']])
+
+    ax = dfschulden[['hhj', 'invkred', 'liqkred']].plot.bar(x='hhj', stacked=True, title='Kreditschulden', color=['darkgreen', 'lawngreen']) 
+    plt.xlabel(xlabel='Haushaltsjahr')
+    plt.xticks(dfschulden.index, labels=dfschulden.hhj, rotation=30)
+    plt.ylabel(ylabel='Schulden in Mio€')
+    #plt.yticks(y, labels=yticklabels)
+    plt.axvline(x=xplan, color = "forestgreen")
+    dfschulden['schulden'] = dfschulden['invkred']+dfschulden['liqkred']
+    y = round(max(dfschulden['schulden'])/1000000)*1000000+500000
+    plt.text(x=xplan + 0.3, y=y, s='Planwerte'  )
+    plt.savefig(str(pathlib.Path.cwd() / "hhdaten/plots/img_schuldennominal.png"))
+
+def plot_schuldenprokopf(dfschulden):
+    firstplan = dfschulden["e_p"].loc[dfschulden["e_p"]== "p"]
+    xplan = firstplan.index.min()
+    xplan = xplan-0.5
+
+    #fig, ax1 = plt.subplots(figsize = ( 6, 3.6))
+
+    #print(dfschulden[['invkredprokopf', 'liqkredprokopf']])
+
+    ax = dfschulden[['hhj', 'invkredprokopf', 'liqkredprokopf']].plot.bar(x='hhj', stacked=True, title='Kreditschulden pro Kopf', color=['darkgreen', 'lawngreen'])
+    plt.xlabel(xlabel='Haushaltsjahr')
+    plt.xticks(dfschulden.index, labels=dfschulden.hhj, rotation=30)
+    plt.ylabel(ylabel='Schulden in €')
+    #plt.yticks(y, labels=yticklabels)
+    plt.axvline(x=xplan, color = "forestgreen")
+    dfschulden['schuldenpk'] = dfschulden['invkredprokopf']+dfschulden['liqkredprokopf']
+    y = round(max(dfschulden['schuldenpk'])/50)*50+30
+    plt.text(x=xplan + 0.3, y=y, s='Planwerte'  )
+    plt.savefig(str(pathlib.Path.cwd() / "hhdaten/plots/img_schuldenprokopf.png"))
 
 if __name__ == "__main__":
     #plot_gr_popdev(xlsfile=str(pathlib.Path.cwd() / "hhdaten/grunddaten.xlsx"), gde=60, hhj=2023)

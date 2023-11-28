@@ -152,7 +152,7 @@ def readffsfinstatistik(xlsfile, gdenr, hhj):
 
 def readkred(xlsfile, gdenr, hhj):
     df = pd.read_excel(xlsfile, sheet_name="kred")
-    df = df.loc[(df.gde == gdenr)]
+    df = df.loc[(df.gdenr == gdenr)]
     return df
 
 if __name__ == "main": 
