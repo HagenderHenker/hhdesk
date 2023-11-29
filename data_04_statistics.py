@@ -143,7 +143,7 @@ def kredbestandstatistic(dfkred, df, hhj, gde):
    ezohnelv = df.loc[(df['sk'] > 600000) & (df['sk']< 700000) & (df['sk']!= 694440) & (df['sk'] !=694442)][['rgergvvj', 'ansvj', 'anshhj', 'plan1', 'plan2', 'plan3']].sum()
    azohnelv = df.loc[(df['sk'] > 700000) & (df['sk']< 800000) & (df['sk'] !=796440) & (df['sk'] !=794430)][['rgergvvj', 'ansvj', 'anshhj', 'plan1', 'plan2', 'plan3']].sum()
    zsaldo_woliq = pd.DataFrame(data={'rgergvvj' : (ezohnelv['rgergvvj'] - azohnelv['rgergvvj']),  'ansvj' : (ezohnelv['ansvj'] - azohnelv['ansvj']), 'anshhj' : (ezohnelv['anshhj'] - azohnelv['anshhj']), 'plan1' : (ezohnelv['plan1'] - azohnelv['plan1']), 'plan2' : (ezohnelv['plan2'] - azohnelv['plan2']), 'plan3' : (ezohnelv['plan3'] - azohnelv['plan3'])  }, index=[0])
-   kontrollezaz = df.loc[(df['sk']== 694440) | (df['sk'] ==694442 ) | (df['sk'] ==796440) | (df['sk'] ==794430)]
+   #kontrollezaz = df.loc[(df['sk']== 694440) | (df['sk'] ==694442 ) | (df['sk'] ==796440) | (df['sk'] ==794430)]
 
    if not dfkred.loc[dfkred['e_p'] == "p"].empty:
       dfkred.loc[dfkred['e_p'] == "p"].drop(axis=1, inplace=True)
@@ -222,7 +222,7 @@ def kredstat(dfkred, dfbew, hhj, gde):
    in graphplotter.py schuldenentwicklung()
    '''
    df = kredbestandstatistic(dfkred, dfbew, hhj, gde)
-   df = df[['hhj','invkred', 'liqkred', ]]
+   df = df[['hhj','invkred', 'liqkred', "e_p" ]]
    return df
 
 def kredstatprokopf(dfkred, dfbew, hhj, gde):
@@ -232,7 +232,7 @@ def kredstatprokopf(dfkred, dfbew, hhj, gde):
    in graphplotter.py schuldenentwicklung()
    '''
    df = kredbestandstatistic(dfkred, dfbew, hhj, gde)
-   df = df[['hhj','invkred', 'liqkred', 'Einwohner']]
+   df = df[['hhj','invkred', 'liqkred', 'Einwohner', "e_p"]]
    df['invkredprokopf'] = df['invkred']/df['Einwohner']
    df['liqkredprokopf'] = df['liqkred']/df['Einwohner']
    return df
@@ -245,7 +245,7 @@ def bestandsstat(dfkred, dfbew, hhj, gde):
    in graphplotter.py schuldenentwicklung()
    '''
    df = kredbestandstatistic(dfkred, dfbew, hhj, gde)
-   df = df[['hhj','bestand']]
+   df = df[['hhj','bestand', "e_p"]]
    return df
 
 

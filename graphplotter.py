@@ -32,7 +32,9 @@ def plot_gr_popdev(data, gde, hhj):
 
   
     plt.savefig(str(pathlib.Path.cwd() / "hhdaten/plots/bev-entw.png"))
-    plt.show()
+    #plt.show()
+    plt.close()
+
 
 def plot_gr_altersgruppen(df):
     plt.figure(figsize=(8,5))
@@ -68,6 +70,8 @@ def plot_flaechenentwicklung(df):
  
 
     plt.savefig(str(pathlib.Path.cwd() / "hhdaten/plots/flaechennutzung.png"))
+    plt.close()
+
 
 
 
@@ -105,6 +109,8 @@ def plot_ekentwicklung(dfek):
     ax1.set_yticklabels([x/1000000 for x in y])
 
     plt.savefig(str(pathlib.Path.cwd() / "hhdaten/plots/img_ek_entwicklung.png"))
+    plt.close()
+
 
 
 
@@ -137,6 +143,8 @@ def plot_hebesatzentwicklung(dfhebesaetze):
     ax1.legend([grsta, grstb, gewst], labels=["Grundsteuer A", "Grundsteuer B", "Gewerbesteuer"])
     #ax1.set_yticklabels([x/1000000 for x in y])
     plt.savefig(str(pathlib.Path.cwd() / "hhdaten/plots/img_hebesatz_entwicklung.png"))
+    plt.close()
+
 
 def plot_ergebnisentwicklung(dfergebnis):
     def colorizer(jevalue):
@@ -215,7 +223,9 @@ def plot_ergebnisentwicklung(dfergebnis):
     plt.ticklabel_format(style='sci', axis='y', useMathText="True", )
 
     plt.savefig(str(pathlib.Path.cwd() / "hhdaten/plots/img_je_entwicklung.png"))
-    plt.show()
+    #plt.show()
+    plt.close()
+
 
 def plot_steuerentwicklung(dfs):
 
@@ -266,11 +276,12 @@ def plot_steuerentwicklung(dfs):
     plt.yticks(color="darkgreen")
     plt.axvline(x=counter-1.5 , color = "forestgreen", label="Planwerte")
     plt.tight_layout()
-
     plt.savefig(str(pathlib.Path.cwd() / "hhdaten/plots/img_steuer_entwicklung.png"))
+    plt.close()
 
 def plot_liquiditaet(dfliq):
-    firstplan = dfliq["e_p"].loc[dfliq["e_p"]== "p"]
+    
+    firstplan = dfliq["e_p"].loc[(dfliq["e_p"]== "p")]
     xplan = firstplan.index.min()
     xplan = xplan-0.5
 
@@ -293,6 +304,8 @@ def plot_liquiditaet(dfliq):
     plt.text(x=xplan + 0.3, y=max(y)-50000, s='Planwerte'  )
 
     plt.savefig(str(pathlib.Path.cwd() / "hhdaten/plots/img_liquiditaetsentwicklung.png"))
+    plt.close()
+
 
 def plot_schuldenentwicklung(dfschulden):
     firstplan = dfschulden["e_p"].loc[dfschulden["e_p"]== "p"]
@@ -304,6 +317,7 @@ def plot_schuldenentwicklung(dfschulden):
     #print(dfschulden[['invkred', 'liqkred']])
 
     ax = dfschulden[['hhj', 'invkred', 'liqkred']].plot.bar(x='hhj', stacked=True, title='Kreditschulden', color=['darkgreen', 'lawngreen']) 
+    ax.legend(['Investitionskredit', 'Liquiditätskredite'])
     plt.xlabel(xlabel='Haushaltsjahr')
     plt.xticks(dfschulden.index, labels=dfschulden.hhj, rotation=30)
     plt.ylabel(ylabel='Schulden in Mio€')
@@ -313,6 +327,8 @@ def plot_schuldenentwicklung(dfschulden):
     y = round(max(dfschulden['schulden'])/1000000)*1000000+500000
     plt.text(x=xplan + 0.3, y=y, s='Planwerte'  )
     plt.savefig(str(pathlib.Path.cwd() / "hhdaten/plots/img_schuldennominal.png"))
+    plt.close()
+
 
 def plot_schuldenprokopf(dfschulden):
     firstplan = dfschulden["e_p"].loc[dfschulden["e_p"]== "p"]
@@ -324,6 +340,7 @@ def plot_schuldenprokopf(dfschulden):
     #print(dfschulden[['invkredprokopf', 'liqkredprokopf']])
 
     ax = dfschulden[['hhj', 'invkredprokopf', 'liqkredprokopf']].plot.bar(x='hhj', stacked=True, title='Kreditschulden pro Kopf', color=['darkgreen', 'lawngreen'])
+    ax.legend(['Investitionskredit', 'Liquiditätskredite'])
     plt.xlabel(xlabel='Haushaltsjahr')
     plt.xticks(dfschulden.index, labels=dfschulden.hhj, rotation=30)
     plt.ylabel(ylabel='Schulden in €')
@@ -333,6 +350,8 @@ def plot_schuldenprokopf(dfschulden):
     y = round(max(dfschulden['schuldenpk'])/50)*50+30
     plt.text(x=xplan + 0.3, y=y, s='Planwerte'  )
     plt.savefig(str(pathlib.Path.cwd() / "hhdaten/plots/img_schuldenprokopf.png"))
+    plt.close()
+
 
 if __name__ == "__main__":
     #plot_gr_popdev(xlsfile=str(pathlib.Path.cwd() / "hhdaten/grunddaten.xlsx"), gde=60, hhj=2023)
