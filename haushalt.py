@@ -111,6 +111,9 @@ if __name__ == "__main__":
     plot.plot_schuldenprokopf(dfschulden=stat.kredstatprokopf(dfbew=dfbew, dfkred=dfkred, hhj=hhj, gde=gde))
     print("... Entwicklung der pro Kopf Verschuldung")
 
+    plot.plot_persaufwandstruktur(dfsummierungaufwand=stat.personalaufwandsstruktur(df=dfbew, dfprod=dfpro))
+    print("...Personalaufwandstruktur")
+
 
     # build "Haushaltssatzung"
     """

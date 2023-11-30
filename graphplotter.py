@@ -352,6 +352,27 @@ def plot_schuldenprokopf(dfschulden):
     plt.savefig(str(pathlib.Path.cwd() / "hhdaten/plots/img_schuldenprokopf.png"))
     plt.close()
 
+def plot_persaufwandstruktur(dfsummierungaufwand):
+    fig, ax = plt.subplots(figsize = ( 10, 6))
+    sns.light_palette("seagreen", as_cmap=True)
+    sns.barplot(data=dfsummierungaufwand,
+                x= "prbez",
+                y="anshhj",
+                palette = "Greens",
+                ax = ax
+            )
+
+
+    ax.set_ylabel("Volumen in Mio€", size = 14 )
+    ax.set_xlabel("bei Produkt", size = 14 )
+    ax.set_title("Personalaufwand", size = 20)
+
+    plt.ticklabel_format(style='sci', axis='y', useMathText="True")
+    plt.xticks(rotation=30, ha="right")
+    plt.savefig(str(pathlib.Path.cwd() / "hhdaten/plots/img_persaufwandstruktur.png"))
+    plt.close()
+
+
 
 if __name__ == "__main__":
     #plot_gr_popdev(xlsfile=str(pathlib.Path.cwd() / "hhdaten/grunddaten.xlsx"), gde=60, hhj=2023)

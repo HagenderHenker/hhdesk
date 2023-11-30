@@ -249,6 +249,29 @@ def bestandsstat(dfkred, dfbew, hhj, gde):
    return df
 
 
+def personalaufwandsstruktur(df, dfprod):
+   dfpaw = df.loc[(df["sk"]>500000)&(df["sk"]<520000)]
+   dfpaz = df.loc[(df["sk"]>700000)&(df["sk"]<720000)]
+   print(dfprod)
+   dfprod= dfprod["produkt", "Bezeichnung"].rename({"Bezeichnung":"prbez"})
+
+   dfpaw = dfpaw.merge(right = dfprod, how="left", left_on = "produkt", right_on = "produkt")
+   dfpaz = dfpaz.merge(right = dfprod, how="left", left_on = "produkt", right_on = "produkt")
+
+   dfsummierungaufwand = dfpaw.groupby(by="produkt", ).agg({"produkt":"first", "prbez" : "first", "anshhj" : "sum", "ansvj" : "sum", "rgergvvj" : "sum"})
+   #dfsummierungaufwand.drop(["sk", "mn"], axis=1)
+   #print(dfsummierungaufwand)
+   dfsummierungaufwand = dfsummierungaufwand.loc[(dfsummierungaufwand['anshhj'] != 0) | (dfsummierungaufwand['ansvj'] != 0) & (dfsummierungaufwand['rgergvvj'] != 0)]
+
+
+   dfsummierungauszahlung = dfpaz.groupby(by="produkt", ).agg("sum")
+   #dfsummierungauszahlung.drop(["sk", "mn"], axis=1)
+
+   return dfsummierungaufwand
+
+
+
+
 
 
 
