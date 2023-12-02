@@ -252,9 +252,12 @@ def bestandsstat(dfkred, dfbew, hhj, gde):
 def personalaufwandsstruktur(df, dfprod):
    dfpaw = df.loc[(df["sk"]>500000)&(df["sk"]<520000)]
    dfpaz = df.loc[(df["sk"]>700000)&(df["sk"]<720000)]
-   print(dfprod)
-   dfprod= dfprod["produkt", "Bezeichnung"].rename({"Bezeichnung":"prbez"})
 
+   dfprod= dfprod[["Produkt", "Bezeichnung"]]
+   dfprod = dfprod.rename(columns={"Produkt" : "produkt", "Bezeichnung":"prbez"} )
+   print(dfprod)
+   dfprod.info()
+   df.info()
    dfpaw = dfpaw.merge(right = dfprod, how="left", left_on = "produkt", right_on = "produkt")
    dfpaz = dfpaz.merge(right = dfprod, how="left", left_on = "produkt", right_on = "produkt")
 

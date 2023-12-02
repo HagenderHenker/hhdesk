@@ -353,7 +353,7 @@ def plot_schuldenprokopf(dfschulden):
     plt.close()
 
 def plot_persaufwandstruktur(dfsummierungaufwand):
-    fig, ax = plt.subplots(figsize = ( 10, 6))
+    fig, ax = plt.subplots(figsize = ( 10, 8))
     sns.light_palette("seagreen", as_cmap=True)
     sns.barplot(data=dfsummierungaufwand,
                 x= "prbez",
@@ -369,9 +369,15 @@ def plot_persaufwandstruktur(dfsummierungaufwand):
 
     plt.ticklabel_format(style='sci', axis='y', useMathText="True")
     plt.xticks(rotation=30, ha="right")
+    plt.tight_layout()
     plt.savefig(str(pathlib.Path.cwd() / "hhdaten/plots/img_persaufwandstruktur.png"))
     plt.close()
 
+def plot_ertragsstruktur(df):
+    pass
+
+def plot_aufwandsstruktur(df):
+    pass
 
 
 if __name__ == "__main__":
