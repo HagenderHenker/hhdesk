@@ -331,14 +331,12 @@ def plot_schuldenentwicklung(dfschulden):
 
 
 def plot_schuldenprokopf(dfschulden):
-    firstplan = dfschulden["e_p"].loc[dfschulden["e_p"]== "p"]
-    xplan = firstplan.index.min()
-    xplan = xplan-0.5
-
     #fig, ax1 = plt.subplots(figsize = ( 6, 3.6))
 
     #print(dfschulden[['invkredprokopf', 'liqkredprokopf']])
-
+    firstplan = dfschulden["e_p"].loc[dfschulden["e_p"]== "p"]
+    xplan = firstplan.index.min()
+    xplan = xplan-0.5
     ax = dfschulden[['hhj', 'invkredprokopf', 'liqkredprokopf']].plot.bar(x='hhj', stacked=True, title='Kreditschulden pro Kopf', color=['darkgreen', 'lawngreen'])
     ax.legend(['Investitionskredit', 'Liquiditätskredite'])
     plt.xlabel(xlabel='Haushaltsjahr')
@@ -374,10 +372,54 @@ def plot_persaufwandstruktur(dfsummierungaufwand):
     plt.close()
 
 def plot_ertragsstruktur(df):
-    pass
+    fig, ax = plt.subplots(figsize = ( 10, 6))
+    sns.barplot(data=df,
+            x= "stbez",
+            y="betrag",
+            hue="jahr",
+            palette="Greens",
+            ax = ax)
+    plt.xticks(rotation= 30, ha = 'right')
+    ax.set_xlabel("Ertragsart", size= 14)
+    ax.set_ylabel("Volumen in Mio€", size = 14 )
+    ax.set_title("Erträge", size = 20)
+    plt.savefig(str(pathlib.Path.cwd() / "hhdaten/plots/img_ertragsstruktur.png"))
+    plt.close()
+
 
 def plot_aufwandsstruktur(df):
-    pass
+    fig, ax = plt.subplots(figsize = ( 10, 6))
+    sns.barplot(data=df,
+            x= "stbez",
+            y="betrag",
+            hue="jahr",
+            palette="Greens",
+            ax = ax)
+    plt.xticks(rotation= 30, ha = 'right')
+    ax.set_xlabel("Aufwandsart", size= 14)
+    ax.set_ylabel("Volumen in Mio€", size = 14 )
+    ax.set_title("Aufwand", size = 20)
+    plt.savefig(str(pathlib.Path.cwd() / "hhdaten/plots/img_aufwandstruktur.png"))
+    plt.close()
+
+def plot_Umlagen(df):
+    firstplan = df["e_p"].loc[df["e_p"]== "p"]
+    xplan = firstplan.index.min()
+    xplan = xplan-0.5
+    #fig, ax1 = plt.subplots(figsize = ( 6, 3.6))
+    #print(dfschulden[['invkred', 'liqkred']])
+    ax = df[['hhj', 'invkred', 'liqkred']].plot.bar(x='hhj', stacked=True, title='Umlagen', color=['forestgreen', 'darkgreen', 'lawngreen', 'yellowgreen']) 
+    ax.legend(['Gewerbesteuerumlage', 'Kreisumlage', 'Verbandsgemeindeumlage', 'Sonderumlage Grundschulen'])
+    plt.xlabel(xlabel='Haushaltsjahr')
+    plt.xticks(df.index, labels=df.hhj, rotation=30)
+    plt.ylabel(ylabel='Umlagevolumen in Mio€')
+    #plt.yticks(y, labels=yticklabels)
+    plt.axvline(x=xplan, color = "forestgreen")
+    df['umlagen'] = df['GewSt_Umlage']+df['Grundschulumlage']+df['Kreisumlage']+df['VG-Umlage']
+    y = round(max(df['umlagen'])/1000000)*1000000+500000
+    plt.text(x=xplan + 0.3, y=y, s='Planwerte'  )
+    plt.savefig(str(pathlib.Path.cwd() / "hhdaten/plots/img_Umlagen.png"))
+    plt.close()
 
 
 if __name__ == "__main__":

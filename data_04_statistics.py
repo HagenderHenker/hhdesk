@@ -255,7 +255,7 @@ def personalaufwandsstruktur(df, dfprod):
 
    dfprod= dfprod[["Produkt", "Bezeichnung"]]
    dfprod = dfprod.rename(columns={"Produkt" : "produkt", "Bezeichnung":"prbez"} )
-   print(dfprod)
+   # print(dfprod)
    dfprod.info()
    df.info()
    dfpaw = dfpaw.merge(right = dfprod, how="left", left_on = "produkt", right_on = "produkt")
@@ -272,54 +272,168 @@ def personalaufwandsstruktur(df, dfprod):
 
    return dfsummierungaufwand
 
+def staffelung(sk):
+   if sk < 410000:
+      return 400
+   if 410000 <= sk < 420000:
+      return 410
+   if 420000 <= sk < 430000:
+      return 420
+   if 430000 <= sk < 440000:
+      return 430
+   if 440000 <= sk < 442000 or 443000 <= sk < 450000:
+      return 440
+   if 442000 <= sk < 443000:
+      return 442
+   if 450000 <= sk < 460000:
+      return 450
+   if 460000 <= sk < 470000:
+      return 460
+   if 470000 <= sk < 480000:
+      return 470
+   if 480000 <= sk < 490000:
+      return 480
+   if 490000 <= sk < 500000:
+      return 490
+
+   if 500000 <= sk < 520000:
+      return 500
+   if 520000 <= sk < 530000:
+      return 520
+   if 530000 <= sk < 540000:
+      return 530
+   if 540000 <= sk < 550000:
+      return 540
+   if 550000 <= sk < 560000:
+      return 550
+   if 560000 <= sk < 570000:
+      return 560
+   if 570000 <= sk < 580000:
+      return 570
+   if 580000 <= sk < 590000:
+      return 580
+   if 590000 <= sk < 600000:
+      return 590
+
+def eart(staffelung):
+   if staffelung < 50:
+      return "e"
+   else:
+      return "a"
+
+def ertragsstruktur(df):
+   dferg = df.loc[(df["sk"] < 500000)]
+   dferg["staffel"] = dferg["sk"].map(staffelung)
+   dferg["eart"] = dferg["staffel"].map(eart)
+
+   dftp = dferg[["hhs", "sk", "staffel", "eart", "anshhj"]]
+   dftp = dftp.rename(columns={"anshhj" : "betrag"})
+   dftp["p-re"] = "p"
+   dftp["jahr"] = "Haushaltsjahr"
+
+   dfe2 = dferg[["hhs", "sk", "staffel", "eart", "ansvj"]]
+   dfe2 = dfe2.rename(columns={"ansvj" : "betrag"})
+   dfe2["p-re"] = "p"
+   dfe2["jahr"] = "Nachtrag/Plan Vorjahr"
+
+   dfe3 = dferg[["hhs", "sk", "staffel", "eart", "rgergvvj"]]
+   dfe3 = dfe3.rename(columns={"rgergvvj" : "betrag"})
+   dfe3["p-re"] = "re"
+   dfe3["jahr"] = "Rechnungserg. 2. Vorjahr"
+
+   dftp = pd.concat([dftp, dfe2])
+   dftp = pd.concat([dftp, dfe3])
+
+   groupers = {
+      400 : "Steuern",
+      410 : "Transfererträge",
+      420 : "Erträge der sozialen Sicherung",
+      430 : "Gebühren",
+      440 : "privatrechtl. Leistungsentgelte",
+      442 : "Kostenerstattungen",
+      450 : "Wertkorrekturen",
+      460 : "sonstige Erträge",
+      470 : "Finanzerträge",
+      480 : "Erträge aus ILV",
+      490 : "Andere Erträge"
+   }
+
+   dftp2 = dftp.groupby(["staffel", "jahr"], as_index=False).sum()
+   dftp2.reset_index()
+   dftp2["stbez"] = dftp2.staffel.apply(lambda x: groupers[x])
 
 
+   for grouper in groupers:
+      d = dftp2.loc[dftp2.staffel == grouper]
+      x = []
+      for hhj in d.jahr:
+         if d.loc[ d.jahr == hhj]['betrag'].values == 0:
+            x.append(0)
+            print(f"{grouper}: x = {x}")
+         else:
+            break
+
+         if x == [0,0,0]:
+            
+            dftp2 = dftp2.drop(dftp2[dftp2.staffel == grouper].index, axis=0)
+   
+   return dftp2
+
+def aufwandsstruktur(df):
+   dferg = df.loc[(df["sk"] > 500000) & (df["sk"] > 600000)]
+   dferg["staffel"] = dferg["sk"].map(staffelung)
+   dferg["eart"] = dferg["staffel"].map(eart)
+
+   dftp = dferg[["hhs", "sk", "staffel", "eart", "anshhj"]]
+   dftp = dftp.rename(columns={"anshhj" : "betrag"})
+   dftp["p-re"] = "p"
+   dftp["jahr"] = "Haushaltsjahr"
+
+   dfe2 = dferg[["hhs", "sk", "staffel", "eart", "ansvj"]]
+   dfe2 = dfe2.rename(columns={"ansvj" : "betrag"})
+   dfe2["p-re"] = "p"
+   dfe2["jahr"] = "Nachtrag/Plan Vorjahr"
+
+   dfe3 = dferg[["hhs", "sk", "staffel", "eart", "rgergvvj"]]
+   dfe3 = dfe3.rename(columns={"rgergvvj" : "betrag"})
+   dfe3["p-re"] = "re"
+   dfe3["jahr"] = "Rechnungserg. 2. Vorjahr"
+
+   dftp = pd.concat([dftp, dfe2])
+   dftp = pd.concat([dftp, dfe3])
+
+   groupers = {
+      500 : "Personal & Versorgungsaufwand",
+      520 : "Aufwendungen für Sach- und Dienstleistungen",
+      530 : "Abschreibungen",
+      540 : "Zuwendungen und Transferaufwand",
+      550 : "Aufwand der sozialen Sicherung",
+      560 : "sonstiger Aufwand",
+      570 : "Finanzaufwand",
+      580 : "Aufwand aus ILV",
+      590 : "Andere Aufwendungen"
+   }
+
+   dftp2 = dftp.groupby(["staffel", "jahr"], as_index=False).sum()
+   dftp2.reset_index()
+   dftp2["stbez"] = dftp2.staffel.apply(lambda x: groupers[x])
 
 
+   for grouper in groupers:
+      d = dftp2.loc[dftp2.staffel == grouper]
+      x = []
+      for hhj in d.jahr:
+         if d.loc[ d.jahr == hhj]['betrag'].values == 0:
+            x.append(0)
+            print(f"{grouper}: x = {x}")
+         else:
+            break
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+         if x == [0,0,0]:
+            
+            dftp2 = dftp2.drop(dftp2[dftp2.staffel == grouper].index, axis=0)
+   
+   return dftp2
 
 
 

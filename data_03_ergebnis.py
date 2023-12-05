@@ -425,6 +425,75 @@ def get_ilfA(df, dferl):
    st = dfnew[["hhs","sk", "produkt", "bez", "anshhj", "ansvj", "rgergvvj", "erl"]].to_dict('records')
    return st
 
+def createinvest(df, dfprod, dfmnt, dferl):
+   dferl.columns = ["hh", "produkt", "mn", "sk", "erlnr", "erltyp", "intern", "erl", "nü"]
+   dfmnt.columns = ["produkt", "mn", "txt", "konsum", "anzPSt"]
+   dfprod = dfprod["Produkt", "Bezeichnung"]
+   dfprod = dfprod.rename(columns={"Produkt" : "produkt", "Bezeichnung" : "prbez"}) 
+   dferl['erljoined'] = dferl.groupby('hhs')['erl'].transform(lambda x: ' '.join(x))
+   #dfmnt = dfmnt.rename(columns={"Maßnahme" : "mn", "Produkt" : "produkt"})
+   dfmnt.columns = ["produkt", "mn", "txt", "konsum", "anzPSt"]
+
+   dfprod = dfprod.rename(columns={"Produkt" : "produkt"})
+
+   #print(f"______________________________")
+   #print(f"erläuterungen vor bereinigung ")
+   #print(f"==============================")
+
+   #dferl.info()
+
+   # löschen der Duplikate
+   dferl = dferl.drop_duplicates(subset=["hhs"], keep="first")
+   # drop der erläuterungsspalte
+   #print(f"______________________________")
+   #print(f"erläuterungen nach bereinigung")
+   #print(f"==============================")
+   #dferl.info()
+
+   # umbenenen der erljoined in erl
+   dferl = dferl.drop(["erl"], axis=1)
+   dferl = dferl.rename(columns={"erljoined" : "erl" })
+
+   #print(f"Erläuterungen: \n {dfdup}")
+
+   dfneu = pd.merge(left=df, right=dfmnt, how="left",
+                  left_on=["produkt", "mn"],
+                  right_on=["produkt", "mn"]
+                  )
+   
+   #dfneu.info()
+   dfneu = pd.merge(left=dfneu,
+                  right=dfprod,
+                  how="left",
+                  left_on=["produkt"],
+                  right_on=["produkt"],
+                  )
+   #print(f"Merge Produkttext: {dfneu}")
+   dfneu = pd.merge(left=dfneu,
+                  right=dferl,
+                  how="left",
+                  left_on=["produkt", "mn", "sk"],
+                  right_on=["produkt", "mn", "sk"]
+                  )
+   #print(f"Merge Erläuterungstext: {dfneu}")
+   dferl2 = dferl.loc[dferl["sk"]==0]
+   dfneu = pd.merge(left=dfneu,
+                  right=dferl2,
+                  how="left",
+                  left_on=["produkt", "mn"],
+                  right_on=["produkt", "mn"]
+                  )
+   dfneu = dfneu.rename(columns={"sk_x": "sk", "erl_x": "pserl","erl_y": "mnerl", "hhs" : "hhsmn", "hhs_x": "hhs"})#, "hhs_x": "hhs"
+   dfneu = dfneu.drop(["sk_y", "hhs_y", "duplikat_y", "duplikat_x"  ], axis=1)
+
+   dfneu = dfneu.fillna(0)
+
+   dfneu.iloc[ :, [0,16,17,18,19,20,21,22,23,24]]
+
+   return dfneu
+
+
+
 if __name__ == "__main__":
    # print(gesamtplan_erg(xlsfile=str(pathlib.Path.cwd() / "haushalt/hhdaten/bewegungsdaten.xlsx"), hhj=2023, gde=60))
    print(gesamtplan_vvj(di.hhdata_excelimport(xlsxfile=str(pathlib.Path.cwd() / "hhdaten/bewegungsdaten.xlsx"))))

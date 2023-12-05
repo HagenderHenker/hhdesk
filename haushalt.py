@@ -1,5 +1,6 @@
 import dataimport as di 
 import contextbuilder as ctx
+import data_03_ergebnis as erg
 import data_04_statistics as stat
 import docbuilder
 import pathlib
@@ -16,13 +17,20 @@ vorb01tpl = env.vorb01tpl
 vorb02tpl = env.vorb02tpl
 vorb05tpl = env.vorb05tpl
 vorb06tpl = env.vorb06tpl
+vorb07tpl = env.vorb07tpl
+vorb08tpl = env.vorb08tpl
 quelleewdaten = env.quelleewdaten
 quelleflaechendaten = env.quelleflaechendaten
 
 if __name__ == "__main__":
 
     # create the dataframes for all further purposes from dataimport
+    print("")
+    print("===============================================")    
     print("Creating Dataframes")
+    print("===============================================")
+    print("")
+    
     # Import Bewegungsdaten
     dfbew = di.hhdata_excelimport(xlsxfile=bewegungsdaten)
     print("... Bewegungsdaten")
@@ -63,13 +71,6 @@ if __name__ == "__main__":
     print("... Statistik der Steuererträge der Gemeinde Vorjahre")
     dfkred = di.readkred(xlsfile=grunddaten, gdenr=gde, hhj=hhj)
     print("... Schulden und Kassenbestände")
-    #dfschuldenentwicklung
-    
-
-    #dfinvkredentwicklung
-
-    #dfliqkredentwicklung
-
     #dfsteuerentwicklung
     dfstkraft = di.readlfag_stkberechnung(xlsfile=grunddaten, gdenr=gde, hhj=hhj)
     print("... Steuereinnahmen")
@@ -114,45 +115,68 @@ if __name__ == "__main__":
     plot.plot_persaufwandstruktur(dfsummierungaufwand=stat.personalaufwandsstruktur(df=dfbew, dfprod=dfpro))
     print("...Personalaufwandstruktur")
 
+    plot.plot_ertragsstruktur(df=stat.ertragsstruktur(df=dfbew))
+    print("...Ertragsstruktur")
+
+    plot.plot_aufwandsstruktur(df=stat.ertragsstruktur(df=dfbew))
+    print("...Aufwandstruktur")
+
+
+
+    # plotting graphs
+    print("")
+    print("===============================================")
+    print("Building docx Documents")
+    print("===============================================")
+    print("")
 
     # build "Haushaltssatzung"
-    """
+    
     contexthhsatzung = ctx.hhsatzung(gde = gde, hhj = hhj, xlsgrunddaten = grunddaten, xlsbewegung = bewegungsdaten)
     print("Daten für 'Haushaltssatzung' sind zusammengestellt")
     
-    docbuilder.builddocx(template=hhstpl, context=contexthhsatzung, filename="00-Haushaltssatzung", gde=gde, hhj=hhj)
+    hhs = docbuilder.create_tpl_instance(template=hhstpl)
+    docbuilder.builddocx(tpl=hhs, context=contexthhsatzung, filename="00-Haushaltssatzung", gde=gde, hhj=hhj)
     print(f"Haushaltssatzung erstellt in Ordner: 'Ausgabe/{gde}/{hhj}")
-    """
+    
     # build "02_Vorbericht" 1. Abschnitt: Allgemeines
 
-    #vorb01tpl_instanz = docbuilder.create_tpl_instance(vorb01tpl)
-    #print("*** Templateinstanz Vorbericht 01 Allgemeines erzeugt")
+    vorb01tpl_instanz = docbuilder.create_tpl_instance(vorb01tpl)
+    print("*** Templateinstanz Vorbericht 01 Allgemeines erzeugt")
 
-    #contextvorb1 = ctx.hh_vorbericht_01_Allgemeines(
-    #                                                dfhhs=dfhhs,dfgdegrunddaten = dfgde, 
-    #                                                dfewentwicklung=dfewentw, 
-    #                                                dfewaltersgliederung=dfewalter, 
-    #                                                dfewalteru20= dfewu20, 
-    #                                                dfflaeche=dfflaeche, 
-    #                                                quelleewdaten=quelleewdaten, quelleflaeche=quelleflaechendaten,
-    #                                                doc =  vorb01tpl_instanz
-    #                                              )
-    #print("Daten für Vorbericht 01 Allgemeines sind zusammengestellt")
+    contextvorb1 = ctx.hh_vorbericht_01_Allgemeines(
+                                                    dfhhs=dfhhs,dfgdegrunddaten = dfgde, 
+                                                    dfewentwicklung=dfewentw, 
+                                                    dfewaltersgliederung=dfewalter, 
+                                                    dfewalteru20= dfewu20, 
+                                                    dfflaeche=dfflaeche, 
+                                                    quelleewdaten=quelleewdaten, quelleflaeche=quelleflaechendaten,
+                                                    doc =  vorb01tpl_instanz
+                                                  )
+    print("Daten für Vorbericht 01 Allgemeines sind zusammengestellt")
 
-    #docbuilder.builddocx(tpl=vorb01tpl_instanz, context=contextvorb1, filename="01-Vorb_Allgemeines", gde=gde, hhj=hhj)
-    #print(f"Vorbericht 01 - Allgemeines erzeugt in Ordner: 'Ausgabe/{gde}/{hhj}")
+    docbuilder.builddocx(tpl=vorb01tpl_instanz, context=contextvorb1, filename="01-Vorb_Allgemeines", gde=gde, hhj=hhj)
+    print(f"Vorbericht 01 - Allgemeines erzeugt in Ordner: 'Ausgabe/{gde}/{hhj}")
 
     # build "03_Vorbericht" Information about closed year
 
-    #vorb02tpl_instanz = docbuilder.create_tpl_instance(vorb02tpl)
-    #contextvorb2_vvj = ctx.hh_vorbericht_02_verlaufvvj(df=dfbew)
-    #print("Daten für Vorbericht 02 Bericht 2. Haushaltsvorjahr sind zusammengestellt ")
-    #docbuilder.builddocx(tpl=vorb02tpl_instanz, context=contextvorb2_vvj, filename="02-Vorb_VVJ", gde=gde, hhj=hhj)
-    #print(f"Vorbericht 02 - 2. Haushaltsvorjahr: 'Ausgabe/{gde}/{hhj}")
+    vorb02tpl_instanz = docbuilder.create_tpl_instance(vorb02tpl)
+    contextvorb2_vvj = ctx.hh_vorbericht_02_verlaufvvj(df=dfbew)
+    print("Daten für Vorbericht 02 Bericht 2. Haushaltsvorjahr sind zusammengestellt ")
+    docbuilder.builddocx(tpl=vorb02tpl_instanz, context=contextvorb2_vvj, filename="02-Vorb_VVJ", gde=gde, hhj=hhj)
+    print(f"Vorbericht 02 - 2. Haushaltsvorjahr: 'Ausgabe/{gde}/{hhj}")
 
     # build "04_Vorbericht" Information about last year
 
+    #vorb03tpl_instanz = docbuilder.create_tpl_instance(vorb03tpl)
+
+
+
     # build "05_Vorbericht" Gesamtergebnisplan
+
+    #vorb04tpl_instanz = docbuilder.create_tpl_instance(vorb04tpl)
+
+    
 
     # build "06_Vorbericht_aenderungenErtraege"
 
@@ -165,3 +189,24 @@ if __name__ == "__main__":
     
 
     #build "07_Vorbericht" Aufwendungen im Ergebnishaushalt
+
+
+
+
+    #bulid "08_FinnHH" Abweichungen Finanzhaushalt
+
+
+
+    #build "09_Invest" Investitionen
+
+    vorb08tpl_instanz = docbuilder.create_tpl_instance(vorb08tpl)
+    contextvorb08 = ctx.hh_vorbericht_09_invest(dfneu=erg.createinvest(df=dfbew, dfprod=dfpro, dfmnt=dfmn, dferl=dferl))
+    print("Daten für Vorbericht 08 'Investitionen' sind zusammengestellt ")
+    docbuilder.builddocx(tpl=vorb08tpl_instanz, context=contextvorb08, filename="08-Vorb_Invest", gde=gde, hhj=hhj)
+    print(f"Vorbericht 08 - Investitionen: 'Ausgabe/{gde}/{hhj}")
+    #build "10_Kredit" Kredite
+
+
+
+
+    #build "11_Pflichtanlagen" Pflichtanlagen

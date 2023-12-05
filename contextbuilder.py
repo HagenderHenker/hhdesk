@@ -114,7 +114,7 @@ def hh_vorbericht_06_Ertraege(df, dferl, mindiff):
 
 
     """
-
+    
     steuertbl = erg.get_steuern(df=df, dferl=dferl)
     transfertbl = erg.get_umlagen(df=df, dferl=dferl, mindiff=mindiff)
     oerlegtbl = erg.get_oerE(df=df, dferl=dferl, mindiff=mindiff)
@@ -140,6 +140,85 @@ def hh_vorbericht_06_Ertraege(df, dferl, mindiff):
     return ertrdict
 
 
+
+def hh_vorbericht_09_invest(dfneu):
+    # Filtern der Maßnahmen
+    print(dfneu)
+    dfmn = dfneu.loc[(dfneu["mn"]!=0)&(dfneu["anshhj"]!=0)]
+
+    dfinve = dfmn.loc[(dfmn["sk"]>680000)&(dfmn["sk"]<690000)]
+    dfinva = dfmn.loc[(dfmn["sk"]>780000)&(dfmn["sk"]<790000)]
+
+    #dfa = dfmn.groupby(by=["produkt", "mn"])
+
+
+    #x = dict(iter(dfa))
+
+    x = dfmn.to_dict("index")
+    pdict = {}
+    mndict = {}
+    produkte = []
+    massnahmen = []
+
+    #print(x)
+    print(x)
+    for plstdat in x.values():
+        if plstdat["produkt"] not in produkte:
+            produkte.append((plstdat["produkt"], plstdat["prbez"]))
+
+
+    for plstdat in x.values():
+        prmn = f"{plstdat['produkt']}-{plstdat['mn']}"
+        if prmn not in massnahmen:
+            massnahmen.append((prmn, plstdat["mn"], plstdat["txt"], plstdat["mnerl"]))
+
+    #print(produkte)
+    #print(massnahmen)
+
+    for produkt, prbez in produkte:
+        pdict[produkt] = {"produkt": produkt,
+                        "prbez" :  prbez,
+                        "massnahmen" : {}
+                        }
+
+
+
+    for massnahme, mn, text, erlaeuterung in massnahmen:
+        eakt = 0
+        evj = 0
+        aakt = 0
+        avj = 0
+        #text = "" if text == pd.nan else text
+        if text == 0: text = ""
+        if erlaeuterung == 0: erlaeuterung = ""
+
+        if massnahme[0:7] == produkt:
+
+            pdict[produkt]["massnahmen"][massnahme] = {"massnahme" : mn,
+                                                        "mnbez" : text,
+                                                        "mnerl" : erlaeuterung,
+                                                        "plst" : {}}
+
+        for plstdat in x.values():
+            if f"{plstdat['produkt']}-{plstdat['mn']}" == massnahme:
+                pdict[produkt]["massnahmen"][massnahme]["plst"][plstdat['hhs']] = plstdat
+            if 680000 < plstdat["sk"] < 690000:
+                eakt += plstdat["anshhj"]
+                evj += plstdat["ansvj"]
+            if 780000 < plstdat["sk"] < 790000:
+                aakt += plstdat["anshhj"]
+                avj += plstdat["ansvj"]
+
+        pdict[produkt]["massnahmen"][massnahme]["eakt"] = eakt
+        pdict[produkt]["massnahmen"][massnahme]["aakt"] = aakt
+        pdict[produkt]["massnahmen"][massnahme]["sakt"] = eakt - aakt
+        pdict[produkt]["massnahmen"][massnahme]["evj"] = evj
+        pdict[produkt]["massnahmen"][massnahme]["avj"] = avj
+        pdict[produkt]["massnahmen"][massnahme]["svj"] = evj - avj
+
+    produkte = {"produkte" : pdict }
+    
+    return produkte
 
 if __name__ == "__main__":
     #print test hhsatzungcontext
