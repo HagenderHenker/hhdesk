@@ -133,14 +133,16 @@ if __name__ == "__main__":
     # build "Haushaltssatzung"
     
     contexthhsatzung = ctx.hhsatzung(gde = gde, hhj = hhj, xlsgrunddaten = grunddaten, xlsbewegung = bewegungsdaten)
-    print("Daten für 'Haushaltssatzung' sind zusammengestellt")
+    print("... Daten für 'Haushaltssatzung' sind zusammengestellt")
     
     hhs = docbuilder.create_tpl_instance(template=hhstpl)
     docbuilder.builddocx(tpl=hhs, context=contexthhsatzung, filename="00-Haushaltssatzung", gde=gde, hhj=hhj)
-    print(f"Haushaltssatzung erstellt in Ordner: 'Ausgabe/{gde}/{hhj}")
+    print(f"... Haushaltssatzung erstellt in Ordner: 'Ausgabe/{gde}/{hhj}")
     
     # build "02_Vorbericht" 1. Abschnitt: Allgemeines
-
+    print(" ")
+    print("----------------------------")
+ 
     vorb01tpl_instanz = docbuilder.create_tpl_instance(vorb01tpl)
     print("*** Templateinstanz Vorbericht 01 Allgemeines erzeugt")
 
@@ -161,10 +163,14 @@ if __name__ == "__main__":
     # build "03_Vorbericht" Information about closed year
 
     vorb02tpl_instanz = docbuilder.create_tpl_instance(vorb02tpl)
+    print(" ")
+    print("----------------------------")
+    print("*** Templateinstanz Vorbericht 02 VVJ erzeugt")
+
     contextvorb2_vvj = ctx.hh_vorbericht_02_verlaufvvj(df=dfbew)
-    print("Daten für Vorbericht 02 Bericht 2. Haushaltsvorjahr sind zusammengestellt ")
+    print("...Daten für Vorbericht 02 Bericht 2. Haushaltsvorjahr sind zusammengestellt ")
     docbuilder.builddocx(tpl=vorb02tpl_instanz, context=contextvorb2_vvj, filename="02-Vorb_VVJ", gde=gde, hhj=hhj)
-    print(f"Vorbericht 02 - 2. Haushaltsvorjahr: 'Ausgabe/{gde}/{hhj}")
+    print(f"...Vorbericht 02 - 2. Haushaltsvorjahr: 'Ausgabe/{gde}/{hhj}")
 
     # build "04_Vorbericht" Information about last year
 
@@ -180,12 +186,14 @@ if __name__ == "__main__":
 
     # build "06_Vorbericht_aenderungenErtraege"
 
-    
     vorb05tpl_instanz = docbuilder.create_tpl_instance(vorb05tpl)
+    print(" ")
+    print("----------------------------")
+    print("*** Templateinstanz Vorbericht 05 Ertrag erzeugt")
     contextvorb05 = ctx.hh_vorbericht_06_Ertraege(df=dfbew, dferl=dferl, mindiff=env.mindiff)
-    print("Daten für Vorbericht 06 'Veränderungen in den Erträgen' sind zusammengestellt ")
+    print("...Daten für Vorbericht 06 'Veränderungen in den Erträgen' sind zusammengestellt ")
     docbuilder.builddocx(tpl=vorb05tpl_instanz, context=contextvorb05, filename="06-Vorb_Ertraege", gde=gde, hhj=hhj)
-    print(f"Vorbericht 06 - Veränderung in den Erträgen: 'Ausgabe/{gde}/{hhj}")
+    print(f"...Vorbericht 06 - Veränderung in den Erträgen: Ausgabe/{gde}/{hhj}")
     
 
     #build "07_Vorbericht" Aufwendungen im Ergebnishaushalt
@@ -198,7 +206,9 @@ if __name__ == "__main__":
 
 
     #build "09_Invest" Investitionen
-
+    print(" ")
+    print("----------------------------")
+    print("*** Templateinstanz Vorbericht 08 Invest erzeugt")
     vorb08tpl_instanz = docbuilder.create_tpl_instance(vorb08tpl)
     contextvorb08 = ctx.hh_vorbericht_09_invest(dfneu=erg.createinvest(df=dfbew, dfprod=dfpro, dfmnt=dfmn, dferl=dferl))
     print("Daten für Vorbericht 08 'Investitionen' sind zusammengestellt ")

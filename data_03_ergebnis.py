@@ -200,7 +200,7 @@ def get_umlagen(df, dferl, mindiff=0):
    teildf = df.loc[(df["sk"]<420000) & (df["sk"]>410000)]
 
    teildf = teildf.loc[(teildf["ansdiff"] > mindiff) | (teildf["ansdiff"] < mindiff*-1) ]
-   teildf.info()
+   #teildf.info()
    #print(dferl)
    dferl["sk"] = dferl["sk"].fillna(0).astype("int")
    #print(dferl)
@@ -234,7 +234,7 @@ def get_oerE(df, dferl, mindiff=0):
    dferl = dferl.drop("hhs", axis=1)
    teildf = df.loc[(df["sk"]<440000) & (df["sk"]>430000)]
    teildf = teildf.loc[(teildf["ansdiff"] > mindiff) | (teildf["ansdiff"] < mindiff*-1) ]
-   teildf.info()
+   #teildf.info()
    #print(dferl)
    dferl["sk"] = dferl["sk"].fillna(0).astype("int")
    #print(dferl)
@@ -252,7 +252,7 @@ def get_prE(df, dferl, mindiff=0):
    dferl = dferl.drop("hhs", axis=1) 
    teildf = df.loc[(df["sk"]<442000) & (df["sk"]>440000)]
    teildf = teildf.loc[(teildf["ansdiff"] > mindiff) | (teildf["ansdiff"] < mindiff*-1) ]
-   teildf.info()
+   #teildf.info()
    #print(dferl)
    dferl["sk"] = dferl["sk"].fillna(0).astype("int")
    #print(dferl)
@@ -270,7 +270,7 @@ def get_kostE(df, dferl, mindiff=0):
    dferl = dferl.drop("hhs", axis=1) 
    teildf = df.loc[(df["sk"]<450000) & (df["sk"]>442000)]
    teildf = teildf.loc[(teildf["ansdiff"] > mindiff) | (teildf["ansdiff"] < mindiff*-1) ]
-   teildf.info()
+   #teildf.info()
    #print(dferl)
    dferl["sk"] = dferl["sk"].fillna(0).astype("int")
    #print(dferl)
@@ -288,7 +288,7 @@ def get_sonstE(df, dferl, mindiff=0):
    dferl = dferl.drop("hhs", axis=1) 
    teildf = df.loc[(df["sk"]<470000) & (df["sk"]>460000)]
    teildf = teildf.loc[(teildf["ansdiff"] > mindiff) | (teildf["ansdiff"] < mindiff*-1) ]
-   teildf.info()
+   #teildf.info()
    #print(dferl)
    dferl["sk"] = dferl["sk"].fillna(0).astype("int")
    #print(dferl)
@@ -306,7 +306,7 @@ def get_finE(df, dferl, mindiff=0):
    dferl = dferl.drop("hhs", axis=1) 
    teildf = df.loc[(df["sk"]<480000) & (df["sk"]>470000)]
    teildf = teildf.loc[(teildf["ansdiff"] > mindiff) | (teildf["ansdiff"] < mindiff*-1) ]
-   teildf.info()
+   #teildf.info()
    #print(dferl)
    dferl["sk"] = dferl["sk"].fillna(0).astype("int")
    #print(dferl)
@@ -322,7 +322,7 @@ def get_finE(df, dferl, mindiff=0):
 def get_persA(df, dferl):
    teildf = df.loc[(df["sk"]<520000) & (df["sk"]>500000)]
    dferl = dferl.drop("hhs", axis=1)
-      #print(dferl)
+   #print(dferl)
    dferl["sk"] = dferl["sk"].fillna(0).astype("int")
    #print(dferl)
    dfnew = pd.merge(teildf, dferl, how = "left", left_on= ["produkt", "sk"], right_on=["produkt", "sk"])
@@ -426,9 +426,11 @@ def get_ilfA(df, dferl):
    return st
 
 def createinvest(df, dfprod, dfmnt, dferl):
-   dferl.columns = ["hh", "produkt", "mn", "sk", "erlnr", "erltyp", "intern", "erl", "nü"]
+   
+   dferl.columns = ["hh", "produkt", "mn", "sk", "erlnr", "erltyp", "intern", "nü", "hhs", "duplikat", "erl"]
    dfmnt.columns = ["produkt", "mn", "txt", "konsum", "anzPSt"]
-   dfprod = dfprod["Produkt", "Bezeichnung"]
+   print(dfprod)
+   dfprod = dfprod[["Produkt", "Bezeichnung"]]
    dfprod = dfprod.rename(columns={"Produkt" : "produkt", "Bezeichnung" : "prbez"}) 
    dferl['erljoined'] = dferl.groupby('hhs')['erl'].transform(lambda x: ' '.join(x))
    #dfmnt = dfmnt.rename(columns={"Maßnahme" : "mn", "Produkt" : "produkt"})
