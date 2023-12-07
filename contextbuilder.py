@@ -161,29 +161,39 @@ def hh_vorbericht_09_invest(dfneu):
     massnahmen = []
 
     #print(x)
-    print(f"x ist folgendes dict:{x}")
+    #print(f"x ist folgendes dict:{x}")
+
     for plstdat in x.values():
-        if plstdat["produkt"] not in produkte:
+        if (plstdat["produkt"], plstdat["prbez"]) not in produkte:
             produkte.append((plstdat["produkt"], plstdat["prbez"]))
+    
+    print(produkte)
 
 
     for plstdat in x.values():
         prmn = f"{plstdat['produkt']}-{plstdat['mn']}"
-        if prmn not in massnahmen:
+        t=[]
+        t = [a[0] for a in massnahmen]
+        
+        if prmn not in t:
             massnahmen.append((prmn, plstdat["mn"], plstdat["txt"], plstdat["mnerl"]))
-
+            
+    
+    print(massnahmen)
     #print(produkte)
     #print(massnahmen)
 
     for produkt, prbez in produkte:
+        print(f"produkt ist gleich {produkt}")
         pdict[produkt] = {"produkt": produkt,
                         "prbez" :  prbez,
                         "massnahmen" : {}
                         }
 
 
-
+        print(pdict)
         for massnahme, mn, text, erlaeuterung in massnahmen:
+            #print(f"MN: {massnahme} mnummer: {mn}, text: {text}, erl: {erlaeuterung}")
             eakt = 0
             evj = 0
             aakt = 0
@@ -191,23 +201,24 @@ def hh_vorbericht_09_invest(dfneu):
             #text = "" if text == pd.nan else text
             if text == 0: text = ""
             if erlaeuterung == 0: erlaeuterung = ""
-
+            
             if massnahme[0:7] == produkt:
-
+                #print(f"... MN .......{massnahme[0:7]}")
                 pdict[produkt]["massnahmen"][massnahme] = {"massnahme" : mn,
                                                             "mnbez" : text,
                                                             "mnerl" : erlaeuterung,
                                                             "plst" : {}}
+                
 
-            for plstdat in x.values():
-                if f"{plstdat['produkt']}-{plstdat['mn']}" == massnahme:
-                    pdict[produkt]["massnahmen"][massnahme]["plst"][plstdat['hhs']] = plstdat
-                if 680000 < plstdat["sk"] < 690000:
-                    eakt += plstdat["anshhj"]
-                    evj += plstdat["ansvj"]
-                if 780000 < plstdat["sk"] < 790000:
-                    aakt += plstdat["anshhj"]
-                    avj += plstdat["ansvj"]
+        for plstdat in x.values():
+            if f"{plstdat['produkt']}-{plstdat['mn']}" == massnahme:
+                pdict[produkt]["massnahmen"][massnahme]["plst"][plstdat['hhs']] = plstdat
+            if 680000 < plstdat["sk"] < 690000:
+                eakt += plstdat["anshhj"]
+                evj += plstdat["ansvj"]
+            if 780000 < plstdat["sk"] < 790000:
+                aakt += plstdat["anshhj"]
+                avj += plstdat["ansvj"]
 
             pdict[produkt]["massnahmen"][massnahme]["eakt"] = eakt
             pdict[produkt]["massnahmen"][massnahme]["aakt"] = aakt
