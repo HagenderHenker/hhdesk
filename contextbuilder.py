@@ -145,9 +145,12 @@ def hh_vorbericht_09_invest(dfneu):
     # Filtern der Maßnahmen
     
     dfmn = dfneu.loc[(dfneu["mn"]!=0)&(dfneu["anshhj"]!=0)]
+    print("DFMN ")
+    print("_________________________________")   
     print(dfmn)
     dfinve = dfmn.loc[(dfmn["sk"]>680000)&(dfmn["sk"]<690000)]
     dfinva = dfmn.loc[(dfmn["sk"]>780000)&(dfmn["sk"]<790000)]
+    dfmn = pd.concat([dfinve, dfinva])
 
     #dfa = dfmn.groupby(by=["produkt", "mn"])
 
@@ -180,20 +183,20 @@ def hh_vorbericht_09_invest(dfneu):
             
     
     print(massnahmen)
-    #print(produkte)
+    print(produkte)
     #print(massnahmen)
 
     for produkt, prbez in produkte:
-        print(f"produkt ist gleich {produkt}")
+        #print(f"produkt ist gleich {produkt}")
         pdict[produkt] = {"produkt": produkt,
                         "prbez" :  prbez,
                         "massnahmen" : {}
                         }
 
 
-        print(pdict)
+       #print(pdict)
         for massnahme, mn, text, erlaeuterung in massnahmen:
-            #print(f"MN: {massnahme} mnummer: {mn}, text: {text}, erl: {erlaeuterung}")
+            print(f"MN: {massnahme} mnummer: {mn}, text: {text}, erl: {erlaeuterung}")
             eakt = 0
             evj = 0
             aakt = 0
@@ -210,15 +213,18 @@ def hh_vorbericht_09_invest(dfneu):
                                                             "plst" : {}}
                 
 
-        for plstdat in x.values():
-            if f"{plstdat['produkt']}-{plstdat['mn']}" == massnahme:
-                pdict[produkt]["massnahmen"][massnahme]["plst"][plstdat['hhs']] = plstdat
-            if 680000 < plstdat["sk"] < 690000:
-                eakt += plstdat["anshhj"]
-                evj += plstdat["ansvj"]
-            if 780000 < plstdat["sk"] < 790000:
-                aakt += plstdat["anshhj"]
-                avj += plstdat["ansvj"]
+            for plstdat in x.values():
+                if f"{plstdat['produkt']}-{plstdat['mn']}" == massnahme:
+                    print(massnahme)
+                    print(produkt)
+                    pdict[produkt]["massnahmen"][massnahme]["plst"][plstdat['hhs']] = plstdat
+                    print(pdict)
+                if 680000 < plstdat["sk"] < 690000:
+                    eakt += plstdat["anshhj"]
+                    evj += plstdat["ansvj"]
+                if 780000 < plstdat["sk"] < 790000:
+                    aakt += plstdat["anshhj"]
+                    avj += plstdat["ansvj"]
 
             pdict[produkt]["massnahmen"][massnahme]["eakt"] = eakt
             pdict[produkt]["massnahmen"][massnahme]["aakt"] = aakt
