@@ -145,13 +145,13 @@ def hh_vorbericht_09_invest(dfneu):
     # Filtern der Maßnahmen
     
     dfmn = dfneu.loc[(dfneu["mn"]!=0)&(dfneu["anshhj"]!=0)]
-    print("DFMN ")
-    print("_________________________________")   
-    print(dfmn)
+    #print("DFMN ")
+    #print("_________________________________")   
+    #print(dfmn)
     dfinve = dfmn.loc[(dfmn["sk"]>680000)&(dfmn["sk"]<690000)]
     dfinva = dfmn.loc[(dfmn["sk"]>780000)&(dfmn["sk"]<790000)]
     dfmn = pd.concat([dfinve, dfinva])
-
+    dfmn = dfmn.sort_values(by=["hhs"])
     #dfa = dfmn.groupby(by=["produkt", "mn"])
 
 
@@ -170,7 +170,7 @@ def hh_vorbericht_09_invest(dfneu):
         if (plstdat["produkt"], plstdat["prbez"]) not in produkte:
             produkte.append((plstdat["produkt"], plstdat["prbez"]))
     
-    print(produkte)
+    #print(produkte)
 
 
     for plstdat in x.values():
@@ -182,8 +182,8 @@ def hh_vorbericht_09_invest(dfneu):
             massnahmen.append((prmn, plstdat["mn"], plstdat["txt"], plstdat["mnerl"]))
             
     
-    print(massnahmen)
-    print(produkte)
+    #print(massnahmen)
+    #print(produkte)
     #print(massnahmen)
 
     for produkt, prbez in produkte:
@@ -194,9 +194,9 @@ def hh_vorbericht_09_invest(dfneu):
                         }
 
 
-       #print(pdict)
+        #print(f"nach Produkt hinzugefügt: \n \n {pdict}")
         for massnahme, mn, text, erlaeuterung in massnahmen:
-            print(f"MN: {massnahme} mnummer: {mn}, text: {text}, erl: {erlaeuterung}")
+            #print(f"MN: {massnahme} mnummer: {mn}, text: {text}, erl: {erlaeuterung}")
             eakt = 0
             evj = 0
             aakt = 0
@@ -212,26 +212,30 @@ def hh_vorbericht_09_invest(dfneu):
                                                             "mnerl" : erlaeuterung,
                                                             "plst" : {}}
                 
+                #print(f"nach Maßnahme hinzugefügt: \n \n {pdict}")
+                for plstdat in x.values():
+                    if f"{plstdat['produkt']}-{plstdat['mn']}" == massnahme:
+                        #print(massnahme)
+                        #print(produkt)
+                        pdict[produkt]["massnahmen"][massnahme]["plst"][plstdat['hhs']] = plstdat
+                        #print(pdict)
+                        if 680000 < plstdat["sk"] < 690000:
+                            eakt += plstdat["anshhj"]
+                            evj += plstdat["ansvj"]
+                        if 780000 < plstdat["sk"] < 790000:
+                            aakt += plstdat["anshhj"]
+                            avj += plstdat["ansvj"]
 
-            for plstdat in x.values():
-                if f"{plstdat['produkt']}-{plstdat['mn']}" == massnahme:
-                    print(massnahme)
-                    print(produkt)
-                    pdict[produkt]["massnahmen"][massnahme]["plst"][plstdat['hhs']] = plstdat
-                    print(pdict)
-                if 680000 < plstdat["sk"] < 690000:
-                    eakt += plstdat["anshhj"]
-                    evj += plstdat["ansvj"]
-                if 780000 < plstdat["sk"] < 790000:
-                    aakt += plstdat["anshhj"]
-                    avj += plstdat["ansvj"]
-
-            pdict[produkt]["massnahmen"][massnahme]["eakt"] = eakt
-            pdict[produkt]["massnahmen"][massnahme]["aakt"] = aakt
-            pdict[produkt]["massnahmen"][massnahme]["sakt"] = eakt - aakt
-            pdict[produkt]["massnahmen"][massnahme]["evj"] = evj
-            pdict[produkt]["massnahmen"][massnahme]["avj"] = avj
-            pdict[produkt]["massnahmen"][massnahme]["svj"] = evj - avj
+                pdict[produkt]["massnahmen"][massnahme]["eakt"] = eakt
+                pdict[produkt]["massnahmen"][massnahme]["aakt"] = aakt
+                pdict[produkt]["massnahmen"][massnahme]["sakt"] = eakt - aakt
+                pdict[produkt]["massnahmen"][massnahme]["evj"] = evj
+                pdict[produkt]["massnahmen"][massnahme]["avj"] = avj
+                pdict[produkt]["massnahmen"][massnahme]["svj"] = evj - avj
+                eakt = 0
+                evj = 0
+                aakt = 0
+                avj = 0
 
     produkte = {"produkte" : pdict }
     
