@@ -173,6 +173,15 @@ if __name__ == "__main__":
     print(f"...Vorbericht 02 - 2. Haushaltsvorjahr: 'Ausgabe/{gde}/{hhj}")
 
     # build "04_Vorbericht" Information about last year
+    print(" ")
+    print("----------------------------")
+    vorb03tpl_instanz = docbuilder.create_tpl_instance(vorb03tpl)
+    print("*** Templateinstanz Vorbericht 03 VJ erzeugt")
+    contextvorb2_vvj = ctx.hh_vorbericht_03_verlaufvj(df=dfbew)
+    print("...Daten für Vorbericht 02 Bericht 2. Haushaltsvorjahr sind zusammengestellt ")
+    docbuilder.builddocx(tpl=vorb02tpl_instanz, context=contextvorb2_vvj, filename="02-Vorb_VVJ", gde=gde, hhj=hhj)
+    print(f"...Vorbericht 02 - 2. Haushaltsvorjahr: 'Ausgabe/{gde}/{hhj}")
+
 
     #vorb03tpl_instanz = docbuilder.create_tpl_instance(vorb03tpl)
 
@@ -197,7 +206,14 @@ if __name__ == "__main__":
     
 
     #build "07_Vorbericht" Aufwendungen im Ergebnishaushalt
-
+    print(" ")
+    print("----------------------------")
+    vorb06tpl_instanz = docbuilder.create_tpl_instance(vorb06tpl)
+    print("*** Templateinstanz Vorbericht 06 Ertrag erzeugt")
+    contextvorb06 = ctx.hh_vorbericht_06_Ertraege(df=dfbew, dferl=dferl, mindiff=env.mindiff)
+    print("...Daten für Vorbericht 07 'Veränderungen in den Aufwendungen' sind zusammengestellt ")
+    docbuilder.builddocx(tpl=vorb06tpl_instanz, context=contextvorb06, filename="07-Vorb_Aufwand", gde=gde, hhj=hhj)
+    print(f"...Vorbericht 06 - Veränderung in den Erträgen: Ausgabe/{gde}/{hhj}")
 
 
 

@@ -1,0 +1,21 @@
+{{ PersaufwHHJ }}	
+{{ PersaufwVJ }}
+{{ abschreibungen }}
+{{ STK }} 
+{{ SZA }}
+{{ SZZO }}
+{{ Umlgrl }}
+{{ UmlSaKU }}	
+{{ UmlLastKU }}
+{{ UmlSaVGU }}	
+{{ UmlLastVGU }}
+{{ UmlSaSoU }}	
+{{ UmlLastSoU }}
+
+msdtbl
+umltranstbl
+sonstAtbl
+finAtbl
+
+{{ img_persaufwandstruktur }}
+{{ img_EntwicklungUmlagelast }}

@@ -95,6 +95,9 @@ def hh_vorbericht_02_verlaufvvj(df):
     ergdict["ergueb"] = ergueb
     return ergdict
 
+def hh_vorbericht_03_verlaufvj(df):
+    pass
+
 
 def hh_vorbericht_05_UebersichtErgHH(df):
     ergdict = erg.gesamtplan_erg(df)
@@ -139,6 +142,64 @@ def hh_vorbericht_06_Ertraege(df, dferl, mindiff):
 
     return ertrdict
 
+
+def hh_vorbericht_06_Ertraege(df, dferl, mindiff, doc):
+
+    """
+    hhj:        Haushaltsjahr, Quelle environmentvar.py
+    gde:        Gemeindenummer, Quelle environmentvar.py
+
+    abweichung: Betrag um die ein Ansatz vom Vorjahresansatz abweichen soll um in der Tabelle aufgenommen zu werden
+
+
+    steuertbl:  Daten für die tabellarische Darstellung der Steuern, 
+    zuwtbl:     Daten für die tabellarische Darstellung der Zuweisungen und Transfererträge, 
+
+
+    """
+    
+    img_persaufwandstruktur = str(pathlib.Path.cwd() / "hhdaten/plots/img_persaufwandstruktur.png")
+    img_EntwicklungUmlagelast = str(pathlib.Path.cwd() / "hhdaten/plots/img_EntwicklungUmlagelast.png")
+
+
+    msdtbl = erg.get_msdA(df=df, dferl=dferl)
+    umltranstbl = erg.get_UmlA(df=df, dferl=dferl, mindiff=mindiff)
+    sozAtbl = erg.get_sozA(df=df, dferl=dferl, mindiff=mindiff)
+    sonstAtbl = erg.get_sonstA(df=df, dferl=dferl, mindiff=mindiff)
+    finAtbl = erg.get_prE(df=df, dferl=dferl, mindiff=mindiff)
+
+    hhj = env.hhj
+    gde = env.gde
+   
+    aufwdict = {
+                "msdtbl" : msdtbl,
+                "umltranstbl" : umltranstbl,
+                "sonstAtbl" : sonstAtbl,
+                "sozAtbl" : sozAtbl,
+                "finAtbl" : finAtbl,
+                "STK" : d,
+                "hhj" : hhj,
+                "hhj-1" : hhj-1, 
+                "img_persaufwandsstruktur" : docxtpl.InlineImage(doc, img_persaufwandstruktur),
+                "img_EntwicklungUmlagelast" : docxtpl.InlineImage(doc, img_EntwicklungUmlagelast)
+                "PersaufwHHJ"	:
+                "PersaufwVJ" :
+                "abschreibungen" :
+                "STK" :
+                "SZA" :
+                "SZZO"
+                "Umlgrl"
+                "UmlSaKU"	
+                "UmlLastKU"
+                "UmlSaVGU"	
+                "UmlLastVGU"
+                "UmlSaSoU"	
+                "UmlLastSoU"
+
+                }
+                
+    
+    return aufwdict
 
 
 def hh_vorbericht_09_invest(dfneu):
