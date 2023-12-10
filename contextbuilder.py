@@ -143,7 +143,7 @@ def hh_vorbericht_06_Ertraege(df, dferl, mindiff):
     return ertrdict
 
 
-def hh_vorbericht_06_Ertraege(df, dferl, mindiff, doc):
+def hh_vorbericht_06_Ertraege(df, dferl, mindiff, doc, dfumlagen):
 
     """
     hhj:        Haushaltsjahr, Quelle environmentvar.py
@@ -158,6 +158,11 @@ def hh_vorbericht_06_Ertraege(df, dferl, mindiff, doc):
 
     """
     
+    stk = dfumlagen["stk"].values
+    sza = dfumlagen["sza"].values
+    szzo = dfumlagen["szzo"].values
+    
+
     img_persaufwandstruktur = str(pathlib.Path.cwd() / "hhdaten/plots/img_persaufwandstruktur.png")
     img_EntwicklungUmlagelast = str(pathlib.Path.cwd() / "hhdaten/plots/img_EntwicklungUmlagelast.png")
 
@@ -177,19 +182,21 @@ def hh_vorbericht_06_Ertraege(df, dferl, mindiff, doc):
                 "sonstAtbl" : sonstAtbl,
                 "sozAtbl" : sozAtbl,
                 "finAtbl" : finAtbl,
-                "STK" : d,
+               
                 "hhj" : hhj,
                 "hhj-1" : hhj-1, 
                 "img_persaufwandsstruktur" : docxtpl.InlineImage(doc, img_persaufwandstruktur),
-                "img_EntwicklungUmlagelast" : docxtpl.InlineImage(doc, img_EntwicklungUmlagelast)
-                "PersaufwHHJ"	:
-                "PersaufwVJ" :
-                "abschreibungen" :
-                "STK" :
-                "SZA" :
-                "SZZO"
-                "Umlgrl"
-                "UmlSaKU"	
+                "img_EntwicklungUmlagelast" : docxtpl.InlineImage(doc, img_EntwicklungUmlagelast), 
+                
+                "PersaufwHHJ" : erg.sum_personalaufwand(dfbew=df, dferl=dferl)[0],
+                "PersaufwVJ" : erg.sum_personalaufwand(dfbew=df, dferl=dferl)[1],
+                "abschreibungen" : erg.get_AfA.sum(),
+
+                "STK" : stk,
+                "SZA" : sza, 
+                "SZZO" : szzo,
+                "Umlgrl" : stk+sza+szzo
+                "UmlSaKU" : 	
                 "UmlLastKU"
                 "UmlSaVGU"	
                 "UmlLastVGU"

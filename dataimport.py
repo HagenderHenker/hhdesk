@@ -155,6 +155,8 @@ def readkred(xlsfile, gdenr, hhj):
     df = df.loc[(df.gdenr == gdenr)]
     return df
 
+
+
 if __name__ == "main": 
     #df = readewstatistik_wohn(xlsfile=str(pathlib.Path.cwd() / "hhdaten/grunddaten.xlsx"), gdenr=60, jahr=2022)
     #print(df)

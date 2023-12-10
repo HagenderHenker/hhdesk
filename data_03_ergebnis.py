@@ -494,6 +494,10 @@ def createinvest(df, dfprod, dfmnt, dferl):
 
    return dfneu
 
+def sum_personalaufwand(dfbew, dferl):
+   df = get_persA(df=dfbew, dferl=dferl)
+   summe = (df["anshhj"].sum(), df["ansvj"].sum())
+   return summe
 
 
 if __name__ == "__main__":
