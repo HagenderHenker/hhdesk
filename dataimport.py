@@ -132,7 +132,8 @@ def readewdaten_u20(xlsfile, gdenr, hhj):
     return df    
 
 def readlfag_stkberechnung(xlsfile, gdenr, hhj):
-    df = pd.read_excel(xlsfile, sheet_name="STKRAFT") 
+    df = pd.read_excel(xlsfile, sheet_name="STKRAFT")
+    df = df.loc[(df.gdenr == gdenr) & (df.hhj == hhj)]
     return df
 
 def readsteuerertraege(xlsfile, gdenr, hhj):

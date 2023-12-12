@@ -15,6 +15,7 @@ bewegungsdaten = env.bewDat
 hhstpl = env.hhstpl
 vorb01tpl = env.vorb01tpl
 vorb02tpl = env.vorb02tpl
+vorb03tpl = env.vorb03tpl
 vorb05tpl = env.vorb05tpl
 vorb06tpl = env.vorb06tpl
 vorb07tpl = env.vorb07tpl
@@ -65,15 +66,24 @@ if __name__ == "__main__":
     #dffinanzentwicklung = 
     dffinanz = di.readffsfinstatistik(xlsfile=grunddaten, gdenr=gde, hhj=hhj)
     print("... Statistik der freien Finanzspitze und der Finanzrechnungsdaten")
+    #hebesaetze
     dfhebesaetze = di.readhebesatzentwicklung(xlsfile=grunddaten, gdenr=gde)
     print("... Statistik der festgesetzten Hebesätze der Gemeinde")
+    #steuerentwicklung
     dfsteuer = di.readsteuerertraege(xlsfile=grunddaten, gdenr=gde, hhj=hhj)
     print("... Statistik der Steuererträge der Gemeinde Vorjahre")
+    #kredit
     dfkred = di.readkred(xlsfile=grunddaten, gdenr=gde, hhj=hhj)
     print("... Schulden und Kassenbestände")
     #dfsteuerentwicklung
+
+
+    # steuerkraft
     dfstkraft = di.readlfag_stkberechnung(xlsfile=grunddaten, gdenr=gde, hhj=hhj)
-    print("... Steuereinnahmen")
+    print("... Berechnung Steuerkraft")
+    # LFAG Kalkulationsdaten (Gemeindunabhängig/Landeseinheitlich)
+    
+    
 
     # plotting graphs
     print("")
@@ -121,8 +131,7 @@ if __name__ == "__main__":
     plot.plot_aufwandsstruktur(df=stat.ertragsstruktur(df=dfbew))
     print("...Aufwandstruktur")
 
-
-
+   
     # plotting graphs
     print("")
     print("===============================================")
@@ -171,7 +180,7 @@ if __name__ == "__main__":
     print("...Daten für Vorbericht 02 Bericht 2. Haushaltsvorjahr sind zusammengestellt ")
     docbuilder.builddocx(tpl=vorb02tpl_instanz, context=contextvorb2_vvj, filename="02-Vorb_VVJ", gde=gde, hhj=hhj)
     print(f"...Vorbericht 02 - 2. Haushaltsvorjahr: 'Ausgabe/{gde}/{hhj}")
-
+    """
     # build "04_Vorbericht" Information about last year
     print(" ")
     print("----------------------------")
@@ -181,7 +190,7 @@ if __name__ == "__main__":
     print("...Daten für Vorbericht 02 Bericht 2. Haushaltsvorjahr sind zusammengestellt ")
     docbuilder.builddocx(tpl=vorb02tpl_instanz, context=contextvorb2_vvj, filename="02-Vorb_VVJ", gde=gde, hhj=hhj)
     print(f"...Vorbericht 02 - 2. Haushaltsvorjahr: 'Ausgabe/{gde}/{hhj}")
-
+    """
 
     #vorb03tpl_instanz = docbuilder.create_tpl_instance(vorb03tpl)
 
@@ -199,7 +208,7 @@ if __name__ == "__main__":
     print(" ")
     print("----------------------------")
     print("*** Templateinstanz Vorbericht 05 Ertrag erzeugt")
-    contextvorb05 = ctx.hh_vorbericht_06_Ertraege(df=dfbew, dferl=dferl, mindiff=env.mindiff)
+    contextvorb05 = ctx.hh_vorbericht_06_Ertraege(df=dfbew, dferl=dferl, mindiff=env.mindiff, dfstk=dfstkraft, doc=vorb05tpl_instanz)
     print("...Daten für Vorbericht 06 'Veränderungen in den Erträgen' sind zusammengestellt ")
     docbuilder.builddocx(tpl=vorb05tpl_instanz, context=contextvorb05, filename="06-Vorb_Ertraege", gde=gde, hhj=hhj)
     print(f"...Vorbericht 06 - Veränderung in den Erträgen: Ausgabe/{gde}/{hhj}")
@@ -209,8 +218,8 @@ if __name__ == "__main__":
     print(" ")
     print("----------------------------")
     vorb06tpl_instanz = docbuilder.create_tpl_instance(vorb06tpl)
-    print("*** Templateinstanz Vorbericht 06 Ertrag erzeugt")
-    contextvorb06 = ctx.hh_vorbericht_06_Ertraege(df=dfbew, dferl=dferl, mindiff=env.mindiff)
+    print("*** Templateinstanz Vorbericht 06 Aufwand erzeugt")
+    contextvorb06 = ctx.hh_vorbericht_07_aufwand(df=dfbew, dferl=dferl, mindiff=env.mindiff, dfumlagen=dfstkraft, doc=vorb06tpl_instanz)
     print("...Daten für Vorbericht 07 'Veränderungen in den Aufwendungen' sind zusammengestellt ")
     docbuilder.builddocx(tpl=vorb06tpl_instanz, context=contextvorb06, filename="07-Vorb_Aufwand", gde=gde, hhj=hhj)
     print(f"...Vorbericht 06 - Veränderung in den Erträgen: Ausgabe/{gde}/{hhj}")
@@ -231,8 +240,26 @@ if __name__ == "__main__":
     docbuilder.builddocx(tpl=vorb08tpl_instanz, context=contextvorb08, filename="08-Vorb_Invest", gde=gde, hhj=hhj)
     print(f"Vorbericht 08 - Investitionen: 'Ausgabe/{gde}/{hhj}")
     #build "10_Kredit" Kredite
-
-
+    """
+    print(" ")
+    print("----------------------------")
+    print("*** Templateinstanz Vorbericht 08 Invest erzeugt")
+    vorb08tpl_instanz = docbuilder.create_tpl_instance(vorb08tpl)
+    contextvorb08 = ctx.hh_vorbericht_09_invest(dfneu=erg.createinvest(df=dfbew, dfprod=dfpro, dfmnt=dfmn, dferl=dferl))
+    print("Daten für Vorbericht 08 'Investitionen' sind zusammengestellt ")
+    docbuilder.builddocx(tpl=vorb08tpl_instanz, context=contextvorb08, filename="08-Vorb_Invest", gde=gde, hhj=hhj)
+    print(f"Vorbericht 08 - Investitionen: 'Ausgabe/{gde}/{hhj}")
+    """
 
 
     #build "11_Pflichtanlagen" Pflichtanlagen
+    """
+    print(" ")
+    print("----------------------------")
+    print("*** Templateinstanz Vorbericht 11 Pflichtanlagen erzeugt")
+    vorb11tpl_instanz = docbuilder.create_tpl_instance(vorb08tpl)
+    contextvorb11 = ctx.hh_vorbericht_09_invest(dfneu=erg.createinvest(df=dfbew, dfprod=dfpro, dfmnt=dfmn, dferl=dferl))
+    print("Daten für Vorbericht 08 'Investitionen' sind zusammengestellt ")
+    docbuilder.builddocx(tpl=vorb08tpl_instanz, context=contextvorb08, filename="08-Vorb_Invest", gde=gde, hhj=hhj)
+    print(f"Vorbericht 08 - Investitionen: 'Ausgabe/{gde}/{hhj}")
+    """

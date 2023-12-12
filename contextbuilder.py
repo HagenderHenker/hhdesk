@@ -1,6 +1,7 @@
 import data_01_allgemein as allgemein
 import data_02_hhsatzung as hhdaten
 import data_03_ergebnis as erg
+import data_05_LFAG as lfag
 import numpy as np 
 import pandas as pd
 import pathlib
@@ -103,7 +104,7 @@ def hh_vorbericht_05_UebersichtErgHH(df):
     ergdict = erg.gesamtplan_erg(df)
     return ergdict
 
-def hh_vorbericht_06_Ertraege(df, dferl, mindiff):
+def hh_vorbericht_06_Ertraege(df, dferl, dfstk, mindiff, doc):
 
     """
     hhj:        Haushaltsjahr, Quelle environmentvar.py
@@ -118,6 +119,9 @@ def hh_vorbericht_06_Ertraege(df, dferl, mindiff):
 
     """
     
+    img_Hebesatzentwicklung = str(pathlib.Path.cwd() / "hhdaten/plots/img_hebesatz_entwicklung.png")
+    img_Steuerentwicklung = str(pathlib.Path.cwd() / "hhdaten/plots/img_steuer_entwicklung.png")
+
     steuertbl = erg.get_steuern(df=df, dferl=dferl)
     transfertbl = erg.get_umlagen(df=df, dferl=dferl, mindiff=mindiff)
     oerlegtbl = erg.get_oerE(df=df, dferl=dferl, mindiff=mindiff)
@@ -129,6 +133,8 @@ def hh_vorbericht_06_Ertraege(df, dferl, mindiff):
 
     hhj = env.hhj
     gde = env.gde
+
+    stk = lfag.calculate_steuerkraft(dfstk)
    
     ertrdict = {"steuertbl" : steuertbl,
                 "transfertbl" : transfertbl,
@@ -138,12 +144,17 @@ def hh_vorbericht_06_Ertraege(df, dferl, mindiff):
                 "sonstetbl" : sonstetbl,
                 "finetbl" : finetbl,
                 "hhj" : hhj,
-                "hhj-1" : hhj-1, }
+                "hhj-1" : hhj-1, 
+                "stk" : stk,
+                "img_Hebesatzentwicklung" : docxtpl.InlineImage(doc,img_Hebesatzentwicklung),
+                "img_Steuerentwicklung" : docxtpl.InlineImage(doc,img_Steuerentwicklung), 
+                
+                }
 
     return ertrdict
 
 
-def hh_vorbericht_06_Ertraege(df, dferl, mindiff, doc, dfumlagen):
+def hh_vorbericht_07_aufwand(df, dferl, mindiff, doc, dfumlagen):
 
     """
     hhj:        Haushaltsjahr, Quelle environmentvar.py
@@ -195,13 +206,13 @@ def hh_vorbericht_06_Ertraege(df, dferl, mindiff, doc, dfumlagen):
                 "STK" : stk,
                 "SZA" : sza, 
                 "SZZO" : szzo,
-                "Umlgrl" : stk+sza+szzo
-                "UmlSaKU" : 	
-                "UmlLastKU"
-                "UmlSaVGU"	
-                "UmlLastVGU"
-                "UmlSaSoU"	
-                "UmlLastSoU"
+                "Umlgrl" : stk+sza+szzo,
+                "UmlSaKU" : "dödel"	,
+                "UmlLastKU" : "dadel",
+                "UmlSaVGU"	: 123,
+                "UmlLastVGU" : 456,
+                "UmlSaSoU"	: 789,
+                "UmlLastSoU" : 101112,
 
                 }
                 
