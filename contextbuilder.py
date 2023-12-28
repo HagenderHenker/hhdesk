@@ -8,6 +8,7 @@ import pathlib
 import docxtpl
 import dataimport as di
 import enviromentvar as env
+from datetime import date
 
 
 def hhsatzung(gde, hhj, xlsgrunddaten, xlsbewegung):
@@ -104,7 +105,7 @@ def hh_vorbericht_05_UebersichtErgHH(df):
     ergdict = erg.gesamtplan_erg(df)
     return ergdict
 
-def hh_vorbericht_06_Ertraege(df, dferl, dfstk, mindiff, doc):
+def hh_vorbericht_06_Ertraege(df, dferl, dfstk, dfod, dfew, hhj, mindiff, doc):
 
     """
     hhj:        Haushaltsjahr, Quelle environmentvar.py
@@ -135,6 +136,8 @@ def hh_vorbericht_06_Ertraege(df, dferl, dfstk, mindiff, doc):
     gde = env.gde
 
     stk = lfag.calculate_steuerkraft(dfstk)
+    sza = lfag.sza(dfod=dfod, ew=dfew, stk=stk, hhj=hhj)
+    szzo = lfag.szzo(dfod=dfod, )
    
     ertrdict = {"steuertbl" : steuertbl,
                 "transfertbl" : transfertbl,
@@ -146,6 +149,7 @@ def hh_vorbericht_06_Ertraege(df, dferl, dfstk, mindiff, doc):
                 "hhj" : hhj,
                 "hhj-1" : hhj-1, 
                 "stk" : stk,
+                "sza" : sza,
                 "img_Hebesatzentwicklung" : docxtpl.InlineImage(doc,img_Hebesatzentwicklung),
                 "img_Steuerentwicklung" : docxtpl.InlineImage(doc,img_Steuerentwicklung), 
                 

@@ -141,6 +141,12 @@ def readsteuerertraege(xlsfile, gdenr, hhj):
     df = df.loc[(df.gdenr == gdenr)]
     return df
 
+def readumlagen(xlsfile, gdenr, hhj):
+    df = pd.read_excel(xlsfile, sheet_name="umlagen")
+    df = df.loc[(df.gdenr == gdenr)]
+    return df
+
+
 def readergebnisEKstat(xlsfile, gdenr, hhj):
     df = pd.read_excel(xlsfile, sheet_name="ertrag")
     df = df.loc[(df.gde == gdenr)]
@@ -156,6 +162,15 @@ def readkred(xlsfile, gdenr, hhj):
     df = df.loc[(df.gdenr == gdenr)]
     return df
 
+def readlfagod(xlsfile, hhj):
+    df = pd.read_excel(xlsfile, sheet_name="LFAGOD")
+    df = df.loc[(df.hhj == hhj)]
+    return df
+
+def readlfagHHJgde(xlsfile, hhj, gde):
+    df = pd.read_excel(xlsfile, sheet_name="LFAGHHJ")
+    df = df.loc[(df.gdenr == gdenr) & (df.hhj == hhj)]
+    return df    
 
 
 if __name__ == "main": 

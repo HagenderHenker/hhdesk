@@ -1,6 +1,9 @@
 import dataimport as di
 import pathlib
 import pandas as pd
+from datetime import date
+import numpy as np
+from datetime import date
 
 def calculate_steuerkraft(dflfagstk):
 
@@ -16,7 +19,7 @@ def calculate_steuerkraft(dflfagstk):
     stkgrsta = grzgrsta * nivgrsta/100
     print(stkgrsta)
     
-    grstb_4vvj = round((dflfagstk["grstb_IV_vvj"].values[0] - dflfagstk["ber_grstb_IV_vvj"].values[0])*10000/dflfagstk["hebesatz_grstb_IV_vvj"].values[0],0)/100
+    nivgrstb = dflfagstk["nivellierungssatz_grsta"].values[0] 
     grstb_1bis3vj = round((dflfagstk["grstb_I-III_vj"].values[0] - dflfagstk["ber_grstb_I-III_vj"].values[0])*10000/dflfagstk["hebesatz_grstb_I-III_vj"].values[0],0)/100
     grzgrstb = grstb_4vvj + grstb_1bis3vj
     nivgrstb = dflfagstk["nivellierungssatz_grsta"].values[0] 
@@ -42,14 +45,14 @@ def calculate_steuerkraft(dflfagstk):
     wgUSt1bis3vj = dflfagstk["wgUSt1bis3vj"].values[0]
     wgust = wgUSt1bis3vj + wgUSt4vvj
 
-    stkdict = {
+        "hebesatz_grsta_IV_vvj" : dflfagstk["hebesatz_grsta_IV_vvj"].values[0],
         "grsta_4vvjist" : dflfagstk["grsta_IV_vvj"].values[0],
         "ber_grsta_IV_vvj" : dflfagstk["ber_grsta_IV_vvj"].values[0],
         "hebesatz_grsta_IV_vvj" : dflfagstk["hebesatz_grsta_IV_vvj"].values[0],
-        "grzgrsta4vvj" : grsta_4vvj, 
+        "hebesatz_grsta_IbisIII_vj" : dflfagstk["hebesatz_grsta_I-III_vj"].values[0],
         "grsta_IbisIII_vj" : dflfagstk["grsta_I-III_vj"].values[0],
         "ber_grsta_IbisIII_vj" : dflfagstk["ber_grsta_I-III_vj"].values[0],
-        "hebesatz_grsta_IbisIII_vj" : dflfagstk["hebesatz_grsta_I-III_vj"].values[0],
+        "nivgrsta" : nivgrsta,
         "grzgrsta1bis3vj" : grsta_1bis3vj,
         "grzgrsta" : grzgrsta,
         "nivgrsta" : nivgrsta,
@@ -88,7 +91,55 @@ def calculate_steuerkraft(dflfagstk):
         "wgUSt4vvj" : wgUSt4vvj,
         "wgUSt1bis3vj" : wgUSt1bis3vj,
         "wgust" : wgust,
-        "stkgesamt" : float(ekst + wgust+ ust+stkgewst+stkgrsta+stkgrstb)
+        "stkgesamt" : ekst + wgust+ ust+stkgewst+stkgrsta+stkgrstb
         }
 
     return stkdict
+
+def sza(dfod, ew, stk, hhj):
+    stk = stk["stkgesamt"]
+    ewdf = ew.loc[ew["datum"]== np.datetime64(date(year=hhj, month = 6, day = 30))&(ew["wohnstatus"] == "Einwohner mit Hauptwohnung")]
+    ewz = ewdf["maennl"][0]+ewdf["weibl"][0]
+    
+
+    szadict = {
+        "stkmz" : stk,
+        "ew_3006vj" : ewz,
+        "stkmzproEW" : stk/ewz,
+        "stkproew_land" : dfod["landesdurchschnSTK"],
+        "schwellenwertsza" : dfod["Schwellenwert_76vh"],
+        "diffstkjeEWuSchwW" : stk/ewz-dfod["Schwellenwert_76vh"],
+        "sza" : (stk/ewz-dfod["Schwellenwert_76vh"])*ewz*-1
+    }
+
+    return szadict
+
+def szzo(dfod, ew, dfstk):
+
+    multiplikatorNB = dfod["multiplikatorSZZONahbereichOG"]
+    grundbetragvf_OG = dfod["ZO_GrundbetragOG"]
+    vf_ansatz = ew * multiplikatorNB
+    ausglbetrag = vf_ansatz * grundbetragvf_OG
+    ausglMZ = 0
+    finanzkraftMZ = 0
+    diff = ausglbetrag + ausglMZ - finanzkraftMZ
+    anr_SZB = 1
+    endg_zuwZO = diff*0.9 - anr_SZB
+
+
+
+    szzodict = {
+        "EW_Verflechtungsraum" : ew,
+        "multiplikatorNB" : multiplikatorNB,
+        "vf_ansatz" : vf_ansatz,
+        "grundbetragvf_OG" : grundbetragvf_OG,
+        "ausglbetrag" : ausglbetrag,
+        "ausglMZ" : ausglMZ,
+        "finanzkraftMZ" : finanzkraftMZ,
+        "DeltaFinKAMZZO" : diff,
+        "vorl_ZuwZO" : diff * 0.9,
+        "anr_SZB" : anr_SZB,
+        "endg_zuwZO" : endg_zuwZO
+    }
+
+    return szzodict
