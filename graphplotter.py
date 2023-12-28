@@ -402,22 +402,44 @@ def plot_aufwandsstruktur(df):
     plt.savefig(str(pathlib.Path.cwd() / "hhdaten/plots/img_aufwandstruktur.png"))
     plt.close()
 
-def plot_Umlagen(df):
-    firstplan = df["e_p"].loc[df["e_p"]== "p"]
+def plot_Umlagen(dfu):
+
+    firstplan = dfu["e_p"].loc[dfu["e_p"]== "p"]
     xplan = firstplan.index.min()
     xplan = xplan-0.5
-    #fig, ax1 = plt.subplots(figsize = ( 6, 3.6))
-    #print(dfschulden[['invkred', 'liqkred']])
-    ax = df[['hhj', 'invkred', 'liqkred']].plot.bar(x='hhj', stacked=True, title='Umlagen', color=['forestgreen', 'darkgreen', 'lawngreen', 'yellowgreen']) 
-    ax.legend(['Gewerbesteuerumlage', 'Kreisumlage', 'Verbandsgemeindeumlage', 'Sonderumlage Grundschulen'])
-    plt.xlabel(xlabel='Haushaltsjahr')
-    plt.xticks(df.index, labels=df.hhj, rotation=30)
-    plt.ylabel(ylabel='Umlagevolumen in Mio€')
-    #plt.yticks(y, labels=yticklabels)
-    plt.axvline(x=xplan, color = "forestgreen")
-    df['umlagen'] = df['GewSt_Umlage']+df['Grundschulumlage']+df['Kreisumlage']+df['VG-Umlage']
-    y = round(max(df['umlagen'])/1000000)*1000000+500000
-    plt.text(x=xplan + 0.3, y=y, s='Planwerte'  )
+
+    ind = dfu.index
+
+    counter=0
+
+    for i in ind:
+        #print(f"counter: {i}")
+        counter = counter+1
+        if i > xplan:
+            break
+
+    ax = dfu.plot(kind="bar",
+                stacked=True,
+                colormap="Greens",
+                figsize = (6, 5),
+
+                )
+    ax.legend(loc="lower center", ncols=4, bbox_to_anchor=(0.5 , -0.4),  labelcolor ="darkgreen"   )
+
+    ax.spines[["left", "top", "bottom", "right"]].set_color("darkgreen")
+
+    plt.title("Entwicklung der Umlagelasten", )
+    plt.xlabel(xlabel="Haushaltsjahr", )
+    plt.ylabel(ylabel="Volumen in Mio €", )
+    plt.xticks(rotation = 30, color="darkgreen" )
+    plt.yticks(color="darkgreen")
+    plt.axvline(x=counter-1.5 , color = "forestgreen", label="Planwerte")
+    ymax = dfu.sum(axis=1, numeric_only=True).max()
+    print("ymax_ ",ymax)
+    plt.text(x=counter-1, y=ymax, s='Planwerte' )
+    plt.tight_layout()
+
+
     plt.savefig(str(pathlib.Path.cwd() / "hhdaten/plots/img_Umlagen.png"))
     plt.close()
 

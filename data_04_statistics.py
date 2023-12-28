@@ -436,6 +436,55 @@ def aufwandsstruktur(df):
    return dftp2
 
 
+def createdfumlagen(df, dfumlagen, hhj):
+
+   dfus = dfumlagen[["kreisumlage_satz", "vg_umlage_satz"]]
+
+   dfumlagen = dfumlagen.drop(["kreisumlage_satz", "vg_umlage_satz"], axis = 1)
+
+   dfu = dfumlagen.set_index('hhj').drop("gde", axis=1)
+
+   umlagearten = dfu.columns.values.tolist()
+   umlagearten.append("e_p")
+   planungsstellenumlagen = ["2.1.1.1.541430", "6.1.1.0.543100", "6.1.1.0.544210", "6.1.1.0.544230"]
+   dictumlagen = {umlagearten[i]:planungsstellenumlagen[i] for i in range(len(planungsstellenumlagen))}
+
+   dfu['e_p'] = "e"
+
+
+   #print(dictumlagen)
+
+   jahre = [i for i in range(hhj-2, hhj+4)]
+   #print(jahre)
+
+   dfu2 = pd.DataFrame(columns=umlagearten, index=jahre)
+
+   for umlageart in dictumlagen:
+      dfz=df.loc[df['hhs']==dictumlagen[umlageart]]
+      #print(dfz)
+      dfu2.loc[hhj-2, umlageart] = dfz.iloc[0]['rgergvvj']
+      dfu2.loc[hhj-2]['e_p'] = "e"
+      dfu2.loc[hhj-1, umlageart] = dfz.iloc[0]['ansvj']
+      dfu2.loc[hhj-1]['e_p'] = "p"
+      dfu2.loc[hhj, umlageart] = dfz.iloc[0]['anshhj']
+      dfu2.loc[hhj]['e_p'] = "p"
+      dfu2.loc[hhj+1, umlageart] = dfz.iloc[0]['plan1']
+      dfu2.loc[hhj+1]['e_p'] = "p"
+      dfu2.loc[hhj+2, umlageart] = dfz.iloc[0]['plan2']
+      dfu2.loc[hhj+2]['e_p'] = "p"
+      dfu2.loc[hhj+3, umlageart] = dfz.iloc[0]['plan3']
+      dfu2.loc[hhj+3]['e_p'] = "p"
+
+   dfu = pd.concat([dfu,dfu2], axis=0)
+
+   #print(dfu)
+
+   dfu['Gew.St.-Umlage'] = dfu['Gew.St.-Umlage'].astype(float)
+   dfu['Grundschulumlage'] = dfu['Grundschulumlage'].astype(float)
+   dfu['Kreisumlage'] = dfu['Kreisumlage'].astype(float)
+   dfu['VGUmlage'] = dfu['VGUmlage'].astype(float)
+   return dfu
+
 
 
 

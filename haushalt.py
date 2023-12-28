@@ -72,18 +72,21 @@ if __name__ == "__main__":
     #steuerentwicklung
     dfsteuer = di.readsteuerertraege(xlsfile=grunddaten, gdenr=gde, hhj=hhj)
     print("... Statistik der Steuererträge der Gemeinde Vorjahre")
+    dfumlagen = di.readumlagen(gdenr=gde, hhj=hhj, xlsfile=grunddaten)
+    print("... Statistik der Umlagelast der Gemeinde Vorjahre")
     #kredit
     dfkred = di.readkred(xlsfile=grunddaten, gdenr=gde, hhj=hhj)
     print("... Schulden und Kassenbestände")
-    #dfsteuerentwicklung
-
+    #df LFAG Daten Haushaltsjahr (Orientierungsdaten)
+    dfod = di.readlfagod(xlsfile=grunddaten, hhj=hhj)
+    print("... LFAG Richtwerte Orientierungsdaten/Haushaltsrundschreiben")
 
     # steuerkraft
     dfstkraft = di.readlfag_stkberechnung(xlsfile=grunddaten, gdenr=gde, hhj=hhj)
     print("... Berechnung Steuerkraft")
     # LFAG Kalkulationsdaten (Gemeindunabhängig/Landeseinheitlich)
-    
-    
+    dflfaghhj = di.readlfagHHJgde(xlsfile=grunddaten, hhj=hhj, gde=gde)
+    print("... LFAG gemeindespezifische Daten")
 
     # plotting graphs
     print("")
@@ -112,6 +115,10 @@ if __name__ == "__main__":
 #
     plot.plot_steuerentwicklung(dfs=stat.steuerstat(dfsteuer=dfsteuer, bewegungsdaten=dfbew, hhj=hhj, gde=gde) )
     print("... Entwicklung der Steuererträge")
+
+    plot.plot_Umlagen(dfu=stat.createdfumlagen(df=dfbew, dfumlagen=dfumlagen, hhj=hhj, gde=gde))
+    print("... Entwicklung der Steuererträge")    
+
 
     plot.plot_liquiditaet(dfliq=stat.bestandsstat(dfbew=dfbew, dfkred=dfkred, hhj=hhj, gde=gde))
     print("... Entwicklung der Bestände")
