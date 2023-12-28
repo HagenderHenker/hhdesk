@@ -1,7 +1,6 @@
 import dataimport as di
 import pathlib
 import pandas as pd
-from datetime import date
 import numpy as np
 from datetime import date
 
@@ -19,10 +18,10 @@ def calculate_steuerkraft(dflfagstk):
     stkgrsta = grzgrsta * nivgrsta/100
     print(stkgrsta)
     
-    nivgrstb = dflfagstk["nivellierungssatz_grsta"].values[0] 
+    grstb_4vvj = round((dflfagstk["grstb_IV_vvj"].values[0] - dflfagstk["ber_grstb_IV_vvj"].values[0])*10000/dflfagstk["hebesatz_grstb_IV_vvj"].values[0],0)/100
     grstb_1bis3vj = round((dflfagstk["grstb_I-III_vj"].values[0] - dflfagstk["ber_grstb_I-III_vj"].values[0])*10000/dflfagstk["hebesatz_grstb_I-III_vj"].values[0],0)/100
     grzgrstb = grstb_4vvj + grstb_1bis3vj
-    nivgrstb = dflfagstk["nivellierungssatz_grsta"].values[0] 
+    nivgrstb = dflfagstk["nivellierungssatz_grstb"].values[0] 
     stkgrstb = grzgrstb * nivgrstb/100
 
     gewst_4vvj = round((dflfagstk["gewst_IV_vvj"].values[0] - dflfagstk["ber_gewst_IV_vvj"].values[0])*10000/dflfagstk["hebesatz_gewst_IV_vvj"].values[0],0)/100
@@ -45,17 +44,17 @@ def calculate_steuerkraft(dflfagstk):
     wgUSt1bis3vj = dflfagstk["wgUSt1bis3vj"].values[0]
     wgust = wgUSt1bis3vj + wgUSt4vvj
 
-        "hebesatz_grsta_IV_vvj" : dflfagstk["hebesatz_grsta_IV_vvj"].values[0],
+    stkdict = {
         "grsta_4vvjist" : dflfagstk["grsta_IV_vvj"].values[0],
         "ber_grsta_IV_vvj" : dflfagstk["ber_grsta_IV_vvj"].values[0],
-        "hebesatz_grsta_IV_vvj" : dflfagstk["hebesatz_grsta_IV_vvj"].values[0],
-        "hebesatz_grsta_IbisIII_vj" : dflfagstk["hebesatz_grsta_I-III_vj"].values[0],
+        "hebesatz_grsta_IV_vvj" : int(dflfagstk["hebesatz_grsta_IV_vvj"].values[0]),
+        "grzgrsta4vvj" : grsta_4vvj, 
         "grsta_IbisIII_vj" : dflfagstk["grsta_I-III_vj"].values[0],
         "ber_grsta_IbisIII_vj" : dflfagstk["ber_grsta_I-III_vj"].values[0],
-        "nivgrsta" : nivgrsta,
+        "hebesatz_grsta_IbisIII_vj" : int(dflfagstk["hebesatz_grsta_I-III_vj"].values[0]),
         "grzgrsta1bis3vj" : grsta_1bis3vj,
         "grzgrsta" : grzgrsta,
-        "nivgrsta" : nivgrsta,
+        "nivgrsta" : int(nivgrsta),
         "stkgrsta" : stkgrsta,
 
         "grstb_4vvjist" : dflfagstk["grstb_IV_vvj"].values[0],
@@ -91,7 +90,7 @@ def calculate_steuerkraft(dflfagstk):
         "wgUSt4vvj" : wgUSt4vvj,
         "wgUSt1bis3vj" : wgUSt1bis3vj,
         "wgust" : wgust,
-        "stkgesamt" : ekst + wgust+ ust+stkgewst+stkgrsta+stkgrstb
+        "stkgesamt" : float(ekst + wgust+ ust+stkgewst+stkgrsta+stkgrstb)
         }
 
     return stkdict
