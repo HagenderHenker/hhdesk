@@ -78,6 +78,7 @@ if __name__ == "__main__":
     dfkred = di.readkred(xlsfile=grunddaten, gdenr=gde, hhj=hhj)
     print("... Schulden und Kassenbestände")
     #df LFAG Daten Haushaltsjahr (Orientierungsdaten)
+
     dfod = di.readlfagod(xlsfile=grunddaten, hhj=hhj)
     print("... LFAG Richtwerte Orientierungsdaten/Haushaltsrundschreiben")
 
@@ -116,8 +117,8 @@ if __name__ == "__main__":
     plot.plot_steuerentwicklung(dfs=stat.steuerstat(dfsteuer=dfsteuer, bewegungsdaten=dfbew, hhj=hhj, gde=gde) )
     print("... Entwicklung der Steuererträge")
 
-    plot.plot_Umlagen(dfu=stat.createdfumlagen(df=dfbew, dfumlagen=dfumlagen, hhj=hhj, gde=gde))
-    print("... Entwicklung der Steuererträge")    
+    plot.plot_Umlagen(dfu=stat.createdfumlagen(df=dfbew, dfumlagen=dfumlagen, hhj=hhj))
+    print("... Entwicklung der Umlagebeträge (Asbolut)")    
 
 
     plot.plot_liquiditaet(dfliq=stat.bestandsstat(dfbew=dfbew, dfkred=dfkred, hhj=hhj, gde=gde))
@@ -215,7 +216,7 @@ if __name__ == "__main__":
     print(" ")
     print("----------------------------")
     print("*** Templateinstanz Vorbericht 05 Ertrag erzeugt")
-    contextvorb05 = ctx.hh_vorbericht_06_Ertraege(df=dfbew, dferl=dferl, mindiff=env.mindiff, dfstk=dfstkraft, doc=vorb05tpl_instanz)
+    contextvorb05 = ctx.hh_vorbericht_06_Ertraege(df=dfbew, dferl=dferl, mindiff=env.mindiff, dfew=dfewentw, dflfaghhj=dflfaghhj, dfod = dfod, dfstk=dfstkraft, hhj=hhj, doc=vorb05tpl_instanz)
     print("...Daten für Vorbericht 06 'Veränderungen in den Erträgen' sind zusammengestellt ")
     docbuilder.builddocx(tpl=vorb05tpl_instanz, context=contextvorb05, filename="06-Vorb_Ertraege", gde=gde, hhj=hhj)
     print(f"...Vorbericht 06 - Veränderung in den Erträgen: Ausgabe/{gde}/{hhj}")

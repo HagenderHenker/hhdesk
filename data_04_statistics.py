@@ -438,11 +438,11 @@ def aufwandsstruktur(df):
 
 def createdfumlagen(df, dfumlagen, hhj):
 
-   dfus = dfumlagen[["kreisumlage_satz", "vg_umlage_satz"]]
+   #dfus = dfumlagen[["kreisumlage_satz", "vg_umlage_satz"]]
 
-   dfumlagen = dfumlagen.drop(["kreisumlage_satz", "vg_umlage_satz"], axis = 1)
+   #dfumlagen = dfumlagen.drop(["kreisumlage_satz", "vg_umlage_satz"], axis = 1)
 
-   dfu = dfumlagen.set_index('hhj').drop("gde", axis=1)
+   dfu = dfumlagen.set_index('hhj').drop("gdenr", axis=1)
 
    umlagearten = dfu.columns.values.tolist()
    umlagearten.append("e_p")

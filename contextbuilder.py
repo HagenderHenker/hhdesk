@@ -105,7 +105,7 @@ def hh_vorbericht_05_UebersichtErgHH(df):
     ergdict = erg.gesamtplan_erg(df)
     return ergdict
 
-def hh_vorbericht_06_Ertraege(df, dferl, dfstk, dfod, dfew, hhj, mindiff, doc):
+def hh_vorbericht_06_Ertraege(df, dferl, dfstk, dfod, dflfaghhj, dfew, hhj, mindiff, doc):
 
     """
     hhj:        Haushaltsjahr, Quelle environmentvar.py
@@ -137,7 +137,7 @@ def hh_vorbericht_06_Ertraege(df, dferl, dfstk, dfod, dfew, hhj, mindiff, doc):
 
     stk = lfag.calculate_steuerkraft(dfstk)
     sza = lfag.sza(dfod=dfod, ew=dfew, stk=stk, hhj=hhj)
-    szzo = lfag.szzo(dfod=dfod, )
+    szzo = lfag.szzo(dfod=dfod, dflfaghhj = dflfaghhj )
    
     ertrdict = {"steuertbl" : steuertbl,
                 "transfertbl" : transfertbl,

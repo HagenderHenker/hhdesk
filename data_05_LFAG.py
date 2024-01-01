@@ -6,8 +6,8 @@ from datetime import date
 
 def calculate_steuerkraft(dflfagstk):
 
-    print(dflfagstk)
-    print(dflfagstk["grstb_IV_vvj"].values[0])
+    #print(dflfagstk)
+    #print(dflfagstk["grstb_IV_vvj"].values[0])
 
     grsta_4vvj = round((dflfagstk["grsta_IV_vvj"].values[0] - dflfagstk["ber_grsta_IV_vvj"].values[0])*10000/dflfagstk["hebesatz_grsta_IV_vvj"].values[0],0)/100
     grsta_1bis3vj = round((dflfagstk["grsta_I-III_vj"].values[0] - dflfagstk["ber_grsta_I-III_vj"].values[0])*10000/dflfagstk["hebesatz_grsta_I-III_vj"].values[0],0)/100
@@ -16,7 +16,7 @@ def calculate_steuerkraft(dflfagstk):
     # Nivellierung
     nivgrsta = dflfagstk["nivellierungssatz_grsta"].values[0] 
     stkgrsta = grzgrsta * nivgrsta/100
-    print(stkgrsta)
+    #print(stkgrsta)
     
     grstb_4vvj = round((dflfagstk["grstb_IV_vvj"].values[0] - dflfagstk["ber_grstb_IV_vvj"].values[0])*10000/dflfagstk["hebesatz_grstb_IV_vvj"].values[0],0)/100
     grstb_1bis3vj = round((dflfagstk["grstb_I-III_vj"].values[0] - dflfagstk["ber_grstb_I-III_vj"].values[0])*10000/dflfagstk["hebesatz_grstb_I-III_vj"].values[0],0)/100
@@ -96,8 +96,10 @@ def calculate_steuerkraft(dflfagstk):
     return stkdict
 
 def sza(dfod, ew, stk, hhj):
+    print(ew)
     stk = stk["stkgesamt"]
-    ewdf = ew.loc[ew["datum"]== np.datetime64(date(year=hhj, month = 6, day = 30))&(ew["wohnstatus"] == "Einwohner mit Hauptwohnung")]
+    ewdf = ew.loc[(ew["jahr"]== hhj-1)&(ew["wohnstatus"] == "Einwohner mit Hauptwohnung")]
+    print(ewdf)
     ewz = ewdf["maennl"][0]+ewdf["weibl"][0]
     
 
@@ -113,11 +115,25 @@ def sza(dfod, ew, stk, hhj):
 
     return szadict
 
-def szzo(dfod, ew, dfstk):
+def szzo(dfod, dflfaghhj, dfstk):
 
+    
+    if dflfaghhj.mittelbereich.values[0] != 0:
+        mittelbereich = True
+        ew_mittelbereich = dflfaghhj.mittelbereich.values[0]
+    else:
+        mittelbereich = False
+        ew_mittelbereich = 0
+    
+    print(mittelbereich)
+
+    multiplikatorMB = dfod["multiplikatorSZZOmittelbereihOG"]
+    ansatzMB = round(ew_mittelbereich * multiplikatorMB)
+    ew_nahbereich = dflfaghhj.nahbereich.values[0]
     multiplikatorNB = dfod["multiplikatorSZZONahbereichOG"]
+    ansatzNB = round(ew_nahbereich * multiplikatorNB)
     grundbetragvf_OG = dfod["ZO_GrundbetragOG"]
-    vf_ansatz = ew * multiplikatorNB
+    vf_ansatz = ansatzMB + ansatzNB
     ausglbetrag = vf_ansatz * grundbetragvf_OG
     ausglMZ = 0
     finanzkraftMZ = 0
@@ -125,11 +141,13 @@ def szzo(dfod, ew, dfstk):
     anr_SZB = 1
     endg_zuwZO = diff*0.9 - anr_SZB
 
-
-
     szzodict = {
-        "EW_Verflechtungsraum" : ew,
+        "EW_Mittelbereich" : ew_mittelbereich,
+        "multiplikatorMB" : multiplikatorMB,
+        "ansatzMB" : ansatzMB,
+        "EW_Nahbereich" : ew_nahbereich,
         "multiplikatorNB" : multiplikatorNB,
+        "ansatzNB" : ansatzNB,
         "vf_ansatz" : vf_ansatz,
         "grundbetragvf_OG" : grundbetragvf_OG,
         "ausglbetrag" : ausglbetrag,

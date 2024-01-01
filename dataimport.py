@@ -169,7 +169,7 @@ def readlfagod(xlsfile, hhj):
 
 def readlfagHHJgde(xlsfile, hhj, gde):
     df = pd.read_excel(xlsfile, sheet_name="LFAGHHJ")
-    df = df.loc[(df.gdenr == gdenr) & (df.hhj == hhj)]
+    df = df.loc[(df.gdenr == gde) & (df.hhj == hhj)]
     return df    
 
 
