@@ -95,12 +95,14 @@ def calculate_steuerkraft(dflfagstk):
 
     return stkdict
 
-def sza(dfod, ew, stk, hhj):
-    print(ew)
+def einwohner(ew, hhj):
+    ewdf = ew.loc[(ew["jahr"]== hhj-1)&(ew["wohnstatus"] == "Einwohner mit Hauptwohnung")].gesamt.values[0]
+    return ewdf
+
+def sza(dfod, ew, stk):
+    #print(ew)
     stk = stk["stkgesamt"]
-    ewdf = ew.loc[(ew["jahr"]== hhj-1)&(ew["wohnstatus"] == "Einwohner mit Hauptwohnung")]
-    print(ewdf)
-    ewz = ewdf["maennl"][0]+ewdf["weibl"][0]
+    ewz = ew
     
 
     szadict = {
@@ -115,7 +117,49 @@ def sza(dfod, ew, stk, hhj):
 
     return szadict
 
-def szzo(dfod, dflfaghhj, dfstk):
+def szb(ew, dfod, dflfaghhj, stk, sza):
+
+
+
+    # Finanzkraftermittlung
+    finanzkraft = (stk + sza)*0.3
+    # ERmittlung Ausgleichsmesszahl
+    hauptansatz = ew *0.3
+    kitaansatz = 1
+    schulansatz = 1
+    nebenansatz = kitaansatz + schulansatz
+    gesamtansatz = hauptansatz + nebenansatz
+    grundbetrag = dfod.SZB_GrundbetragOG.values[0]
+    ausgleichsmesszahl = gesamtansatz * grundbetrag
+    # Ermittlung SZ B
+    diffausfin = ausgleichsmesszahl - finanzkraft
+    szbquote = 0.9
+    szb = int(round(diffausfin * szbquote))
+
+
+    szbdict = {
+        # Finanzkraftermittlung
+        "stk" : stk,
+        "sza" : sza,
+        "stk+sza" : stk + sza,
+        "anrechnungsquote" : 0.3, # Anrechnungsquote gem. § 16 LFAG
+        "finkraftmz" : finanzkraft,
+        # Ausgleichsmesszahlermittlung
+        "ew" : ew,
+        "ewanrechnungsquotehas" : 0.3, # Anrechnungsquote gem. § 
+        "hauptansatz" : hauptansatz,
+        "kitaansatz" : kitaansatz,
+        "schulansatz" : schulansatz,
+        "nebenansatz" : kitaansatz+schulansatz,
+        "gesamtansatz" : gesamtansatz,
+        "grundbetrag" : grundbetrag,
+        "ausgleichsmesszahl" : ausgleichsmesszahl,
+
+    }
+
+    return szbdict
+
+def szzo(dfod, dflfaghhj, stk, sza):
 
     
     if dflfaghhj.mittelbereich.values[0] != 0:
@@ -127,6 +171,8 @@ def szzo(dfod, dflfaghhj, dfstk):
     
     print(mittelbereich)
 
+    
+
     multiplikatorMB = dfod["multiplikatorSZZOmittelbereihOG"]
     ansatzMB = round(ew_mittelbereich * multiplikatorMB)
     ew_nahbereich = dflfaghhj.nahbereich.values[0]
@@ -136,7 +182,7 @@ def szzo(dfod, dflfaghhj, dfstk):
     vf_ansatz = ansatzMB + ansatzNB
     ausglbetrag = vf_ansatz * grundbetragvf_OG
     ausglMZ = 0
-    finanzkraftMZ = 0
+    finanzkraftMZ = (stk + sza)*0.3 # Finanzkraft = 30 % der Summe aus Schlüsselzuweisungen A + Gesamtsteuerkraft
     diff = ausglbetrag + ausglMZ - finanzkraftMZ
     anr_SZB = 1
     endg_zuwZO = diff*0.9 - anr_SZB

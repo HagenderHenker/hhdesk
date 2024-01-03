@@ -136,8 +136,9 @@ def hh_vorbericht_06_Ertraege(df, dferl, dfstk, dfod, dflfaghhj, dfew, hhj, mind
     gde = env.gde
 
     stk = lfag.calculate_steuerkraft(dfstk)
-    sza = lfag.sza(dfod=dfod, ew=dfew, stk=stk, hhj=hhj)
-    szzo = lfag.szzo(dfod=dfod, dflfaghhj = dflfaghhj )
+    sza = lfag.sza(dfod=dfod, ew=lfag.einwohner(dfew, hhj=hhj), stk=stk)
+    szb = lfag.szb(ew=lfag.einwohner(dfew, hhj=hhj), dfod=dfod, dflfaghhj=dflfaghhj, stk=stk["stkgesamt"], sza=sza["sza"])
+    szzo = lfag.szzo(dfod=dfod, dflfaghhj = dflfaghhj, sza=sza["sza"], stk=stk["stkgesamt"] )
    
     ertrdict = {"steuertbl" : steuertbl,
                 "transfertbl" : transfertbl,
@@ -150,6 +151,8 @@ def hh_vorbericht_06_Ertraege(df, dferl, dfstk, dfod, dflfaghhj, dfew, hhj, mind
                 "hhj-1" : hhj-1, 
                 "stk" : stk,
                 "sza" : sza,
+                "szb" : szb,
+                "szzo" : szzo,
                 "img_Hebesatzentwicklung" : docxtpl.InlineImage(doc,img_Hebesatzentwicklung),
                 "img_Steuerentwicklung" : docxtpl.InlineImage(doc,img_Steuerentwicklung), 
                 
