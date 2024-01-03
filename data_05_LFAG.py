@@ -109,12 +109,12 @@ def sza(dfod, ew, stk):
         "stkmz" : stk,
         "ew_3006vj" : ewz,
         "stkmzproEW" : stk/ewz,
-        "stkproew_land" : dfod["landesdurchschnSTK"],
-        "schwellenwertsza" : dfod["Schwellenwert_76vh"],
-        "diffstkjeEWuSchwW" : stk/ewz-dfod["Schwellenwert_76vh"],
-        "sza" : (stk/ewz-dfod["Schwellenwert_76vh"])*ewz*-1
+        "stkproew_land" : dfod["landesdurchschnSTK"].values[0],
+        "schwellenwertsza" : dfod["Schwellenwert_76vh"].values[0],
+        "diffstkjeEWuSchwW" : stk/ewz-dfod["Schwellenwert_76vh"].values[0],
+        "sza" : (stk/ewz-dfod["Schwellenwert_76vh"].values[0])*ewz*-1
     }
-
+    print(szadict)
     return szadict
 
 def szb(ew, dfod, dflfaghhj, stk, sza):
@@ -159,7 +159,7 @@ def szb(ew, dfod, dflfaghhj, stk, sza):
 
     return szbdict
 
-def szzo(dfod, dflfaghhj, stk, sza):
+def szzo(dfod, dflfaghhj, stk, sza, ):
 
     
     if dflfaghhj.mittelbereich.values[0] != 0:
@@ -173,12 +173,12 @@ def szzo(dfod, dflfaghhj, stk, sza):
 
     
 
-    multiplikatorMB = dfod["multiplikatorSZZOmittelbereihOG"]
-    ansatzMB = round(ew_mittelbereich * multiplikatorMB)
+    multiplikatorMB = dfod["multiplikatorSZZOmittelbereihOG"].values[0]
+    ansatzMB = round(ew_mittelbereich * multiplikatorMB/100)
     ew_nahbereich = dflfaghhj.nahbereich.values[0]
-    multiplikatorNB = dfod["multiplikatorSZZONahbereichOG"]
-    ansatzNB = round(ew_nahbereich * multiplikatorNB)
-    grundbetragvf_OG = dfod["ZO_GrundbetragOG"]
+    multiplikatorNB = dfod["multiplikatorSZZONahbereichOG"].values[0]
+    ansatzNB = round(ew_nahbereich * multiplikatorNB/100)
+    grundbetragvf_OG = dfod["ZO_GrundbetragOG"].values[0]
     vf_ansatz = ansatzMB + ansatzNB
     ausglbetrag = vf_ansatz * grundbetragvf_OG
     ausglMZ = 0
@@ -204,5 +204,5 @@ def szzo(dfod, dflfaghhj, stk, sza):
         "anr_SZB" : anr_SZB,
         "endg_zuwZO" : endg_zuwZO
     }
-
+    print(szzodict)
     return szzodict

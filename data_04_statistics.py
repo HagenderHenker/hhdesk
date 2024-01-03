@@ -446,7 +446,7 @@ def createdfumlagen(df, dfumlagen, hhj):
 
    umlagearten = dfu.columns.values.tolist()
    umlagearten.append("e_p")
-   planungsstellenumlagen = ["2.1.1.1.541430", "6.1.1.0.543100", "6.1.1.0.544210", "6.1.1.0.544230"]
+   planungsstellenumlagen = ["6.1.1.0.543100", "6.1.1.0.544210", "6.1.1.0.544230", "2.1.1.1.541430",]
    dictumlagen = {umlagearten[i]:planungsstellenumlagen[i] for i in range(len(planungsstellenumlagen))}
 
    dfu['e_p'] = "e"
