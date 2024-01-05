@@ -161,7 +161,7 @@ def hh_vorbericht_06_Ertraege(df, dferl, dfstk, dfod, dflfaghhj, dfew, hhj, mind
     return ertrdict
 
 
-def hh_vorbericht_07_aufwand(df, dferl, mindiff, doc, dfumlagen):
+def hh_vorbericht_07_aufwand(df, dferl, mindiff, doc, dfumlagen, kfadict):
 
     """
     hhj:        Haushaltsjahr, Quelle environmentvar.py
@@ -176,9 +176,9 @@ def hh_vorbericht_07_aufwand(df, dferl, mindiff, doc, dfumlagen):
 
     """
     
-    stk = dfumlagen["stk"].values
-    sza = dfumlagen["sza"].values
-    szzo = dfumlagen["szzo"].values
+    stk = kfadict["stk"]["stkgesamt"]
+    sza = kfadict["sza"]["sza"]
+    szzo = kfadict["szzo"]["endg_zuwZO"]
     
 
     img_persaufwandstruktur = str(pathlib.Path.cwd() / "hhdaten/plots/img_persaufwandstruktur.png")
@@ -210,16 +210,16 @@ def hh_vorbericht_07_aufwand(df, dferl, mindiff, doc, dfumlagen):
                 "PersaufwVJ" : erg.sum_personalaufwand(dfbew=df, dferl=dferl)[1],
                 "abschreibungen" : erg.get_AfA.sum(),
 
-                "STK" : stk,
-                "SZA" : sza, 
-                "SZZO" : szzo,
-                "Umlgrl" : stk+sza+szzo,
-                "UmlSaKU" : "dödel"	,
-                "UmlLastKU" : "dadel",
-                "UmlSaVGU"	: 123,
-                "UmlLastVGU" : 456,
-                "UmlSaSoU"	: 789,
-                "UmlLastSoU" : 101112,
+                "stk" : stk,
+                "sza" : sza, 
+                "szzo" : szzo,
+                "umlgrl" : stk+sza+szzo,
+                "umlSaKU" : "dödel"	,
+                "umlLastKU" : "dadel",
+                "umlSaVGU"	: 123,
+                "umlLastVGU" : 456,
+                "umlSaSoU"	: 789,
+                "umlLastSoU" : 101112,
 
                 }
                 

@@ -227,7 +227,16 @@ if __name__ == "__main__":
     print("----------------------------")
     vorb06tpl_instanz = docbuilder.create_tpl_instance(vorb06tpl)
     print("*** Templateinstanz Vorbericht 06 Aufwand erzeugt")
-    contextvorb06 = ctx.hh_vorbericht_07_aufwand(df=dfbew, dferl=dferl, mindiff=env.mindiff, dfumlagen=dfstkraft, doc=vorb06tpl_instanz)
+
+    kfadict = {
+        "stk" : contextvorb05["stk"],
+        "szzo": contextvorb05["szzo"],
+        "sza" : contextvorb05["sza"],
+        "szb" : contextvorb05["szb"],
+    }
+
+    print(kfadict)
+    contextvorb06 = ctx.hh_vorbericht_07_aufwand(df=dfbew, dferl=dferl, mindiff=env.mindiff, dfumlagen=dfstkraft, kfadict=kfadict, doc=vorb06tpl_instanz)
     print("...Daten für Vorbericht 07 'Veränderungen in den Aufwendungen' sind zusammengestellt ")
     docbuilder.builddocx(tpl=vorb06tpl_instanz, context=contextvorb06, filename="07-Vorb_Aufwand", gde=gde, hhj=hhj)
     print(f"...Vorbericht 06 - Veränderung in den Erträgen: Ausgabe/{gde}/{hhj}")

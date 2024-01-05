@@ -90,7 +90,7 @@ def calculate_steuerkraft(dflfagstk):
         "wgUSt4vvj" : wgUSt4vvj,
         "wgUSt1bis3vj" : wgUSt1bis3vj,
         "wgust" : wgust,
-        "stkgesamt" : float(ekst + wgust+ ust+stkgewst+stkgrsta+stkgrstb)
+        "stkgesamt" : int(round(ekst + wgust+ ust+stkgewst+stkgrsta+stkgrstb))
         }
 
     return stkdict
@@ -100,11 +100,9 @@ def einwohner(ew, hhj):
     return ewdf
 
 def sza(dfod, ew, stk):
-    #print(ew)
     stk = stk["stkgesamt"]
     ewz = ew
     
-
     szadict = {
         "stkmz" : stk,
         "ew_3006vj" : ewz,
@@ -112,9 +110,9 @@ def sza(dfod, ew, stk):
         "stkproew_land" : dfod["landesdurchschnSTK"].values[0],
         "schwellenwertsza" : dfod["Schwellenwert_76vh"].values[0],
         "diffstkjeEWuSchwW" : stk/ewz-dfod["Schwellenwert_76vh"].values[0],
-        "sza" : (stk/ewz-dfod["Schwellenwert_76vh"].values[0])*ewz*-1
+        "sza" : int(round(stk/ewz-dfod["Schwellenwert_76vh"].values[0])*ewz*-1)
     }
-    print(szadict)
+
     return szadict
 
 def szb(ew, dfod, dflfaghhj, stk, sza):
@@ -122,26 +120,30 @@ def szb(ew, dfod, dflfaghhj, stk, sza):
 
 
     # Finanzkraftermittlung
-    finanzkraft = (stk + sza)*0.3
+    finanzkraft = int(round((stk + sza)*0.3))
     # ERmittlung Ausgleichsmesszahl
-    hauptansatz = ew *0.3
-    kitaansatz = 1
-    schulansatz = 1
+    hauptansatz = int(round(ew *0.3))
+    kitaansatz = int(dflfaghhj.kitaansatz.values[0])
+    schulansatz = int(dflfaghhj.schulansatz.values[0])
     nebenansatz = kitaansatz + schulansatz
     gesamtansatz = hauptansatz + nebenansatz
-    grundbetrag = dfod.SZB_GrundbetragOG.values[0]
-    ausgleichsmesszahl = gesamtansatz * grundbetrag
+    grundbetrag = float(dfod.SZB_GrundbetragOG.values[0])
+    ausgleichsmesszahl = float(gesamtansatz * grundbetrag)
     # Ermittlung SZ B
     diffausfin = ausgleichsmesszahl - finanzkraft
     szbquote = 0.9
-    szb = int(round(diffausfin * szbquote))
+  
+    if ausgleichsmesszahl > finanzkraft:
+        szb = int(round(diffausfin * szbquote))
+    else:
+        szb=0
 
 
     szbdict = {
         # Finanzkraftermittlung
         "stk" : stk,
         "sza" : sza,
-        "stk+sza" : stk + sza,
+        "stkusza" : stk + sza,
         "anrechnungsquote" : 0.3, # Anrechnungsquote gem. § 16 LFAG
         "finkraftmz" : finanzkraft,
         # Ausgleichsmesszahlermittlung
@@ -154,9 +156,10 @@ def szb(ew, dfod, dflfaghhj, stk, sza):
         "gesamtansatz" : gesamtansatz,
         "grundbetrag" : grundbetrag,
         "ausgleichsmesszahl" : ausgleichsmesszahl,
-
+        "diffausfin" : diffausfin,
+        "szbquote" : szbquote,
+        "szb" : szb
     }
-
     return szbdict
 
 def szzo(dfod, dflfaghhj, stk, sza, ):
@@ -164,18 +167,14 @@ def szzo(dfod, dflfaghhj, stk, sza, ):
     
     if dflfaghhj.mittelbereich.values[0] != 0:
         mittelbereich = True
-        ew_mittelbereich = dflfaghhj.mittelbereich.values[0]
+        ew_mittelbereich = int(dflfaghhj.mittelbereich.values[0])
     else:
         mittelbereich = False
         ew_mittelbereich = 0
     
-    print(mittelbereich)
-
-    
-
     multiplikatorMB = dfod["multiplikatorSZZOmittelbereihOG"].values[0]
     ansatzMB = round(ew_mittelbereich * multiplikatorMB/100)
-    ew_nahbereich = dflfaghhj.nahbereich.values[0]
+    ew_nahbereich = int(dflfaghhj.nahbereich.values[0])
     multiplikatorNB = dfod["multiplikatorSZZONahbereichOG"].values[0]
     ansatzNB = round(ew_nahbereich * multiplikatorNB/100)
     grundbetragvf_OG = dfod["ZO_GrundbetragOG"].values[0]
@@ -204,5 +203,5 @@ def szzo(dfod, dflfaghhj, stk, sza, ):
         "anr_SZB" : anr_SZB,
         "endg_zuwZO" : endg_zuwZO
     }
-    print(szzodict)
+ 
     return szzodict
