@@ -190,7 +190,9 @@ def hh_vorbericht_07_aufwand(df, dferl, mindiff, doc, dfumlagen, kfadict):
     sozAtbl = erg.get_sozA(df=df, dferl=dferl, mindiff=mindiff)
     sonstAtbl = erg.get_sonstA(df=df, dferl=dferl, mindiff=mindiff)
     finAtbl = erg.get_prE(df=df, dferl=dferl, mindiff=mindiff)
-
+    afa = erg.get_AfA(df=df, dferl=dferl),
+    # die get_AfA Funktion gibt ein Tupel aus der [0]Liste der AfA Planungsstellen (list of dicts) und dem 
+    # [1] dictionary der Absummierungen zurück
     hhj = env.hhj
     gde = env.gde
    
@@ -208,7 +210,7 @@ def hh_vorbericht_07_aufwand(df, dferl, mindiff, doc, dfumlagen, kfadict):
                 
                 "PersaufwHHJ" : erg.sum_personalaufwand(dfbew=df, dferl=dferl)[0],
                 "PersaufwVJ" : erg.sum_personalaufwand(dfbew=df, dferl=dferl)[1],
-                "abschreibungen" : erg.get_AfA.sum(),
+                "abschreibungen" : afa[1], 
 
                 "stk" : stk,
                 "sza" : sza, 
@@ -223,7 +225,7 @@ def hh_vorbericht_07_aufwand(df, dferl, mindiff, doc, dfumlagen, kfadict):
 
                 }
                 
-    
+    print(aufwdict["abschreibungen"])
     return aufwdict
 
 

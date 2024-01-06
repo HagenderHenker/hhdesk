@@ -343,7 +343,7 @@ def get_msdA(df, dferl):
    st = dfnew[["hhs","sk", "produkt", "bez", "anshhj", "ansvj", "rgergvvj", "erl"]].to_dict('records')
    return st
 
-def get_AfA(df, dferl):
+def get_AfA(df, dferl, mindiff=0):
    teildf = df.loc[(df["sk"]<540000) & (df["sk"]>530000)]
    dferl = dferl.drop("hhs", axis=1)
       #print(dferl)
@@ -352,10 +352,13 @@ def get_AfA(df, dferl):
    dfnew = pd.merge(teildf, dferl, how = "left", left_on= ["produkt", "sk"], right_on=["produkt", "sk"])
    dfnew = dfnew.drop(["hh", "mn_y", "erlNr", "erlTyp", "nicht uebertragbar"], axis=1)
    #print(dfnew)
+   summ = dfnew[["anshhj", "ansvj", "rgergvvj"]].sum()
+   summ = summ.to_dict()
    st = dfnew[["hhs","sk", "produkt", "bez", "anshhj", "ansvj", "rgergvvj", "erl"]].to_dict('records')
-   return st
 
-def get_UmlA(df, dferl):
+   return st, summ
+
+def get_UmlA(df, dferl, mindiff=0):
    teildf = df.loc[(df["sk"]<550000) & (df["sk"]>540000)]
    dferl = dferl.drop("hhs", axis=1)
    #print(dferl)
@@ -367,7 +370,7 @@ def get_UmlA(df, dferl):
    st = dfnew[["hhs","sk", "produkt", "bez", "anshhj", "ansvj", "rgergvvj", "erl"]].to_dict('records')
    return st
 
-def get_sozA(df, dferl):
+def get_sozA(df, dferl, mindiff=0):
    teildf = df.loc[(df["sk"]<560000) & (df["sk"]>550000)]
    dferl = dferl.drop("hhs", axis=1)
    #print(dferl)
@@ -379,7 +382,7 @@ def get_sozA(df, dferl):
    st = dfnew[["hhs","sk", "produkt", "bez", "anshhj", "ansvj", "rgergvvj", "erl"]].to_dict('records')
    return st
 
-def get_sonstA(df, dferl):
+def get_sonstA(df, dferl, mindiff=0):
    teildf = df.loc[(df["sk"]<570000) & (df["sk"]>560000)]
    dferl = dferl.drop("hhs", axis=1)
       #print(dferl)
@@ -391,7 +394,7 @@ def get_sonstA(df, dferl):
    st = dfnew[["hhs","sk", "produkt", "bez", "anshhj", "ansvj", "rgergvvj", "erl"]].to_dict('records')
    return st
 
-def get_finA(df, dferl):
+def get_finA(df, dferl, mindiff=0):
    teildf = df.loc[(df["sk"]<580000) & (df["sk"]>570000)]
    dferl = dferl.drop("hhs", axis=1)
       #print(dferl)
@@ -495,8 +498,14 @@ def createinvest(df, dfprod, dfmnt, dferl):
    return dfneu
 
 def sum_personalaufwand(dfbew, dferl):
-   df = get_persA(df=dfbew, dferl=dferl)
-   summe = (df["anshhj"].sum(), df["ansvj"].sum())
+   teildf = dfbew.loc[(dfbew["sk"]<520000) & (dfbew["sk"]>500000)]
+   dferl = dferl.drop("hhs", axis=1)
+   #print(dferl)
+   dferl["sk"] = dferl["sk"].fillna(0).astype("int")
+   #print(dferl)
+   dfnew = pd.merge(teildf, dferl, how = "left", left_on= ["produkt", "sk"], right_on=["produkt", "sk"])
+   dfnew = dfnew.drop(["hh", "mn_y", "erlNr", "erlTyp", "nicht uebertragbar"], axis=1)
+   summe = (dfnew.anshhj.sum(), dfnew.ansvj.sum())
    return summe
 
 
