@@ -320,6 +320,7 @@ def get_finE(df, dferl, mindiff=0):
    return st
 
 def get_persA(df, dferl):
+   df["ansdiff"] = df["anshhj"] - df["ansvj"] 
    teildf = df.loc[(df["sk"]<520000) & (df["sk"]>500000)]
    dferl = dferl.drop("hhs", axis=1)
    #print(dferl)
@@ -331,8 +332,10 @@ def get_persA(df, dferl):
    st = dfnew[["hhs","sk", "produkt", "bez", "anshhj", "ansvj", "rgergvvj", "erl"]].to_dict('records')
    return st
 
-def get_msdA(df, dferl):
+def get_msdA(df, dferl, mindiff=0):
+   df["ansdiff"] = df["anshhj"] - df["ansvj"] 
    teildf = df.loc[(df["sk"]<530000) & (df["sk"]>520000)]
+   teildf = teildf.loc[(teildf["ansdiff"] > mindiff) | (teildf["ansdiff"] < mindiff*-1) ]
    dferl = dferl.drop("hhs", axis=1)
       #print(dferl)
    dferl["sk"] = dferl["sk"].fillna(0).astype("int")
@@ -355,8 +358,8 @@ def get_AfA(df, dferl, mindiff=0):
    summ = dfnew[["anshhj", "ansvj", "rgergvvj"]].sum()
    summ = summ.to_dict()
    st = dfnew[["hhs","sk", "produkt", "bez", "anshhj", "ansvj", "rgergvvj", "erl"]].to_dict('records')
-
-   return st, summ
+   a = (st, summ)
+   return a 
 
 def get_UmlA(df, dferl, mindiff=0):
    teildf = df.loc[(df["sk"]<550000) & (df["sk"]>540000)]
@@ -371,8 +374,10 @@ def get_UmlA(df, dferl, mindiff=0):
    return st
 
 def get_sozA(df, dferl, mindiff=0):
+   df["ansdiff"] = df["anshhj"] - df["ansvj"] 
    teildf = df.loc[(df["sk"]<560000) & (df["sk"]>550000)]
    dferl = dferl.drop("hhs", axis=1)
+   teildf = teildf.loc[(teildf["ansdiff"] > mindiff) | (teildf["ansdiff"] < mindiff*-1) ]
    #print(dferl)
    dferl["sk"] = dferl["sk"].fillna(0).astype("int")
    #print(dferl)
@@ -383,8 +388,10 @@ def get_sozA(df, dferl, mindiff=0):
    return st
 
 def get_sonstA(df, dferl, mindiff=0):
+   df["ansdiff"] = df["anshhj"] - df["ansvj"] 
    teildf = df.loc[(df["sk"]<570000) & (df["sk"]>560000)]
    dferl = dferl.drop("hhs", axis=1)
+   teildf = teildf.loc[(teildf["ansdiff"] > mindiff) | (teildf["ansdiff"] < mindiff*-1) ]
       #print(dferl)
    dferl["sk"] = dferl["sk"].fillna(0).astype("int")
    #print(dferl)

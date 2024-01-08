@@ -403,7 +403,7 @@ def plot_aufwandsstruktur(df):
     plt.close()
 
 def plot_Umlagen(dfu):
-
+    
     firstplan = dfu["e_p"].loc[dfu["e_p"]== "p"]
     xplan = firstplan.index.min()
     xplan = xplan-0.5
@@ -442,6 +442,8 @@ def plot_Umlagen(dfu):
 
     plt.savefig(str(pathlib.Path.cwd() / "hhdaten/plots/img_Umlagen.png"))
     plt.close()
+
+    
 
 
 if __name__ == "__main__":

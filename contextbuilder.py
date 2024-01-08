@@ -182,19 +182,22 @@ def hh_vorbericht_07_aufwand(df, dferl, mindiff, doc, dfumlagen, kfadict):
     
 
     img_persaufwandstruktur = str(pathlib.Path.cwd() / "hhdaten/plots/img_persaufwandstruktur.png")
-    img_EntwicklungUmlagelast = str(pathlib.Path.cwd() / "hhdaten/plots/img_EntwicklungUmlagelast.png")
+    img_EntwicklungUmlagelast = str(pathlib.Path.cwd() / "hhdaten/plots/img_Umlagen.png")
 
 
     msdtbl = erg.get_msdA(df=df, dferl=dferl)
     umltranstbl = erg.get_UmlA(df=df, dferl=dferl, mindiff=mindiff)
     sozAtbl = erg.get_sozA(df=df, dferl=dferl, mindiff=mindiff)
     sonstAtbl = erg.get_sonstA(df=df, dferl=dferl, mindiff=mindiff)
-    finAtbl = erg.get_prE(df=df, dferl=dferl, mindiff=mindiff)
+    finAtbl = erg.get_finA(df=df, dferl=dferl, mindiff=mindiff)
     afa = erg.get_AfA(df=df, dferl=dferl),
+    
     # die get_AfA Funktion gibt ein Tupel aus der [0]Liste der AfA Planungsstellen (list of dicts) und dem 
     # [1] dictionary der Absummierungen zurück
     hhj = env.hhj
     gde = env.gde
+    print(afa)
+    print(type(afa))
    
     aufwdict = {
                 "msdtbl" : msdtbl,
@@ -210,7 +213,7 @@ def hh_vorbericht_07_aufwand(df, dferl, mindiff, doc, dfumlagen, kfadict):
                 
                 "PersaufwHHJ" : erg.sum_personalaufwand(dfbew=df, dferl=dferl)[0],
                 "PersaufwVJ" : erg.sum_personalaufwand(dfbew=df, dferl=dferl)[1],
-                "abschreibungen" : afa[1], 
+                "abschreibungen" : afa[0][1], 
 
                 "stk" : stk,
                 "sza" : sza, 

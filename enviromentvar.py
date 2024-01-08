@@ -38,7 +38,7 @@ vorb02tpl = str(pathlib.Path.cwd() / "wordtemplates/03_VorberichtVVJ.docx")
 vorb03tpl = str(pathlib.Path.cwd() / "wordtemplates/04_VorberichtVJ.docx")
 vorb04tpl = str(pathlib.Path.cwd() / "wordtemplates/05_Vorbericht_uebersicht_erghh.docx")
 vorb05tpl = str(pathlib.Path.cwd() / "wordtemplates/06_Vorbericht_aenderungenErtraege.docx")
-vorb06tpl = str(pathlib.Path.cwd() / "wordtemplates/07_Vorbericht_aenderungenAufwand")
+vorb06tpl = str(pathlib.Path.cwd() / "wordtemplates/07_Vorbericht_aenderungenAufwand.docx")
 vorb07tpl = str(pathlib.Path.cwd() / "wordtemplates/08_Vorbericht_ueb_FinHH.docx")
 vorb08tpl = str(pathlib.Path.cwd() / "wordtemplates/09_Vorbericht_Invest.docx")
 
