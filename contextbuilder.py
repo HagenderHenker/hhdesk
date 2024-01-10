@@ -185,7 +185,7 @@ def hh_vorbericht_07_aufwand(df, dferl, mindiff, doc, dfumlagen, kfadict):
     img_EntwicklungUmlagelast = str(pathlib.Path.cwd() / "hhdaten/plots/img_Umlagen.png")
 
 
-    msdtbl = erg.get_msdA(df=df, dferl=dferl)
+    msdtbl = erg.get_msdA(df=df, dferl=dferl, mindiff=mindiff)
     umltranstbl = erg.get_UmlA(df=df, dferl=dferl, mindiff=mindiff)
     sozAtbl = erg.get_sozA(df=df, dferl=dferl, mindiff=mindiff)
     sonstAtbl = erg.get_sonstA(df=df, dferl=dferl, mindiff=mindiff)
@@ -331,6 +331,34 @@ def hh_vorbericht_09_invest(dfneu):
     produkte = {"produkte" : pdict }
     
     return produkte
+
+def hh_vorbericht_10_kredit(df, doc):
+
+    hhj = env.hhj
+    img_Liquiditaet = 1
+    img_verschuldung =2
+    img_prokopfverschuldung = 3
+    liqVJ = 1
+    invE = 3
+    invA = 4
+    SaldoInv = -1
+    OrdEZ = 12
+    OrdAZ = 12
+    SaldoOrdZ = OrdEZ - OrdAZ
+    pmTilgung = 8
+    ffs = SaldoOrdZ - pmTilgung
+    
+
+
+    krdict = {
+        "hhj" : hhj, 
+        "img_Liquiditaet" : img_Liquiditaet, 
+        "img_verschuldung" : img_verschuldung,
+        "img_prokopfverschuldung" : img_prokopfverschuldung,
+        "liqVJ" : liqVJ,
+    }
+
+    return krdict
 
 if __name__ == "__main__":
     #print test hhsatzungcontext

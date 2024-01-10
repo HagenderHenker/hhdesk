@@ -41,6 +41,8 @@ vorb05tpl = str(pathlib.Path.cwd() / "wordtemplates/06_Vorbericht_aenderungenErt
 vorb06tpl = str(pathlib.Path.cwd() / "wordtemplates/07_Vorbericht_aenderungenAufwand.docx")
 vorb07tpl = str(pathlib.Path.cwd() / "wordtemplates/08_Vorbericht_ueb_FinHH.docx")
 vorb08tpl = str(pathlib.Path.cwd() / "wordtemplates/09_Vorbericht_Invest.docx")
+vorb10tpl = str(pathlib.Path.cwd() / "wordtemplates/10_Vorbericht_Kredit.docx")
+vorb11tpl = str(pathlib.Path.cwd() / "wordtemplates/11_Vorb_Pflichtanlagen.docx")
 
 # Quelle für die Flächenstatistik
 quelleflaechendaten = "Statistisches Landesamt RLP, 2021"

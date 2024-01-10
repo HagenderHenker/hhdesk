@@ -199,7 +199,7 @@ def get_umlagen(df, dferl, mindiff=0):
    dferl = dferl.drop("hhs", axis=1)
    teildf = df.loc[(df["sk"]<420000) & (df["sk"]>410000)]
 
-   teildf = teildf.loc[(teildf["ansdiff"] > mindiff) | (teildf["ansdiff"] < mindiff*-1) ]
+   teildf = teildf.loc[(teildf["ansdiff"] >= mindiff) | (teildf["ansdiff"] <= mindiff*-1) ]
    #teildf.info()
    #print(dferl)
    dferl["sk"] = dferl["sk"].fillna(0).astype("int")
@@ -217,7 +217,7 @@ def get_sozE(df, dferl, mindiff=0):
    df["ansdiff"] = df["anshhj"] - df["ansvj"]  
    dferl = dferl.drop("hhs", axis=1)
    teildf = df.loc[(df["sk"]<430000) & (df["sk"]>420000)]
-   teildf = teildf.loc[(teildf["ansdiff"] > mindiff) | (teildf["ansdiff"] < mindiff*-1) ]
+   teildf = teildf.loc[(teildf["ansdiff"] >= mindiff) | (teildf["ansdiff"] <= mindiff*-1) ]
    dferl = dferl.drop("hhs", axis=1)
    #print(dferl)
    dferl["sk"] = dferl["sk"].fillna(0).astype("int")
@@ -233,7 +233,7 @@ def get_oerE(df, dferl, mindiff=0):
    df["ansdiff"] = df["anshhj"] - df["ansvj"]  
    dferl = dferl.drop("hhs", axis=1)
    teildf = df.loc[(df["sk"]<440000) & (df["sk"]>430000)]
-   teildf = teildf.loc[(teildf["ansdiff"] > mindiff) | (teildf["ansdiff"] < mindiff*-1) ]
+   teildf = teildf.loc[(teildf["ansdiff"] >= mindiff) | (teildf["ansdiff"] <= mindiff*-1) ]
    #teildf.info()
    #print(dferl)
    dferl["sk"] = dferl["sk"].fillna(0).astype("int")
@@ -251,7 +251,7 @@ def get_prE(df, dferl, mindiff=0):
    df["ansdiff"] = df["anshhj"] - df["ansvj"] 
    dferl = dferl.drop("hhs", axis=1) 
    teildf = df.loc[(df["sk"]<442000) & (df["sk"]>440000)]
-   teildf = teildf.loc[(teildf["ansdiff"] > mindiff) | (teildf["ansdiff"] < mindiff*-1) ]
+   teildf = teildf.loc[(teildf["ansdiff"] >= mindiff) | (teildf["ansdiff"] <= mindiff*-1) ]
    #teildf.info()
    #print(dferl)
    dferl["sk"] = dferl["sk"].fillna(0).astype("int")
@@ -269,7 +269,7 @@ def get_kostE(df, dferl, mindiff=0):
    df["ansdiff"] = df["anshhj"] - df["ansvj"] 
    dferl = dferl.drop("hhs", axis=1) 
    teildf = df.loc[(df["sk"]<450000) & (df["sk"]>442000)]
-   teildf = teildf.loc[(teildf["ansdiff"] > mindiff) | (teildf["ansdiff"] < mindiff*-1) ]
+   teildf = teildf.loc[(teildf["ansdiff"] >= mindiff) | (teildf["ansdiff"] <= mindiff*-1) ]
    #teildf.info()
    #print(dferl)
    dferl["sk"] = dferl["sk"].fillna(0).astype("int")
@@ -287,7 +287,7 @@ def get_sonstE(df, dferl, mindiff=0):
    df["ansdiff"] = df["anshhj"] - df["ansvj"] 
    dferl = dferl.drop("hhs", axis=1) 
    teildf = df.loc[(df["sk"]<470000) & (df["sk"]>460000)]
-   teildf = teildf.loc[(teildf["ansdiff"] > mindiff) | (teildf["ansdiff"] < mindiff*-1) ]
+   teildf = teildf.loc[(teildf["ansdiff"] >= mindiff) | (teildf["ansdiff"] <= mindiff*-1) ]
    #teildf.info()
    #print(dferl)
    dferl["sk"] = dferl["sk"].fillna(0).astype("int")
@@ -305,7 +305,7 @@ def get_finE(df, dferl, mindiff=0):
    df["ansdiff"] = df["anshhj"] - df["ansvj"] 
    dferl = dferl.drop("hhs", axis=1) 
    teildf = df.loc[(df["sk"]<480000) & (df["sk"]>470000)]
-   teildf = teildf.loc[(teildf["ansdiff"] > mindiff) | (teildf["ansdiff"] < mindiff*-1) ]
+   teildf = teildf.loc[(teildf["ansdiff"] >= mindiff) | (teildf["ansdiff"] <= mindiff*-1) ]
    #teildf.info()
    #print(dferl)
    dferl["sk"] = dferl["sk"].fillna(0).astype("int")
@@ -328,20 +328,26 @@ def get_persA(df, dferl):
    #print(dferl)
    dfnew = pd.merge(teildf, dferl, how = "left", left_on= ["produkt", "sk"], right_on=["produkt", "sk"])
    dfnew = dfnew.drop(["hh", "mn_y", "erlNr", "erlTyp", "nicht uebertragbar"], axis=1)
+   dfnew["erl"] = dfnew["erl"].fillna(0)
    #print(dfnew)
    st = dfnew[["hhs","sk", "produkt", "bez", "anshhj", "ansvj", "rgergvvj", "erl"]].to_dict('records')
    return st
 
 def get_msdA(df, dferl, mindiff=0):
+   #dferl = dferl.drop("hhs", axis=1) 
    df["ansdiff"] = df["anshhj"] - df["ansvj"] 
    teildf = df.loc[(df["sk"]<530000) & (df["sk"]>520000)]
-   teildf = teildf.loc[(teildf["ansdiff"] > mindiff) | (teildf["ansdiff"] < mindiff*-1) ]
+   print(teildf)
+   teildf = teildf.loc[(teildf["ansdiff"] >= mindiff) | (teildf["ansdiff"] <= mindiff*-1) ]
+   print("----------------------------------")
+   print(teildf)
    dferl = dferl.drop("hhs", axis=1)
       #print(dferl)
    dferl["sk"] = dferl["sk"].fillna(0).astype("int")
    #print(dferl)
    dfnew = pd.merge(teildf, dferl, how = "left", left_on= ["produkt", "sk"], right_on=["produkt", "sk"])
    dfnew = dfnew.drop(["hh", "mn_y", "erlNr", "erlTyp", "nicht uebertragbar"], axis=1)
+   dfnew["erl"] = dfnew["erl"].fillna(0)
    #print(dfnew)
    st = dfnew[["hhs","sk", "produkt", "bez", "anshhj", "ansvj", "rgergvvj", "erl"]].to_dict('records')
    return st
@@ -354,6 +360,7 @@ def get_AfA(df, dferl, mindiff=0):
    #print(dferl)
    dfnew = pd.merge(teildf, dferl, how = "left", left_on= ["produkt", "sk"], right_on=["produkt", "sk"])
    dfnew = dfnew.drop(["hh", "mn_y", "erlNr", "erlTyp", "nicht uebertragbar"], axis=1)
+   dfnew["erl"] = dfnew["erl"].fillna(0)
    #print(dfnew)
    summ = dfnew[["anshhj", "ansvj", "rgergvvj"]].sum()
    summ = summ.to_dict()
@@ -369,6 +376,7 @@ def get_UmlA(df, dferl, mindiff=0):
    #print(dferl)
    dfnew = pd.merge(teildf, dferl, how = "left", left_on= ["produkt", "sk"], right_on=["produkt", "sk"])
    dfnew = dfnew.drop(["hh", "mn_y", "erlNr", "erlTyp", "nicht uebertragbar"], axis=1)
+   dfnew["erl"] = dfnew["erl"].fillna(0)
    #print(dfnew)
    st = dfnew[["hhs","sk", "produkt", "bez", "anshhj", "ansvj", "rgergvvj", "erl"]].to_dict('records')
    return st
@@ -377,12 +385,13 @@ def get_sozA(df, dferl, mindiff=0):
    df["ansdiff"] = df["anshhj"] - df["ansvj"] 
    teildf = df.loc[(df["sk"]<560000) & (df["sk"]>550000)]
    dferl = dferl.drop("hhs", axis=1)
-   teildf = teildf.loc[(teildf["ansdiff"] > mindiff) | (teildf["ansdiff"] < mindiff*-1) ]
+   teildf = teildf.loc[(teildf["ansdiff"] >= mindiff) | (teildf["ansdiff"] <= mindiff*-1) ]
    #print(dferl)
    dferl["sk"] = dferl["sk"].fillna(0).astype("int")
    #print(dferl)
    dfnew = pd.merge(teildf, dferl, how = "left", left_on= ["produkt", "sk"], right_on=["produkt", "sk"])
    dfnew = dfnew.drop(["hh", "mn_y", "erlNr", "erlTyp", "nicht uebertragbar"], axis=1)
+   dfnew["erl"] = dfnew["erl"].fillna(0)
    #print(dfnew)
    st = dfnew[["hhs","sk", "produkt", "bez", "anshhj", "ansvj", "rgergvvj", "erl"]].to_dict('records')
    return st
@@ -391,12 +400,13 @@ def get_sonstA(df, dferl, mindiff=0):
    df["ansdiff"] = df["anshhj"] - df["ansvj"] 
    teildf = df.loc[(df["sk"]<570000) & (df["sk"]>560000)]
    dferl = dferl.drop("hhs", axis=1)
-   teildf = teildf.loc[(teildf["ansdiff"] > mindiff) | (teildf["ansdiff"] < mindiff*-1) ]
+   teildf = teildf.loc[(teildf["ansdiff"] >= mindiff) | (teildf["ansdiff"] <= mindiff*-1) ]
       #print(dferl)
    dferl["sk"] = dferl["sk"].fillna(0).astype("int")
    #print(dferl)
    dfnew = pd.merge(teildf, dferl, how = "left", left_on= ["produkt", "sk"], right_on=["produkt", "sk"])
    dfnew = dfnew.drop(["hh", "mn_y", "erlNr", "erlTyp", "nicht uebertragbar"], axis=1)
+   dfnew["erl"] = dfnew["erl"].fillna(0)
    #print(dfnew)
    st = dfnew[["hhs","sk", "produkt", "bez", "anshhj", "ansvj", "rgergvvj", "erl"]].to_dict('records')
    return st
@@ -409,6 +419,7 @@ def get_finA(df, dferl, mindiff=0):
    #print(dferl)
    dfnew = pd.merge(teildf, dferl, how = "left", left_on= ["produkt", "sk"], right_on=["produkt", "sk"])
    dfnew = dfnew.drop(["hh", "mn_y", "erlNr", "erlTyp", "nicht uebertragbar"], axis=1)
+   dfnew["erl"] = dfnew["erl"].fillna(0)
    #print(dfnew)
    st = dfnew[["hhs","sk", "produkt", "bez", "anshhj", "ansvj", "rgergvvj", "erl"]].to_dict('records')
    return st
@@ -514,6 +525,8 @@ def sum_personalaufwand(dfbew, dferl):
    dfnew = dfnew.drop(["hh", "mn_y", "erlNr", "erlTyp", "nicht uebertragbar"], axis=1)
    summe = (dfnew.anshhj.sum(), dfnew.ansvj.sum())
    return summe
+
+
 
 
 if __name__ == "__main__":

@@ -20,6 +20,8 @@ vorb05tpl = env.vorb05tpl
 vorb06tpl = env.vorb06tpl
 vorb07tpl = env.vorb07tpl
 vorb08tpl = env.vorb08tpl
+vorb10tpl = env.vorb10tpl
+vorb11tpl = env.vorb11tpl
 quelleewdaten = env.quelleewdaten
 quelleflaechendaten = env.quelleflaechendaten
 
@@ -256,17 +258,18 @@ if __name__ == "__main__":
     print("Daten für Vorbericht 08 'Investitionen' sind zusammengestellt ")
     docbuilder.builddocx(tpl=vorb08tpl_instanz, context=contextvorb08, filename="08-Vorb_Invest", gde=gde, hhj=hhj)
     print(f"Vorbericht 08 - Investitionen: 'Ausgabe/{gde}/{hhj}")
+    
     #build "10_Kredit" Kredite
-    """
+   
     print(" ")
     print("----------------------------")
-    print("*** Templateinstanz Vorbericht 08 Invest erzeugt")
-    vorb08tpl_instanz = docbuilder.create_tpl_instance(vorb08tpl)
-    contextvorb08 = ctx.hh_vorbericht_09_invest(dfneu=erg.createinvest(df=dfbew, dfprod=dfpro, dfmnt=dfmn, dferl=dferl))
+    print("*** Templateinstanz Vorbericht 10 Invest erzeugt")
+    vorb10tpl_instanz = docbuilder.create_tpl_instance(vorb10tpl)
+    contextvorb10 = ctx.hh_vorbericht_10_kredit(dfneu=erg.createinvest(df=dfbew, dfprod=dfpro, dfmnt=dfmn, dferl=dferl))
     print("Daten für Vorbericht 08 'Investitionen' sind zusammengestellt ")
     docbuilder.builddocx(tpl=vorb08tpl_instanz, context=contextvorb08, filename="08-Vorb_Invest", gde=gde, hhj=hhj)
     print(f"Vorbericht 08 - Investitionen: 'Ausgabe/{gde}/{hhj}")
-    """
+   
 
 
     #build "11_Pflichtanlagen" Pflichtanlagen

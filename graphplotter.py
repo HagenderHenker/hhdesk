@@ -140,7 +140,7 @@ def plot_hebesatzentwicklung(dfhebesaetze):
     ax1.set_xticks(dfhebesaetze.index)
     #ax1.set_yticks(y)
     ax1.set_xticklabels(dfhebesaetze["hhj"], rotation = 40, fontdict=font)
-    ax1.legend([grsta, grstb, gewst], labels=["Grundsteuer A", "Grundsteuer B", "Gewerbesteuer"])
+    ax1.legend(handles=[grsta, grstb, gewst], labels=["Grundsteuer A", "Grundsteuer B", "Gewerbesteuer"])
     #ax1.set_yticklabels([x/1000000 for x in y])
     plt.savefig(str(pathlib.Path.cwd() / "hhdaten/plots/img_hebesatz_entwicklung.png"))
     plt.close()
@@ -351,7 +351,7 @@ def plot_schuldenprokopf(dfschulden):
     plt.close()
 
 def plot_persaufwandstruktur(dfsummierungaufwand):
-    fig, ax = plt.subplots(figsize = ( 10, 8))
+    fig, ax = plt.subplots(figsize = ( 6, 7))
     sns.light_palette("seagreen", as_cmap=True)
     sns.barplot(data=dfsummierungaufwand,
                 x= "prbez",
@@ -366,7 +366,7 @@ def plot_persaufwandstruktur(dfsummierungaufwand):
     ax.set_title("Personalaufwand", size = 20)
 
     plt.ticklabel_format(style='sci', axis='y', useMathText="True")
-    plt.xticks(rotation=30, ha="right")
+    plt.xticks(rotation=50, ha="right")
     plt.tight_layout()
     plt.savefig(str(pathlib.Path.cwd() / "hhdaten/plots/img_persaufwandstruktur.png"))
     plt.close()
@@ -379,7 +379,7 @@ def plot_ertragsstruktur(df):
             hue="jahr",
             palette="Greens",
             ax = ax)
-    plt.xticks(rotation= 30, ha = 'right')
+    plt.xticks(rotation= 45, ha = 'right')
     ax.set_xlabel("Ertragsart", size= 14)
     ax.set_ylabel("Volumen in Mio€", size = 14 )
     ax.set_title("Erträge", size = 20)
