@@ -58,6 +58,6 @@ erlaeuterung_finanz_vvj = "Wesentliche Verbesserungen ergaben sich durch die Ver
 ergueb = "vorl. Erg."
 
 # Abweichungsgröße ab der eine gesonderte Erläuterung der Haushaltsstelle im VOrbericht erfolgt
-mindiff = 5000
+mindiff = 1000
 
 

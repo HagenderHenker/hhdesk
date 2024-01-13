@@ -332,7 +332,7 @@ def hh_vorbericht_09_invest(dfneu):
     
     return produkte
 
-def hh_vorbericht_10_kredit(df, doc):
+def hh_vorbericht_10_kredit(df, dfkred, doc):
 
     hhj = env.hhj
     img_Liquiditaet = 1
