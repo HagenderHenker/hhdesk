@@ -90,6 +90,10 @@ if __name__ == "__main__":
     # LFAG Kalkulationsdaten (Gemeindunabhängig/Landeseinheitlich)
     dflfaghhj = di.readlfagHHJgde(xlsfile=grunddaten, hhj=hhj, gde=gde)
     print("... LFAG gemeindespezifische Daten")
+    #Liquiditätsbestand
+    dfliq = stat.bestandsstat(dfbew=dfbew, dfkred=dfkred, hhj=hhj, gde=gde)
+    print("... Liquidität")
+    dfschulden = stat.kredstat(dfbew=dfbew, dfkred=dfkred, hhj=hhj, gde=gde)
 
     # plotting graphs
     print("")
@@ -123,10 +127,10 @@ if __name__ == "__main__":
     print("... Entwicklung der Umlagebeträge (Asbolut)")    
 
 
-    plot.plot_liquiditaet(dfliq=stat.bestandsstat(dfbew=dfbew, dfkred=dfkred, hhj=hhj, gde=gde))
+    plot.plot_liquiditaet(dfliq=dfliq)
     print("... Entwicklung der Bestände")
     
-    plot.plot_schuldenentwicklung(dfschulden=stat.kredstat(dfbew=dfbew, dfkred=dfkred, hhj=hhj, gde=gde))
+    plot.plot_schuldenentwicklung(dfschulden=dfschulden)
     print("... Entwicklung der Schulden")
 
     plot.plot_schuldenprokopf(dfschulden=stat.kredstatprokopf(dfbew=dfbew, dfkred=dfkred, hhj=hhj, gde=gde))
@@ -263,12 +267,12 @@ if __name__ == "__main__":
    
     print(" ")
     print("----------------------------")
-    print("*** Templateinstanz Vorbericht 10 Invest erzeugt")
+    print("*** Templateinstanz Vorbericht 10 Kredit")
     vorb10tpl_instanz = docbuilder.create_tpl_instance(vorb10tpl)
-    contextvorb10 = ctx.hh_vorbericht_10_kredit(dfneu=erg.createinvest(df=dfbew, dfprod=dfpro, dfmnt=dfmn, dferl=dferl))
-    print("Daten für Vorbericht 08 'Investitionen' sind zusammengestellt ")
-    docbuilder.builddocx(tpl=vorb08tpl_instanz, context=contextvorb08, filename="08-Vorb_Invest", gde=gde, hhj=hhj)
-    print(f"Vorbericht 08 - Investitionen: 'Ausgabe/{gde}/{hhj}")
+    contextvorb10 = ctx.hh_vorbericht_10_kredit(dfschulden=dfschulden, dfliq=dfliq, dfbew=dfbew, hhj=hhj, gde=gde, doc=vorb10tpl_instanz)
+    #print("Daten für Vorbericht 08 'Investitionen' sind zusammengestellt ")
+    #docbuilder.builddocx(tpl=vorb08tpl_instanz, context=contextvorb08, filename="08-Vorb_Invest", gde=gde, hhj=hhj)
+    #print(f"Vorbericht 08 - Investitionen: 'Ausgabe/{gde}/{hhj}")
    
 
 

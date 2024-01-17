@@ -332,21 +332,23 @@ def hh_vorbericht_09_invest(dfneu):
     
     return produkte
 
-def hh_vorbericht_10_kredit(df, doc):
+def hh_vorbericht_10_kredit(dfbew, dfschulden, dfliq, hhj, gde, doc):
 
-    hhj = env.hhj
-    img_Liquiditaet = 1
-    img_verschuldung =2
-    img_prokopfverschuldung = 3
-    liqVJ = 1
-    invE = 3
-    invA = 4
-    SaldoInv = -1
-    OrdEZ = 12
-    OrdAZ = 12
-    SaldoOrdZ = OrdEZ - OrdAZ
-    pmTilgung = 8
-    ffs = SaldoOrdZ - pmTilgung
+    hhj = hhj
+    gde = gde
+    img_Liquiditaet = str(pathlib.Path.cwd() / "hhdaten/plots/img_liquiditaetsentwicklung.png")
+    img_verschuldung = str(pathlib.Path.cwd() / "hhdaten/plots/img_schuldennominal.png")
+    img_prokopfverschuldung = str(pathlib.Path.cwd() / "hhdaten/plots/img_schuldenprokopf.png")
+ 
+    liqVJ = dfliq.loc[dfliq["hhj"]==hhj-1]
+    invE = dfbew.loc[(dfbew["sk"]>680000)&(dfbew["sk"]<690000)].sum()
+    invA = dfbew.loc[(dfbew["sk"]>780000)&(dfbew["sk"]<790000)].sum()
+    SaldoInv = invE - invA
+    ordEZ = dfbew.loc[(dfbew["sk"]>600000)&(dfbew["sk"]<680000)].sum()
+    ordAZ = dfbew.loc[(dfbew["sk"]>700000)&(dfbew["sk"]<780000)].sum()
+    saldoOrdZ = ordEZ - ordAZ
+    pmTilgung = dfbew.loc[(dfbew["sk"]>790000)&(dfbew["sk"]<795555)].sum()
+    ffs = saldoOrdZ - pmTilgung
     
 
 
@@ -356,7 +358,15 @@ def hh_vorbericht_10_kredit(df, doc):
         "img_verschuldung" : img_verschuldung,
         "img_prokopfverschuldung" : img_prokopfverschuldung,
         "liqVJ" : liqVJ,
-    }
+        "invE" : invE,
+        "invA" : invA,
+        "saldoInv" : SaldoInv,
+        "ordEZ" : ordEZ,
+        "ordAZ" : ordAZ,
+        "saldoOrdZ" : saldoOrdZ,
+        "pmTilgung" : pmTilgung,
+        "ffs" : ffs,    
+                }
 
     return krdict
 
