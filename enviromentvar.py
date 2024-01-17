@@ -58,7 +58,7 @@ erlaeuterung_finanz_vvj = "Wesentliche Verbesserungen ergaben sich durch die Ver
 ergueb = "vorl. Erg."
 
 # Abweichungsgröße ab der eine gesonderte Erläuterung der Haushaltsstelle im VOrbericht erfolgt
-mindiff = 5000
+mindiff = 1000
 
 # Haushaltsstelle für die Einplanung der Tilgung für neue Plandarlehen
 tilgung_plandarlehen = "6.1.2.1/9999.792511"
