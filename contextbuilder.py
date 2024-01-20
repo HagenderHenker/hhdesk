@@ -336,37 +336,62 @@ def hh_vorbericht_10_kredit(dfbew, dfschulden, dfliq, hhj, gde, doc):
 
     hhj = hhj
     gde = gde
+    
     img_Liquiditaet = str(pathlib.Path.cwd() / "hhdaten/plots/img_liquiditaetsentwicklung.png")
     img_verschuldung = str(pathlib.Path.cwd() / "hhdaten/plots/img_schuldennominal.png")
     img_prokopfverschuldung = str(pathlib.Path.cwd() / "hhdaten/plots/img_schuldenprokopf.png")
  
-    liqVJ = dfliq.loc[dfliq["hhj"]==hhj-1]
-    invE = dfbew.loc[(dfbew["sk"]>680000)&(dfbew["sk"]<690000)].sum()
-    invA = dfbew.loc[(dfbew["sk"]>780000)&(dfbew["sk"]<790000)].sum()
-    SaldoInv = invE - invA
-    ordEZ = dfbew.loc[(dfbew["sk"]>600000)&(dfbew["sk"]<680000)].sum()
-    ordAZ = dfbew.loc[(dfbew["sk"]>700000)&(dfbew["sk"]<780000)].sum()
-    saldoOrdZ = ordEZ - ordAZ
-    pmTilgung = dfbew.loc[(dfbew["sk"]>790000)&(dfbew["sk"]<795555)].sum()
-    ffs = saldoOrdZ - pmTilgung
+
+
+    liqVJ = float(dfliq.loc[dfliq["hhj"]==hhj-1].bestand)
+    print(liqVJ)
+    print(type(liqVJ))
+    invE = dfbew.loc[(dfbew["sk"]>680000)&(dfbew["sk"]<690000)].sum().anshhj
+    invA = dfbew.loc[(dfbew["sk"]>780000)&(dfbew["sk"]<790000)].sum().anshhj
     
+    #print(invA)
+    #print(type(invA))
+    saldoInv = invE - invA
+    ordEZ = dfbew.loc[(dfbew["sk"]>600000)&(dfbew["sk"]<680000)].sum().anshhj
+    ordAZ = dfbew.loc[(dfbew["sk"]>700000)&(dfbew["sk"]<780000)].sum().anshhj
+    saldoOrdZ = ordEZ - ordAZ
+    pmTilgung = dfbew.loc[(dfbew["sk"]>790000)&(dfbew["sk"]<795555)].sum().anshhj
+    ffs = saldoOrdZ - pmTilgung
+    tilgLiqKred = 1
+    aufnLiqKred = 2
+    kreditbedarf_inv = 3
+    invkredvj = 1
+    invkredhhj = 2
+    liqkredvj = 3
+    liqkredhhj = 4
+    kreditgesamtvj =  invkredvj + liqkredvj
+    kreditgesamthhj =  invkredhhj + liqkredhhj
 
 
     krdict = {
         "hhj" : hhj, 
-        "img_Liquiditaet" : img_Liquiditaet, 
-        "img_verschuldung" : img_verschuldung,
-        "img_prokopfverschuldung" : img_prokopfverschuldung,
+        "img_Liquiditaet" : docxtpl.InlineImage(doc, img_Liquiditaet),
+        "img_verschuldung" : docxtpl.InlineImage(doc,img_verschuldung),
+        "img_prokopfverschuldung" : docxtpl.InlineImage(doc, img_prokopfverschuldung),
         "liqVJ" : liqVJ,
         "invE" : invE,
         "invA" : invA,
-        "saldoInv" : SaldoInv,
+        "saldoInv" : saldoInv,
         "ordEZ" : ordEZ,
         "ordAZ" : ordAZ,
         "saldoOrdZ" : saldoOrdZ,
         "pmTilgung" : pmTilgung,
         "ffs" : ffs,    
-                }
+        "tilgLiqKred" : tilgLiqKred,
+        "aufnLiqKred" : aufnLiqKred,
+        "kreditbedarf_inv" : kreditbedarf_inv,
+        "invkredvj" : invkredvj,
+        "invkredhhj" : invkredhhj,
+        "liqkredvj" : liqkredvj,
+        "liqkredhhj" : liqkredhhj,
+        "kreditgesamtvj" : kreditgesamtvj,
+        "kreditgesamthhj" : kreditgesamthhj,
+        } 
 
     return krdict
 

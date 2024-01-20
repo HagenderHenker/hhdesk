@@ -270,9 +270,9 @@ if __name__ == "__main__":
     print("*** Templateinstanz Vorbericht 10 Kredit")
     vorb10tpl_instanz = docbuilder.create_tpl_instance(vorb10tpl)
     contextvorb10 = ctx.hh_vorbericht_10_kredit(dfschulden=dfschulden, dfliq=dfliq, dfbew=dfbew, hhj=hhj, gde=gde, doc=vorb10tpl_instanz)
-    #print("Daten für Vorbericht 08 'Investitionen' sind zusammengestellt ")
-    #docbuilder.builddocx(tpl=vorb08tpl_instanz, context=contextvorb08, filename="08-Vorb_Invest", gde=gde, hhj=hhj)
-    #print(f"Vorbericht 08 - Investitionen: 'Ausgabe/{gde}/{hhj}")
+    print("Daten für Vorbericht 10 'Kredit und Bestand' sind zusammengestellt")
+    docbuilder.builddocx(tpl=vorb10tpl_instanz, context=contextvorb10, filename="10-Vorb_Kredit", gde=gde, hhj=hhj)
+    print(f"Vorbericht 10 - Kredit und Bestand: 'Ausgabe/{gde}/{hhj}")
    
 
 
