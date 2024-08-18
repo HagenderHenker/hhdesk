@@ -341,11 +341,7 @@ def hh_vorbericht_10_kredit(dfbew, dfschulden, dfliq, hhj, gde, doc):
     img_verschuldung = str(pathlib.Path.cwd() / "hhdaten/plots/img_schuldennominal.png")
     img_prokopfverschuldung = str(pathlib.Path.cwd() / "hhdaten/plots/img_schuldenprokopf.png")
  
-
-
-    liqVJ = float(dfliq.loc[dfliq["hhj"]==hhj-1].bestand)
-    print(liqVJ)
-    print(type(liqVJ))
+    liqVJ = float(dfliq.loc[dfliq["hhj"]==hhj-1].bestand.iloc[0])
     invE = dfbew.loc[(dfbew["sk"]>680000)&(dfbew["sk"]<690000)].sum().anshhj
     invA = dfbew.loc[(dfbew["sk"]>780000)&(dfbew["sk"]<790000)].sum().anshhj
     
@@ -355,15 +351,15 @@ def hh_vorbericht_10_kredit(dfbew, dfschulden, dfliq, hhj, gde, doc):
     ordEZ = dfbew.loc[(dfbew["sk"]>600000)&(dfbew["sk"]<680000)].sum().anshhj
     ordAZ = dfbew.loc[(dfbew["sk"]>700000)&(dfbew["sk"]<780000)].sum().anshhj
     saldoOrdZ = ordEZ - ordAZ
-    pmTilgung = dfbew.loc[(dfbew["sk"]>790000)&(dfbew["sk"]<795555)].sum().anshhj
+    pmTilgung = dfbew.loc[(dfbew["sk"]>790000)&(dfbew["sk"]<792999)].sum().anshhj
     ffs = saldoOrdZ - pmTilgung
-    tilgLiqKred = 1
-    aufnLiqKred = 2
-    kreditbedarf_inv = 3
-    invkredvj = 1
-    invkredhhj = 2
-    liqkredvj = 3
-    liqkredhhj = 4
+    tilgLiqKred = dfbew.loc[(dfbew["sk"]>794000)&(dfbew["sk"]<794999)].sum().anshhj
+    aufnLiqKred = dfbew.loc[(dfbew["sk"]>694000)&(dfbew["sk"]<694999)].sum().anshhj
+    kreditbedarf_inv = -1*saldoInv - ffs - aufnLiqKred + tilgLiqKred
+    invkredvj = round(float(dfschulden.loc[dfschulden["hhj"] == hhj-1].invkred.iloc[0]), 2)
+    invkredhhj = round(float(dfschulden.loc[dfschulden["hhj"] == hhj].invkred.iloc[0]), 2)
+    liqkredvj = round(float(dfschulden.loc[dfschulden["hhj"] == hhj-1].liqkred.iloc[0]),2)
+    liqkredhhj = round(float(dfschulden.loc[dfschulden["hhj"] == hhj].liqkred.iloc[0]), 2)
     kreditgesamtvj =  invkredvj + liqkredvj
     kreditgesamthhj =  invkredhhj + liqkredhhj
 
@@ -394,6 +390,51 @@ def hh_vorbericht_10_kredit(dfbew, dfschulden, dfliq, hhj, gde, doc):
         } 
 
     return krdict
+
+def hh_vorbericht_11_Pflichtanlagen(hhj, gde, doc, dfbew, dfje, dffinanz, dferg):
+    
+    img_je_entwicklung = str(pathlib.Path.cwd() / "hhdaten/plots/img_liquiditaetsentwicklung.png")
+
+    pfldict = {
+        "hhj" : hhj,
+        "gde" : gde,
+        "gde_bez" : "Testgemeinde",
+        # Ergebnisentwicklung
+        "img_je_entwicklung" : docxtpl.InlineImage(doc, img_je_entwicklung),
+        "je_hhj5vj" : 1, 
+        "je_hhj4vj" :2,
+        "je_hhj3vj" :3,
+        "je_hhj2vj" :4,
+        "je_hhj1vj" :5,
+        "je_hhj" :6,
+        "je_hhj1pj" :7, 
+        "je_hhj2pj" :8,
+        "je_hhj3pj" :9,
+        "jeSummebisPlanjahr" : 8,
+        "summeErg" : 9,
+        # Finanzhaushalt
+        "o_ao_zahl5vj"  : 1,
+        "o_ao_zahl4vj"  : 1,
+        "o_ao_zahl3vj"  : 1,
+        "o_ao_zahl2vj"  : 1,
+        "o_ao_zahl1vj" : 1,
+        "o_ao_zahlhhj" : 1,
+        "o_ao_zahl1pj"  : 1,
+        "o_ao_zahl2pj"  : 1,
+        "o_ao_zahl3pj"  : 1,
+
+        "pmTilg5vj"  : 2,
+        "pmTilg4vj"  : 2,
+        "pmTilg3vj"  : 2,
+        "pmTilg2vj"  : 2,
+        "pmTilg1vj"  : 2,
+        "pmTilghhj" : 2,
+        "pmTilg1pj"  : 2,
+        "pmTilg2pj"  : 2,
+        "pmTilg3pj"  : 2,
+
+    }
+    return pfldict
 
 if __name__ == "__main__":
     #print test hhsatzungcontext
