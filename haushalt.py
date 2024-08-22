@@ -7,6 +7,7 @@ import pathlib
 import enviromentvar as env
 import graphplotter as plot
 
+
 gde = env.gde
 hhj = env.hhj
 grunddaten = env.grunddaten
@@ -241,11 +242,11 @@ if __name__ == "__main__":
         "szb" : contextvorb05["szb"],
     }
 
-    print(kfadict)
+    #print(kfadict)
     contextvorb06 = ctx.hh_vorbericht_07_aufwand(df=dfbew, dferl=dferl, mindiff=env.mindiff, dfumlagen=dfstkraft, kfadict=kfadict, doc=vorb06tpl_instanz)
     print("...Daten für Vorbericht 07 'Veränderungen in den Aufwendungen' sind zusammengestellt ")
     docbuilder.builddocx(tpl=vorb06tpl_instanz, context=contextvorb06, filename="07-Vorb_Aufwand", gde=gde, hhj=hhj)
-    print(f"...Vorbericht 06 - Veränderung in den Erträgen: Ausgabe/{gde}/{hhj}")
+    print(f"...Vorbericht 07 - Veränderung in den Aufwendungen: Ausgabe/{gde}/{hhj}")
 
 
 
@@ -277,13 +278,20 @@ if __name__ == "__main__":
 
 
     #build "11_Pflichtanlagen" Pflichtanlagen
-    """
+    
     print(" ")
     print("----------------------------")
     print("*** Templateinstanz Vorbericht 11 Pflichtanlagen erzeugt")
-    vorb11tpl_instanz = docbuilder.create_tpl_instance(vorb08tpl)
-    contextvorb11 = ctx.hh_vorbericht_09_invest(dfneu=erg.createinvest(df=dfbew, dfprod=dfpro, dfmnt=dfmn, dferl=dferl))
-    print("Daten für Vorbericht 08 'Investitionen' sind zusammengestellt ")
-    docbuilder.builddocx(tpl=vorb08tpl_instanz, context=contextvorb08, filename="08-Vorb_Invest", gde=gde, hhj=hhj)
-    print(f"Vorbericht 08 - Investitionen: 'Ausgabe/{gde}/{hhj}")
-    """
+    vorb11tpl_instanz = docbuilder.create_tpl_instance(vorb11tpl)
+    contextvorb11 = ctx.hh_vorbericht_11_Pflichtanlagen(hhj=hhj, 
+                                                        gde=gde, 
+                                                        doc=vorb11tpl_instanz, 
+                                                        dferg=stat.ergstat(bewegungsdaten=dfbew, grunddaten=dfergebnis, gde=gde, hhj=hhj),
+                                                        dfbew=2, 
+                                                        dffinanz=3, 
+                                                        dfje=4, 
+                                                        dfek = stat.ekstat(bewegungsdaten=dfbew, grunddaten=dfergebnis, hhj=hhj, gde=gde), )
+    print("Daten für Vorbericht 11 'Pflichtanlagen' sind zusammengestellt ")
+    docbuilder.builddocx(tpl=vorb11tpl_instanz, context=contextvorb11, filename="11-Vorb_Pflichtanlagen", gde=gde, hhj=hhj)
+    print(f"Vorbericht 11- Pflichtanlagen: 'Ausgabe/{gde}/{hhj}")
+    

@@ -337,10 +337,10 @@ def get_msdA(df, dferl, mindiff=0):
    #dferl = dferl.drop("hhs", axis=1) 
    df["ansdiff"] = df["anshhj"] - df["ansvj"] 
    teildf = df.loc[(df["sk"]<530000) & (df["sk"]>520000)]
-   print(teildf)
+   #print(teildf)
    teildf = teildf.loc[(teildf["ansdiff"] >= mindiff) | (teildf["ansdiff"] <= mindiff*-1) ]
-   print("----------------------------------")
-   print(teildf)
+   #print("----------------------------------")
+   #print(teildf)
    dferl = dferl.drop("hhs", axis=1)
       #print(dferl)
    dferl["sk"] = dferl["sk"].fillna(0).astype("int")
@@ -450,7 +450,7 @@ def createinvest(df, dfprod, dfmnt, dferl):
    
    dferl.columns = ["hh", "produkt", "mn", "sk", "erlnr", "erltyp", "intern", "nü", "hhs", "duplikat", "erl"]
    dfmnt.columns = ["produkt", "mn", "txt", "konsum", "anzPSt"]
-   print(dfprod)
+   #print(dfprod)
    dfprod = dfprod[["Produkt", "Bezeichnung"]]
    dfprod = dfprod.rename(columns={"Produkt" : "produkt", "Bezeichnung" : "prbez"}) 
    dferl['erljoined'] = dferl.groupby('hhs')['erl'].transform(lambda x: ' '.join(x))

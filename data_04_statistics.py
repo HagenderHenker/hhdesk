@@ -23,6 +23,12 @@ def ewstatistic(data, gde, hhj):
 
 
 def ergstat(grunddaten, bewegungsdaten, hhj, gde):
+   '''
+   takes grunddaten = dataframe form grunddaten.xlsx
+   takes bewegungsdaten = Dataframe from bewegungsdaten.xlsx
+   takes hhj = fiscal year from config
+   takes gde = municipal corpus from config
+   '''
    
    dfergebnis = grunddaten
    
@@ -54,11 +60,13 @@ def ergstat(grunddaten, bewegungsdaten, hhj, gde):
       dfergebnis.loc[len(dfergebnis.index)] = [gde, hhj+3, df2.plan3, df3.plan3, (df2.plan3-df3.plan3), (eK+(df2.plan3-df3.plan3)).item(), "p"]
       eK = eK+(df2.plan3-df3.plan3)
 
+   #print(dfergebnis)
    return dfergebnis
 
 def ekstat(grunddaten, bewegungsdaten, hhj, gde):
    dfergebnis = ergstat(grunddaten=grunddaten, bewegungsdaten=bewegungsdaten, hhj=hhj, gde=gde)
    dfek = dfergebnis[["hhj", "EK"]]
+   print(dfek)
    return dfek
 
 
@@ -68,6 +76,8 @@ def steuerstat(dfsteuer, bewegungsdaten, hhj, gde):
    takes bewegungsdaten = Dataframe from bewegungsdaten.xlsx
    takes hhj = fiscal year from config
    takes gde = municipal corpus from config
+
+   returns dataframe with rows by fiscal year (hhj-2 to hhj+3) and a column for each tax
    '''
 
    dfs = dfsteuer.set_index('hhj').drop("gdenr", axis=1)

@@ -196,8 +196,8 @@ def hh_vorbericht_07_aufwand(df, dferl, mindiff, doc, dfumlagen, kfadict):
     # [1] dictionary der Absummierungen zurück
     hhj = env.hhj
     gde = env.gde
-    print(afa)
-    print(type(afa))
+    #print(afa)
+    #print(type(afa))
    
     aufwdict = {
                 "msdtbl" : msdtbl,
@@ -228,7 +228,7 @@ def hh_vorbericht_07_aufwand(df, dferl, mindiff, doc, dfumlagen, kfadict):
 
                 }
                 
-    print(aufwdict["abschreibungen"])
+    #print(aufwdict["abschreibungen"])
     return aufwdict
 
 
@@ -391,17 +391,17 @@ def hh_vorbericht_10_kredit(dfbew, dfschulden, dfliq, hhj, gde, doc):
 
     return krdict
 
-def hh_vorbericht_11_Pflichtanlagen(hhj, gde, doc, dfbew, dfje, dffinanz, dferg):
+def hh_vorbericht_11_Pflichtanlagen(hhj, gde, doc, dfbew, dfje, dffinanz, dferg, dfek):
     
     img_je_entwicklung = str(pathlib.Path.cwd() / "hhdaten/plots/img_liquiditaetsentwicklung.png")
-
+    
     pfldict = {
         "hhj" : hhj,
         "gde" : gde,
         "gde_bez" : "Testgemeinde",
         # Ergebnisentwicklung
         "img_je_entwicklung" : docxtpl.InlineImage(doc, img_je_entwicklung),
-        "je_hhj5vj" : 1, 
+        "je_hhj5vj" : dferg.loc[(dferg["gde"]==gde & dferg["hhj"]==hhj-5)].Jahresergebnis, 
         "je_hhj4vj" :2,
         "je_hhj3vj" :3,
         "je_hhj2vj" :4,
@@ -432,7 +432,14 @@ def hh_vorbericht_11_Pflichtanlagen(hhj, gde, doc, dfbew, dfje, dffinanz, dferg)
         "pmTilg1pj"  : 2,
         "pmTilg2pj"  : 2,
         "pmTilg3pj"  : 2,
-
+        # Eigenkapitalentwicklung
+        "ek_hhjv3" : 4,
+        "ek_hhjv2" : 5,
+        "ek_hhjv1" : 6, 
+        "ek_hhj" : 8,
+        "ek_hhjn1" : 9,
+        "ek_hhjn2" : 10,
+        "ek_hhjn3" : 11
     }
     return pfldict
 
