@@ -295,3 +295,4 @@ if __name__ == "__main__":
     docbuilder.builddocx(tpl=vorb11tpl_instanz, context=contextvorb11, filename="11-Vorb_Pflichtanlagen", gde=gde, hhj=hhj)
     print(f"Vorbericht 11- Pflichtanlagen: 'Ausgabe/{gde}/{hhj}")
     
+    
