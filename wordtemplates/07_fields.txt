@@ -1,21 +1,119 @@
-{{ PersaufwHHJ }}	
-{{ PersaufwVJ }}
-{{ abschreibungen }}
-{{ STK }} 
-{{ SZA }}
-{{ SZZO }}
-{{ Umlgrl }}
-{{ UmlSaKU }}	
-{{ UmlLastKU }}
-{{ UmlSaVGU }}	
-{{ UmlLastVGU }}
-{{ UmlSaSoU }}	
-{{ UmlLastSoU }}
+PersaufwHHJ	
+PersaufwVJ
+abschreibungen
+STK 
+SZA
+SZZO
+Umlgrl
+UmlSaKU	
+UmlLastKU
+UmlSaVGU	
+UmlLastVGU
+UmlSaSoU	
+UmlLastSoU
 
 msdtbl
 umltranstbl
 sonstAtbl
 finAtbl
 
-{{ img_persaufwandstruktur }}
-{{ img_EntwicklungUmlagelast }}
+img_persaufwandstruktur
+img_EntwicklungUmlagelast
+
+
+hhj-2
+hhj-1
+hhj
+hhj+1
+hhj +2
+hhj +3
+lfd_ez_2vj
+lfd_ez_1vj
+lfd_ez_hhjj
+lfd_ez_1pj
+lfd_ez_2pj
+lfd_ez_3pj
+lfd_az_2vj
+lfd_az_1vj
+lfd_az_hhj
+lfd_az_1pj
+lfd_az_2pj
+lfd_az_3pj
+lfd_slz_2vj
+lfd_slz_1vj
+lfd_slz_hhj
+lfd_slz_1pj
+lfd_slz_2pj
+lfd_slz_3pj
+fin_slz_2vj
+fin_slz_1vj
+fin_slz_hhj
+fin_slz_1pj
+fin_slz_2pj
+fin_slz_3pj
+ord_slz_2vj
+ord_slz_1vj
+ord_slz_hhj
+ord_slz_1pj
+ord_slz_2pj
+ord_slz_3pj
+ao_slz_2vj
+ao_slz_1vj
+ao_slz_hhj
+ao_slz_1pj
+ao_slz_2pj
+ao_slz_3pj
+inv_ez_2vj
+inv_ez_1vj
+inv_ez_hhj
+inv_ez_1pj
+inv_ez_2pj
+inv_ez_3pj
+inv_az_2vj
+inv_az_1vj
+inv_az_hhj
+inv_az_1pj
+inv_az_2pj
+inv_az_3pj
+inv_slz_2vj
+inv_slz_1vj
+inv_slz_hhj
+inv_slz_1pj
+inv_slz_2pj
+inv_slz_3pj
+finm_slz_2vj
+finm_slz_1vj
+finm_slz_hhj
+finm_slz_1pj
+finm_slz_2pj
+finm_slz_3pj
+kred_ez_2vj
+kred_ez_1vj
+kred_ez_hhj
+kred_ez_1pj
+kred_ez_2pj
+kred_ez_3pj
+kred_az_2vj
+kred_az_1vj
+kred_az_hhj
+kred_az_1pj
+kred_az_2pj
+kred_az_3pj
+kred_ng_2vj
+kred_ng_1vj
+kred_ng_hhj
+kred_ng_1pj
+kred_ng_2pj
+kred_ng_3pj
+kbv_slz_2vj
+kbv_slz_1vj
+kbv_slz_hhj
+kbv_slz_1pj
+kbv_slz_2pj
+kbv_slz_3pj
+ffs_2vj
+ffs_1vj
+ffs_hhj
+ffs_1pj
+ffs_2pj
+ffs_3pj

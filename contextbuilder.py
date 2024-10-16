@@ -231,6 +231,16 @@ def hh_vorbericht_07_aufwand(df, dferl, mindiff, doc, dfumlagen, kfadict):
     #print(aufwdict["abschreibungen"])
     return aufwdict
 
+def hh_vorbereicht_08_gesamtfinanzplan(df):
+
+    fd = erg.gesamtplan_fin(df)
+    
+    findict = {
+
+    }
+
+    return findict
+
 
 def hh_vorbericht_09_invest(dfneu):
     # Filtern der Maßnahmen

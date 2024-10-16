@@ -74,6 +74,125 @@ def gesamtplan_erg(df):
 
     return(dic)
 
+def gesamtplan_fin(df):
+
+   ordslzvj2 = df.loc[(df["sk"]<669500) & (df["sk"]>600000)]["rgergvvj"].sum()- df.loc[(df["sk"]<770000) & (df["sk"]>700000)]["rgergvvj"].sum() +  df.loc[(df["sk"]<680000) & (df["sk"]>670000)]["rgergvvj"].sum()- df.loc[(df["sk"]<780000) & (df["sk"]>770000)]["rgergvvj"].sum()
+   ordslzvj1 = df.loc[(df["sk"]<669500) & (df["sk"]>600000)]["ansvj"].sum() - df.loc[(df["sk"]<770000) & (df["sk"]>700000)]["ansvj"].sum() + df.loc[(df["sk"]<680000) & (df["sk"]>670000)]["ansvj"].sum() - df.loc[(df["sk"]<780000) & (df["sk"]>770000)]["ansvj"].sum()
+   ordslzhhj = df.loc[(df["sk"]<669500) & (df["sk"]>600000)]["anshhj"].sum() - df.loc[(df["sk"]<770000) & (df["sk"]>700000)]["anshhj"].sum() + df.loc[(df["sk"]<680000) & (df["sk"]>670000)]["anshhj"].sum() - df.loc[(df["sk"]<780000) & (df["sk"]>770000)]["anshhj"].sum()
+   ordslzpl1 = df.loc[(df["sk"]<669500) & (df["sk"]>600000)]["plan1"].sum() - df.loc[(df["sk"]<770000) & (df["sk"]>700000)]["plan1"].sum() + df.loc[(df["sk"]<680000) & (df["sk"]>670000)]["plan1"].sum() - df.loc[(df["sk"]<780000) & (df["sk"]>770000)]["plan1"].sum()
+   ordslzpl2 = df.loc[(df["sk"]<669500) & (df["sk"]>600000)]["plan2"].sum() - df.loc[(df["sk"]<770000) & (df["sk"]>700000)]["plan2"].sum() + df.loc[(df["sk"]<680000) & (df["sk"]>670000)]["plan2"].sum() - df.loc[(df["sk"]<780000) & (df["sk"]>770000)]["plan2"].sum()
+   ordslzpl3 = df.loc[(df["sk"]<669500) & (df["sk"]>600000)]["plan3"].sum() - df.loc[(df["sk"]<770000) & (df["sk"]>700000)]["plan3"].sum() + df.loc[(df["sk"]<680000) & (df["sk"]>670000)]["plan3"].sum() - df.loc[(df["sk"]<780000) & (df["sk"]>770000)]["plan3"].sum()
+
+   aoslzvj2 = df.loc[(df["sk"]<669999) & (df["sk"]>669000)]["rgergvvj"].sum()- df.loc[(df["sk"]<769999) & (df["sk"]>769500)]["rgergvvj"].sum()
+   aoslzvj1 = df.loc[(df["sk"]<669999) & (df["sk"]>669000)]["ansvj"].sum()- df.loc[(df["sk"]<769999) & (df["sk"]>769500)]["ansvj"].sum()
+   aoslzhhj = df.loc[(df["sk"]<669999) & (df["sk"]>669000)]["anshhj"].sum()- df.loc[(df["sk"]<769999) & (df["sk"]>769500)]["anshhj"].sum()
+   aoslzpl1 = df.loc[(df["sk"]<669999) & (df["sk"]>669000)]["plan1"].sum()- df.loc[(df["sk"]<769999) & (df["sk"]>769500)]["plan1"].sum()
+   aoslzpl2 = df.loc[(df["sk"]<669999) & (df["sk"]>669000)]["plan2"].sum()- df.loc[(df["sk"]<769999) & (df["sk"]>769500)]["plan2"].sum()
+   aoslzpl3 = df.loc[(df["sk"]<669999) & (df["sk"]>669000)]["plan3"].sum()- df.loc[(df["sk"]<769999) & (df["sk"]>769500)]["plan3"].sum()
+
+   inv_slz_2vj = df.loc[(df["sk"]<690000) & (df["sk"]>680000)]["rgergvvj"].sum() - df.loc[(df["sk"]<790000) & (df["sk"]>780000)]["rgergvvj"].sum()
+   inv_slz_1vj = df.loc[(df["sk"]<690000) & (df["sk"]>680000)]["ansvj"].sum() -  df.loc[(df["sk"]<790000) & (df["sk"]>780000)]["ansvj"].sum()
+   inv_slz_hhj = df.loc[(df["sk"]<690000) & (df["sk"]>680000)]["anshhj"].sum() - df.loc[(df["sk"]<790000) & (df["sk"]>780000)]["anshhj"].sum() 
+   inv_slz_1pj = df.loc[(df["sk"]<690000) & (df["sk"]>680000)]["plan1"].sum() -  df.loc[(df["sk"]<790000) & (df["sk"]>780000)]["plan1"].sum()
+   inv_slz_2pj = df.loc[(df["sk"]<690000) & (df["sk"]>680000)]["plan2"].sum() -  df.loc[(df["sk"]<790000) & (df["sk"]>780000)]["plan2"].sum()
+   inv_slz_3pj = df.loc[(df["sk"]<690000) & (df["sk"]>680000)]["plan3"].sum() -  df.loc[(df["sk"]<790000) & (df["sk"]>780000)]["plan3"].sum()
+
+   findic = {
+      "lfd_ez_2vj" : df.loc[(df["sk"]<670000) & (df["sk"]>600000)]["rgergvvj"].sum(),
+      "lfd_ez_1vj" : df.loc[(df["sk"]<670000) & (df["sk"]>600000)]["ansvj"].sum(),
+      "lfd_ez_hhjj" : df.loc[(df["sk"]<670000) & (df["sk"]>600000)]["anshhj"].sum(),
+      "lfd_ez_1pj" : df.loc[(df["sk"]<670000) & (df["sk"]>600000)]["plan1"].sum(),
+      "lfd_ez_2pj" : df.loc[(df["sk"]<670000) & (df["sk"]>600000)]["plan2"].sum(),
+      "lfd_ez_3pj" : df.loc[(df["sk"]<670000) & (df["sk"]>600000)]["plan3"].sum(),
+      "lfd_az_2vj" : df.loc[(df["sk"]<770000) & (df["sk"]>700000)]["rgergvvj"].sum(),
+      "lfd_az_1vj" :  df.loc[(df["sk"]<770000) & (df["sk"]>700000)]["ansvj"].sum(),
+      "lfd_az_hhj" : df.loc[(df["sk"]<770000) & (df["sk"]>700000)]["anshhj"].sum(),
+      "lfd_az_1pj" :  df.loc[(df["sk"]<770000) & (df["sk"]>700000)]["plan1"].sum(),
+      "lfd_az_2pj" :  df.loc[(df["sk"]<770000) & (df["sk"]>700000)]["plan2"].sum(),
+      "lfd_az_3pj" :  df.loc[(df["sk"]<770000) & (df["sk"]>700000)]["plan3"].sum(),
+      "lfd_slz_2vj" : df.loc[(df["sk"]<670000) & (df["sk"]>600000)]["rgergvvj"].sum()- df.loc[(df["sk"]<770000) & (df["sk"]>700000)]["rgergvvj"].sum(),
+      "lfd_slz_1vj" :  df.loc[(df["sk"]<670000) & (df["sk"]>600000)]["ansvj"].sum() - df.loc[(df["sk"]<770000) & (df["sk"]>700000)]["ansvj"].sum(),
+      "lfd_slz_hhj" : df.loc[(df["sk"]<670000) & (df["sk"]>600000)]["anshhj"].sum() - df.loc[(df["sk"]<770000) & (df["sk"]>700000)]["anshhj"].sum(),
+      "lfd_slz_1pj" :  df.loc[(df["sk"]<670000) & (df["sk"]>600000)]["plan1"].sum() - df.loc[(df["sk"]<770000) & (df["sk"]>700000)]["plan1"].sum(),
+      "lfd_slz_2pj" :  df.loc[(df["sk"]<670000) & (df["sk"]>600000)]["plan2"].sum() - df.loc[(df["sk"]<770000) & (df["sk"]>700000)]["plan2"].sum(),
+      "lfd_slz_3pj" :  df.loc[(df["sk"]<670000) & (df["sk"]>600000)]["plan3"].sum() - df.loc[(df["sk"]<770000) & (df["sk"]>700000)]["plan3"].sum(),
+      "fin_slz_2vj" : df.loc[(df["sk"]<680000) & (df["sk"]>670000)]["rgergvvj"].sum()- df.loc[(df["sk"]<780000) & (df["sk"]>770000)]["rgergvvj"].sum(),
+      "fin_slz_1vj" : df.loc[(df["sk"]<680000) & (df["sk"]>670000)]["ansvj"].sum() - df.loc[(df["sk"]<780000) & (df["sk"]>770000)]["ansvj"].sum(),
+      "fin_slz_hhj" : df.loc[(df["sk"]<680000) & (df["sk"]>670000)]["anshhj"].sum() - df.loc[(df["sk"]<780000) & (df["sk"]>770000)]["anshhj"].sum(),
+      "fin_slz_1pj" : df.loc[(df["sk"]<680000) & (df["sk"]>670000)]["plan1"].sum() - df.loc[(df["sk"]<780000) & (df["sk"]>770000)]["plan1"].sum(),
+      "fin_slz_2pj" : df.loc[(df["sk"]<680000) & (df["sk"]>670000)]["plan2"].sum() - df.loc[(df["sk"]<780000) & (df["sk"]>770000)]["plan2"].sum(),
+      "fin_slz_3pj" : df.loc[(df["sk"]<680000) & (df["sk"]>670000)]["plan3"].sum() - df.loc[(df["sk"]<780000) & (df["sk"]>770000)]["plan3"].sum(),
+      "ord_slz_2vj" : ordslzvj2,
+      "ord_slz_1vj" : ordslzvj1,
+      "ord_slz_hhj" : ordslzhhj,
+      "ord_slz_1pj" : ordslzpl1,
+      "ord_slz_2pj" : ordslzpl2,
+      "ord_slz_3pj" : ordslzpl3,
+      "ao_slz_2vj" : aoslzvj2,
+      "ao_slz_1vj" : aoslzvj1,
+      "ao_slz_hhj" : aoslzhhj,
+      "ao_slz_1pj" : aoslzpl1,
+      "ao_slz_2pj" : aoslzpl2,
+      "ao_slz_3pj" : aoslzpl3,
+      "inv_ez_2vj" : df.loc[(df["sk"]<690000) & (df["sk"]>680000)]["rgergvvj"].sum() ,
+      "inv_ez_1vj" : df.loc[(df["sk"]<690000) & (df["sk"]>680000)]["ansvj"].sum(), 
+      "inv_ez_hhj" : df.loc[(df["sk"]<690000) & (df["sk"]>680000)]["anshhj"].sum(),
+      "inv_ez_1pj" : df.loc[(df["sk"]<690000) & (df["sk"]>680000)]["plan1"].sum(), 
+      "inv_ez_2pj" : df.loc[(df["sk"]<690000) & (df["sk"]>680000)]["plan2"].sum(),
+      "inv_ez_3pj" : df.loc[(df["sk"]<690000) & (df["sk"]>680000)]["plan3"].sum(),
+      "inv_az_2vj" : df.loc[(df["sk"]<790000) & (df["sk"]>780000)]["rgergvvj"].sum(),
+      "inv_az_1vj" : df.loc[(df["sk"]<790000) & (df["sk"]>780000)]["ansvj"].sum(),
+      "inv_az_hhj" : df.loc[(df["sk"]<790000) & (df["sk"]>780000)]["anshhj"].sum(),
+      "inv_az_1pj" : df.loc[(df["sk"]<790000) & (df["sk"]>780000)]["plan1"].sum(),
+      "inv_az_2pj" : df.loc[(df["sk"]<790000) & (df["sk"]>780000)]["plan2"].sum(),
+      "inv_az_3pj" : df.loc[(df["sk"]<790000) & (df["sk"]>780000)]["plan3"].sum(),
+      "inv_slz_2vj" : df.loc[(df["sk"]<690000) & (df["sk"]>680000)]["rgergvvj"].sum() - df.loc[(df["sk"]<790000) & (df["sk"]>780000)]["rgergvvj"].sum(),
+      "inv_slz_1vj" : df.loc[(df["sk"]<690000) & (df["sk"]>680000)]["ansvj"].sum() -  df.loc[(df["sk"]<790000) & (df["sk"]>780000)]["ansvj"].sum(),
+      "inv_slz_hhj" : df.loc[(df["sk"]<690000) & (df["sk"]>680000)]["anshhj"].sum() - df.loc[(df["sk"]<790000) & (df["sk"]>780000)]["anshhj"].sum() ,
+      "inv_slz_1pj" : df.loc[(df["sk"]<690000) & (df["sk"]>680000)]["plan1"].sum() -  df.loc[(df["sk"]<790000) & (df["sk"]>780000)]["plan1"].sum(),
+      "inv_slz_2pj" : df.loc[(df["sk"]<690000) & (df["sk"]>680000)]["plan2"].sum() -  df.loc[(df["sk"]<790000) & (df["sk"]>780000)]["plan2"].sum(),
+      "inv_slz_3pj" : df.loc[(df["sk"]<690000) & (df["sk"]>680000)]["plan3"].sum() -  df.loc[(df["sk"]<790000) & (df["sk"]>780000)]["plan3"].sum(),
+      "finm_slz_2vj" : ,
+      "finm_slz_1vj" : ,
+      "finm_slz_hhj" : ,
+      "finm_slz_1pj" : ,
+      "finm_slz_2pj" : ,
+      "finm_slz_3pj" : ,
+      "kred_ez_2vj" : df.loc[(df["sk"]<700000) & (df["sk"]>690000)]["rgergvvj"].sum(),
+      "kred_ez_1vj" : df.loc[(df["sk"]<700000) & (df["sk"]>690000)]["ansvj"].sum(), 
+      "kred_ez_hhj" : df.loc[(df["sk"]<700000) & (df["sk"]>690000)]["anshhj"].sum(),
+      "kred_ez_1pj" : df.loc[(df["sk"]<700000) & (df["sk"]>690000)]["plan1"].sum(),
+      "kred_ez_2pj" : df.loc[(df["sk"]<700000) & (df["sk"]>690000)]["plan2"].sum(),
+      "kred_ez_3pj" : df.loc[(df["sk"]<700000) & (df["sk"]>690000)]["plan3"].sum(),
+      "kred_az_2vj" : df.loc[(df["sk"]<800000) & (df["sk"]>790000)]["rgergvvj"].sum(),
+      "kred_az_1vj" : df.loc[(df["sk"]<800000) & (df["sk"]>790000)]["ansvj"].sum(),
+      "kred_az_hhj" : df.loc[(df["sk"]<800000) & (df["sk"]>790000)]["anshhj"].sum(),
+      "kred_az_1pj" : df.loc[(df["sk"]<800000) & (df["sk"]>790000)]["plan1"].sum(),
+      "kred_az_2pj" : df.loc[(df["sk"]<800000) & (df["sk"]>790000)]["plan2"].sum(),
+      "kred_az_3pj" : df.loc[(df["sk"]<800000) & (df["sk"]>790000)]["plan3"].sum(),
+      "kred_ng_2vj" : df.loc[(df["sk"]<700000) & (df["sk"]>690000)]["rgergvvj"].sum()
+      "kred_ng_1vj" : df.loc[(df["sk"]<700000) & (df["sk"]>690000)]["ansvj"].sum(), 
+      "kred_ng_hhj" : df.loc[(df["sk"]<700000) & (df["sk"]>690000)]["anshhj"].sum(),
+      "kred_ng_1pj" : df.loc[(df["sk"]<700000) & (df["sk"]>690000)]["plan1"].sum(),
+      "kred_ng_2pj" : df.loc[(df["sk"]<700000) & (df["sk"]>690000)]["plan2"].sum(),
+      "kred_ng_3pj" : df.loc[(df["sk"]<700000) & (df["sk"]>690000)]["plan3"].sum(),
+ 
+      "kbv_slz_2vj" : df.loc[(df["sk"]<700000) & (df["sk"]>690000)]["rgergvvj"].sum() - df.loc[(df["sk"]<800000) & (df["sk"]>790000)]["rgergvvj"].sum(),
+      "kbv_slz_1vj" : df.loc[(df["sk"]<700000) & (df["sk"]>690000)]["ansvj"].sum() - df.loc[(df["sk"]<800000) & (df["sk"]>790000)]["ansvj"].sum(),
+      "kbv_slz_hhj" : df.loc[(df["sk"]<700000) & (df["sk"]>690000)]["anshhj"].sum() - df.loc[(df["sk"]<800000) & (df["sk"]>790000)]["anshhj"].sum(),
+      "kbv_slz_1pj" : df.loc[(df["sk"]<700000) & (df["sk"]>690000)]["plan1"].sum() - df.loc[(df["sk"]<800000) & (df["sk"]>790000)]["plan1"].sum(),
+      "kbv_slz_2pj" : df.loc[(df["sk"]<700000) & (df["sk"]>690000)]["plan2"].sum() - df.loc[(df["sk"]<800000) & (df["sk"]>790000)]["plan2"].sum(),
+      "kbv_slz_3pj" : df.loc[(df["sk"]<700000) & (df["sk"]>690000)]["plan3"].sum() - df.loc[(df["sk"]<800000) & (df["sk"]>790000)]["plan3"].sum(),
+
+      "ffs_2vj" : ordslzvj2 - df.loc[(df["sk"]<800000) & (df["sk"]>790000)]["rgergvvj"].sum(),
+      "ffs_1vj" : ordslzvj1 - df.loc[(df["sk"]<800000) & (df["sk"]>790000)]["ansvj"].sum(),
+      "ffs_hhj" : ordslzhhj - df.loc[(df["sk"]<800000) & (df["sk"]>790000)]["anshhj"].sum(),
+      "ffs_1pj" : ordslzpl1 - df.loc[(df["sk"]<800000) & (df["sk"]>790000)]["plan1"].sum(),
+      "ffs_2pj" : ordslzpl2 - df.loc[(df["sk"]<800000) & (df["sk"]>790000)]["plan2"].sum(),
+      "ffs_3pj" : ordslzpl3 - df.loc[(df["sk"]<800000) & (df["sk"]>790000)]["plan3"].sum(),
+   }
+   findic
+
 def gesamtplan_vvj(df):
    dic = {
       "lfdE_pl_vvj" : df.loc[(df["sk"]<470000)]["planvvj"].sum(),	                
