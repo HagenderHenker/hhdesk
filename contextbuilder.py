@@ -401,27 +401,44 @@ def hh_vorbericht_10_kredit(dfbew, dfschulden, dfliq, hhj, gde, doc):
 
     return krdict
 
-def hh_vorbericht_11_Pflichtanlagen(hhj, gde, doc, dfbew, dfje, dffinanz, dferg, dfek):
+def hh_vorbericht_11_Pflichtanlagen(hhj, gde, doc, dfbew, dffinanz, dferg, dfek):
     
-    img_je_entwicklung = str(pathlib.Path.cwd() / "hhdaten/plots/img_liquiditaetsentwicklung.png")
+    img_je_entwicklung = str(pathlib.Path.cwd() / "hhdaten/plots/img_je_entwicklung.png")
+    img_ek_entwicklung = str(pathlib.Path.cwd() / "hhdaten/plots/img_ek_entwicklung.png")
     
+    je_hhj5vj = dferg.loc[(dferg["gde"]==gde) & (dferg["hhj"]==hhj-5)].Jahresergebnis.values.item() 
+    je_hhj4vj = dferg.loc[(dferg["gde"]==gde) & (dferg["hhj"]==hhj-4)].Jahresergebnis.values.item()
+    je_hhj3vj = dferg.loc[(dferg["gde"]==gde) & (dferg["hhj"]==hhj-3)].Jahresergebnis.values.item()
+    je_hhj2vj = dferg.loc[(dferg["gde"]==gde) & (dferg["hhj"]==hhj-2)].Jahresergebnis.values.item()
+    je_hhj1vj = dferg.loc[(dferg["gde"]==gde) & (dferg["hhj"]==hhj-1)].Jahresergebnis.values.item()
+    je_hhj = dferg.loc[(dferg["gde"]==gde) & (dferg["hhj"]==hhj)].Jahresergebnis.values.item()
+    je_hhj1pj = dferg.loc[(dferg["gde"]==gde) & (dferg["hhj"]==hhj+1)].Jahresergebnis.values.item()
+    je_hhj2pj = dferg.loc[(dferg["gde"]==gde) & (dferg["hhj"]==hhj+2)].Jahresergebnis.values.item()
+    je_hhj3pj = dferg.loc[(dferg["gde"]==gde) & (dferg["hhj"]==hhj+3)].Jahresergebnis.values.item()
+
+       
+    jeSummebisPlanjahr = je_hhj+je_hhj1vj+je_hhj2vj+je_hhj3vj+je_hhj4vj+je_hhj5vj
+    summeErg = jeSummebisPlanjahr + je_hhj1pj+ je_hhj2pj + je_hhj3pj
+
+   
     pfldict = {
         "hhj" : hhj,
         "gde" : gde,
         "gde_bez" : "Testgemeinde",
         # Ergebnisentwicklung
         "img_je_entwicklung" : docxtpl.InlineImage(doc, img_je_entwicklung),
-        "je_hhj5vj" : dferg.loc[(dferg["gde"]==gde & dferg["hhj"]==hhj-5)].Jahresergebnis, 
-        "je_hhj4vj" :2,
-        "je_hhj3vj" :3,
-        "je_hhj2vj" :4,
-        "je_hhj1vj" :5,
-        "je_hhj" :6,
-        "je_hhj1pj" :7, 
-        "je_hhj2pj" :8,
-        "je_hhj3pj" :9,
-        "jeSummebisPlanjahr" : 8,
-        "summeErg" : 9,
+        "je_hhj5vj" : je_hhj5vj, 
+        "je_hhj4vj" :je_hhj4vj ,
+        "je_hhj3vj" :je_hhj3vj ,
+        "je_hhj2vj" :je_hhj2vj ,
+        "je_hhj1vj" :je_hhj1vj ,
+        "je_hhj" : je_hhj ,
+        "je_hhj1pj" :je_hhj1pj, 
+        "je_hhj2pj" :je_hhj2pj,
+        "je_hhj3pj" :je_hhj3pj,
+        "jeSummebisPlanjahr" : jeSummebisPlanjahr,
+        "summeErg" : summeErg,
+        
         # Finanzhaushalt
         "o_ao_zahl5vj"  : 1,
         "o_ao_zahl4vj"  : 1,
@@ -442,14 +459,16 @@ def hh_vorbericht_11_Pflichtanlagen(hhj, gde, doc, dfbew, dfje, dffinanz, dferg,
         "pmTilg1pj"  : 2,
         "pmTilg2pj"  : 2,
         "pmTilg3pj"  : 2,
+        
         # Eigenkapitalentwicklung
-        "ek_hhjv3" : 4,
-        "ek_hhjv2" : 5,
-        "ek_hhjv1" : 6, 
-        "ek_hhj" : 8,
-        "ek_hhjn1" : 9,
-        "ek_hhjn2" : 10,
-        "ek_hhjn3" : 11
+        "img_ek_entwicklung" : img_ek_entwicklung,
+        "ek_hhjv3" : dfek.loc[(dfek["hhj"]==hhj-3)].EK.values.item(),
+        "ek_hhjv2" : dfek.loc[(dfek["hhj"]==hhj-2)].EK.values.item(),
+        "ek_hhjv1" : dfek.loc[(dfek["hhj"]==hhj-1)].EK.values.item(), 
+        "ek_hhj" : dfek.loc[(dfek["hhj"]==hhj)].EK.values.item(),
+        "ek_hhjn1" : dfek.loc[(dfek["hhj"]==hhj+1)].EK.values.item(),
+        "ek_hhjn2" : dfek.loc[(dfek["hhj"]==hhj+2)].EK.values.item(),
+        "ek_hhjn3" : dfek.loc[(dfek["hhj"]==hhj+3)].EK.values.item()
     }
     return pfldict
 

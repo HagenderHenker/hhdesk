@@ -288,8 +288,7 @@ if __name__ == "__main__":
                                                         doc=vorb11tpl_instanz, 
                                                         dferg=stat.ergstat(bewegungsdaten=dfbew, grunddaten=dfergebnis, gde=gde, hhj=hhj),
                                                         dfbew=2, 
-                                                        dffinanz=3, 
-                                                        dfje=4, 
+                                                        dffinanz=dffinanz, 
                                                         dfek = stat.ekstat(bewegungsdaten=dfbew, grunddaten=dfergebnis, hhj=hhj, gde=gde), )
     print("Daten für Vorbericht 11 'Pflichtanlagen' sind zusammengestellt ")
     docbuilder.builddocx(tpl=vorb11tpl_instanz, context=contextvorb11, filename="11-Vorb_Pflichtanlagen", gde=gde, hhj=hhj)

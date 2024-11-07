@@ -66,7 +66,7 @@ def ergstat(grunddaten, bewegungsdaten, hhj, gde):
 def ekstat(grunddaten, bewegungsdaten, hhj, gde):
    dfergebnis = ergstat(grunddaten=grunddaten, bewegungsdaten=bewegungsdaten, hhj=hhj, gde=gde)
    dfek = dfergebnis[["hhj", "EK"]]
-   print(dfek)
+   #print(dfek)
    return dfek
 
 
