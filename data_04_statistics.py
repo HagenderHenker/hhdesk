@@ -504,7 +504,108 @@ def createdfumlagen(df, dfumlagen, hhj):
 
 
 
+def ffs(dfbew, dffinanz, hhj, gde, tilgung_plandarlehen):
+      
+   dffin = dffinanz
+   
+   dffin["p_e"] = "e"
 
+   dffin["tilgungplan"] = 0
+
+   dffin["ffs2"] = dffin ["ffs"]
+
+   dffin.rename(columns= {"ffs" : "ffs1"}, inplace=True)
+   
+
+   dfplanez = dfbew.loc[(dfbew["sk"] > 600000)&(dfbew["sk"] < 700000)]    
+   dfplanaz = dfbew.loc[(dfbew["sk"] > 700000)]
+
+   dfsalden = pd.DataFrame(columns=["hhj", "gde", "saldo_ord", "pm_tilgung", "ffs1", "p_e", "tilgungplan", "ffs2"])
+   #x = dfplanez.loc[(dfplanez["sk"] < 680000)].rgergvvj.sum()
+   #y = dfplanaz.loc[(dfplanaz["sk"] < 780000)].rgergvvj.sum()
+   
+   #print(dfplanez)
+   #print(dfplanaz)
+
+   #print(f"EZ: {x}")
+   #print(f"AZ: {y}")
+   #print(dfplanez.loc[(dfplanez["sk"] < 680000)].rgergvvj.sum() - dfplanaz.loc[(dfplanaz["sk"] < 780000)].rgergvvj.sum())
+
+
+
+   concator = [
+      { 
+      "hhj" : hhj-2 ,
+      "gde" : gde,     
+      "saldo_ord" : dfplanez.loc[(dfplanez["sk"] < 680000)].rgergvvj.sum() - dfplanaz.loc[(dfplanaz["sk"] < 780000)].rgergvvj.sum(),
+      "pm_tilgung" : dfplanaz.loc[(dfplanaz["sk"] > 790000) ].rgergvvj.sum(),
+      "p_e" : "e",
+      "ffs1" : dfplanez.loc[(dfplanez["sk"] < 680000)].rgergvvj.sum() - dfplanaz.loc[(dfplanaz["sk"] < 780000)].rgergvvj.sum() - dfplanaz.loc[(dfplanaz["sk"] > 790000) ].rgergvvj.sum(),
+      "tilgungplan" : 0,
+      "ffs2" : dfplanez.loc[(dfplanez["sk"] < 680000)].rgergvvj.sum() - dfplanaz.loc[(dfplanaz["sk"] < 780000)].rgergvvj.sum() - dfplanaz.loc[(dfplanaz["sk"] > 790000) ].rgergvvj.sum(),
+      }, 
+      {
+      "hhj" : hhj-1 ,
+      "gde" : gde,     
+      "saldo_ord" : dfplanez.loc[(dfplanez["sk"] < 680000)].ansvj.sum() - dfplanaz.loc[(dfplanaz["sk"] < 780000)].ansvj.sum(),
+      "pm_tilgung" : dfplanaz.loc[(dfplanaz["sk"] > 790000) ].ansvj.sum(),
+      "p_e" : "p",
+      "ffs1" : dfplanez.loc[(dfplanez["sk"] < 680000)].ansvj.sum() - dfplanaz.loc[(dfplanaz["sk"] < 780000)].ansvj.sum() - dfplanaz.loc[(dfplanaz["sk"] > 790000) ].ansvj.sum(),
+      "tilgungplan" : 0,
+      "ffs2" : dfplanez.loc[(dfplanez["sk"] < 680000)].ansvj.sum() - dfplanaz.loc[(dfplanaz["sk"] < 780000)].ansvj.sum() - dfplanaz.loc[(dfplanaz["sk"] > 790000) ].ansvj.sum(),
+      },
+      {
+      "hhj" : hhj ,
+      "gde" : gde,     
+      "saldo_ord" : dfplanez.loc[(dfplanez["sk"] < 680000)].anshhj.sum() - dfplanaz.loc[(dfplanaz["sk"] < 780000)].anshhj.sum(),
+      "pm_tilgung" : dfplanaz.loc[(dfplanaz["sk"] > 790000) ].anshhj.sum() - dfplanaz.loc[(dfplanaz["hhs"] == tilgung_plandarlehen) ].anshhj.sum() ,
+      "p_e" : "p",
+      "ffs1" : dfplanez.loc[(dfplanez["sk"] < 680000)].anshhj.sum() - dfplanaz.loc[(dfplanaz["sk"] < 780000)].anshhj.sum() - dfplanaz.loc[(dfplanaz["sk"] > 790000) ].anshhj.sum() + dfplanaz.loc[(dfplanaz["hhs"] == tilgung_plandarlehen)].anshhj.sum(),
+      "tilgungplan" : dfplanaz.loc[(dfplanaz["hhs"] == tilgung_plandarlehen)].anshhj.sum(),
+      "ffs2" : dfplanez.loc[(dfplanez["sk"] < 680000)].anshhj.sum() - dfplanaz.loc[(dfplanaz["sk"] < 780000)].anshhj.sum() - dfplanaz.loc[(dfplanaz["sk"] > 790000) ].anshhj.sum(),
+      },
+      {
+      "hhj" : hhj+1 ,
+      "gde" : gde,     
+      "saldo_ord" : dfplanez.loc[(dfplanez["sk"] < 680000)].plan1.sum() - dfplanaz.loc[(dfplanaz["sk"] < 780000)].plan1.sum(),
+      "pm_tilgung" : dfplanaz.loc[(dfplanaz["sk"] > 790000) ].plan1.sum() - dfplanaz.loc[(dfplanaz["hhs"] == tilgung_plandarlehen) ].plan1.sum() ,
+      "p_e" : "p",
+      "ffs1" : dfplanez.loc[(dfplanez["sk"] < 680000)].plan1.sum() - dfplanaz.loc[(dfplanaz["sk"] < 780000)].plan1.sum() - dfplanaz.loc[(dfplanaz["sk"] > 790000) ].plan1.sum() + dfplanaz.loc[(dfplanaz["hhs"] == tilgung_plandarlehen)].plan1.sum(),
+      "tilgungplan" : dfplanaz.loc[(dfplanaz["hhs"] == tilgung_plandarlehen)].plan1.sum(),
+      "ffs2" : dfplanez.loc[(dfplanez["sk"] < 680000)].plan1.sum() - dfplanaz.loc[(dfplanaz["sk"] < 780000)].plan1.sum() - dfplanaz.loc[(dfplanaz["sk"] > 790000) ].plan1.sum(),
+      },
+      {
+      "hhj" : hhj+2 ,
+      "gde" : gde,     
+      "saldo_ord" : dfplanez.loc[(dfplanez["sk"] < 680000)].plan2.sum() - dfplanaz.loc[(dfplanaz["sk"] < 780000)].plan2.sum(),
+      "pm_tilgung" : dfplanaz.loc[(dfplanaz["sk"] > 790000) ].plan2.sum() - dfplanaz.loc[(dfplanaz["hhs"] == tilgung_plandarlehen) ].plan2.sum() ,
+      "p_e" : "p",
+      "ffs1" : dfplanez.loc[(dfplanez["sk"] < 680000)].plan2.sum() - dfplanaz.loc[(dfplanaz["sk"] < 780000)].plan2.sum() - dfplanaz.loc[(dfplanaz["sk"] > 790000) ].plan2.sum() + dfplanaz.loc[(dfplanaz["hhs"] == tilgung_plandarlehen)].plan2.sum(),
+      "tilgungplan" : dfplanaz.loc[(dfplanaz["hhs"] == tilgung_plandarlehen)].plan2.sum(),
+      "ffs2" : dfplanez.loc[(dfplanez["sk"] < 680000)].plan2.sum() - dfplanaz.loc[(dfplanaz["sk"] < 780000)].plan2.sum() - dfplanaz.loc[(dfplanaz["sk"] > 790000) ].plan2.sum()
+      },
+      {
+      "hhj" : hhj+3 ,
+      "gde" : gde,     
+      "saldo_ord" : dfplanez.loc[(dfplanez["sk"] < 680000)].plan3.sum() - dfplanaz.loc[(dfplanaz["sk"] < 780000)].plan3.sum(),
+      "pm_tilgung" : dfplanaz.loc[(dfplanaz["sk"] > 790000) ].plan3.sum() - dfplanaz.loc[(dfplanaz["hhs"] == tilgung_plandarlehen) ].plan3.sum() ,
+      "p_e" : "p",
+      "ffs1" : dfplanez.loc[(dfplanez["sk"] < 680000)].plan3.sum() - dfplanaz.loc[(dfplanaz["sk"] < 780000)].plan3.sum() - dfplanaz.loc[(dfplanaz["sk"] > 790000) ].plan3.sum() + dfplanaz.loc[(dfplanaz["hhs"] == tilgung_plandarlehen)].plan3.sum(),
+      "tilgungplan" : dfplanaz.loc[(dfplanaz["hhs"] == tilgung_plandarlehen)].plan3.sum(),
+      "ffs2" : dfplanez.loc[(dfplanez["sk"] < 680000)].plan3.sum() - dfplanaz.loc[(dfplanaz["sk"] < 780000)].plan3.sum() - dfplanaz.loc[(dfplanaz["sk"] > 790000) ].plan3.sum()
+      },
+   ]
+   
+   #print(concator)
+
+   dfsalden = pd.concat([dfsalden, pd.DataFrame(concator)])
+   #print(dfsalden)
+   #print(dffin)
+   dffin = pd.concat([dffin, dfsalden])
+   print(dffin)
+   
+      
+   return dffin
 
 
 

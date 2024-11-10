@@ -94,7 +94,12 @@ if __name__ == "__main__":
     #Liquiditätsbestand
     dfliq = stat.bestandsstat(dfbew=dfbew, dfkred=dfkred, hhj=hhj, gde=gde)
     print("... Liquidität")
+    #Schulden
     dfschulden = stat.kredstat(dfbew=dfbew, dfkred=dfkred, hhj=hhj, gde=gde)
+    print("... Schulden")
+    #Freie Finanzspitze
+    dfffs = stat.ffs(dfbew=dfbew, dffinanz=dffinanz, hhj=hhj, gde=gde, tilgung_plandarlehen=env.tilgung_plandarlehen)
+    print("... freie Finanzspitze")
 
     # plotting graphs
     print("")
@@ -195,17 +200,18 @@ if __name__ == "__main__":
     print("...Daten für Vorbericht 02 Bericht 2. Haushaltsvorjahr sind zusammengestellt ")
     docbuilder.builddocx(tpl=vorb02tpl_instanz, context=contextvorb2_vvj, filename="02-Vorb_VVJ", gde=gde, hhj=hhj)
     print(f"...Vorbericht 02 - 2. Haushaltsvorjahr: 'Ausgabe/{gde}/{hhj}")
-    """
+    
+    
     # build "04_Vorbericht" Information about last year
-    print(" ")
-    print("----------------------------")
-    vorb03tpl_instanz = docbuilder.create_tpl_instance(vorb03tpl)
-    print("*** Templateinstanz Vorbericht 03 VJ erzeugt")
-    contextvorb2_vvj = ctx.hh_vorbericht_03_verlaufvj(df=dfbew)
-    print("...Daten für Vorbericht 02 Bericht 2. Haushaltsvorjahr sind zusammengestellt ")
-    docbuilder.builddocx(tpl=vorb02tpl_instanz, context=contextvorb2_vvj, filename="02-Vorb_VVJ", gde=gde, hhj=hhj)
-    print(f"...Vorbericht 02 - 2. Haushaltsvorjahr: 'Ausgabe/{gde}/{hhj}")
-    """
+    #print(" ")
+    #print("----------------------------")
+    #vorb03tpl_instanz = docbuilder.create_tpl_instance(vorb03tpl)
+    #print("*** Templateinstanz Vorbericht 03 VJ erzeugt")
+    #contextvorb2_vvj = ctx.hh_vorbericht_03_verlaufvj(df=dfbew)
+    #print("...Daten für Vorbericht 02 Bericht 2. Haushaltsvorjahr sind zusammengestellt ")
+    #docbuilder.builddocx(tpl=vorb02tpl_instanz, context=contextvorb2_vvj, filename="02-Vorb_VVJ", gde=gde, hhj=hhj)
+    #print(f"...Vorbericht 02 - 2. Haushaltsvorjahr: 'Ausgabe/{gde}/{hhj}")
+    
 
     #vorb03tpl_instanz = docbuilder.create_tpl_instance(vorb03tpl)
 
@@ -287,8 +293,7 @@ if __name__ == "__main__":
                                                         gde=gde, 
                                                         doc=vorb11tpl_instanz, 
                                                         dferg=stat.ergstat(bewegungsdaten=dfbew, grunddaten=dfergebnis, gde=gde, hhj=hhj),
-                                                        dfbew=2, 
-                                                        dffinanz=dffinanz, 
+                                                        dfffs=dfffs, 
                                                         dfek = stat.ekstat(bewegungsdaten=dfbew, grunddaten=dfergebnis, hhj=hhj, gde=gde), )
     print("Daten für Vorbericht 11 'Pflichtanlagen' sind zusammengestellt ")
     docbuilder.builddocx(tpl=vorb11tpl_instanz, context=contextvorb11, filename="11-Vorb_Pflichtanlagen", gde=gde, hhj=hhj)

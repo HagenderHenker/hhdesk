@@ -401,7 +401,7 @@ def hh_vorbericht_10_kredit(dfbew, dfschulden, dfliq, hhj, gde, doc):
 
     return krdict
 
-def hh_vorbericht_11_Pflichtanlagen(hhj, gde, doc, dfbew, dffinanz, dferg, dfek):
+def hh_vorbericht_11_Pflichtanlagen(hhj, gde, doc,  dfffs, dferg, dfek):
     
     img_je_entwicklung = str(pathlib.Path.cwd() / "hhdaten/plots/img_je_entwicklung.png")
     img_ek_entwicklung = str(pathlib.Path.cwd() / "hhdaten/plots/img_ek_entwicklung.png")
@@ -419,8 +419,9 @@ def hh_vorbericht_11_Pflichtanlagen(hhj, gde, doc, dfbew, dffinanz, dferg, dfek)
        
     jeSummebisPlanjahr = je_hhj+je_hhj1vj+je_hhj2vj+je_hhj3vj+je_hhj4vj+je_hhj5vj
     summeErg = jeSummebisPlanjahr + je_hhj1pj+ je_hhj2pj + je_hhj3pj
-
    
+    
+
     pfldict = {
         "hhj" : hhj,
         "gde" : gde,
@@ -440,25 +441,25 @@ def hh_vorbericht_11_Pflichtanlagen(hhj, gde, doc, dfbew, dffinanz, dferg, dfek)
         "summeErg" : summeErg,
         
         # Finanzhaushalt
-        "o_ao_zahl5vj"  : 1,
-        "o_ao_zahl4vj"  : 1,
-        "o_ao_zahl3vj"  : 1,
-        "o_ao_zahl2vj"  : 1,
-        "o_ao_zahl1vj" : 1,
-        "o_ao_zahlhhj" : 1,
-        "o_ao_zahl1pj"  : 1,
-        "o_ao_zahl2pj"  : 1,
-        "o_ao_zahl3pj"  : 1,
+        "o_ao_zahl5vj"  : dfffs.loc[(dfffs["hhj"] == hhj -5)].saldo_ord.values ,
+        "o_ao_zahl4vj"  : dfffs.loc[(dfffs["hhj"] == hhj -4)].saldo_ord.values ,
+        "o_ao_zahl3vj"  : dfffs.loc[(dfffs["hhj"] == hhj -3)].saldo_ord.values ,
+        "o_ao_zahl2vj"  : dfffs.loc[(dfffs["hhj"] == hhj -2)].saldo_ord.values ,
+        "o_ao_zahl1vj" : dfffs.loc[(dfffs["hhj"] == hhj -1)].saldo_ord.values ,
+        "o_ao_zahlhhj" : dfffs.loc[(dfffs["hhj"] == hhj )].saldo_ord.values ,
+        "o_ao_zahl1pj"  : dfffs.loc[(dfffs["hhj"] == hhj +1)].saldo_ord.values ,
+        "o_ao_zahl2pj"  : dfffs.loc[(dfffs["hhj"] == hhj +2)].saldo_ord.values ,
+        "o_ao_zahl3pj"  : dfffs.loc[(dfffs["hhj"] == hhj +3)].saldo_ord.values ,
 
-        "pmTilg5vj"  : 2,
-        "pmTilg4vj"  : 2,
-        "pmTilg3vj"  : 2,
-        "pmTilg2vj"  : 2,
-        "pmTilg1vj"  : 2,
-        "pmTilghhj" : 2,
-        "pmTilg1pj"  : 2,
-        "pmTilg2pj"  : 2,
-        "pmTilg3pj"  : 2,
+        "pmTilg5vj"  : dfffs.loc[(dfffs["hhj"] == hhj -5)].pm_tilgung.values ,
+        "pmTilg4vj"  : dfffs.loc[(dfffs["hhj"] == hhj -4)].pm_tilgung.values ,
+        "pmTilg3vj"  : dfffs.loc[(dfffs["hhj"] == hhj -3)].pm_tilgung.values ,
+        "pmTilg2vj"  : dfffs.loc[(dfffs["hhj"] == hhj -2)].pm_tilgung.values ,
+        "pmTilg1vj"  : dfffs.loc[(dfffs["hhj"] == hhj -1)].pm_tilgung.values ,
+        "pmTilghhj" : dfffs.loc[(dfffs["hhj"] == hhj )].pm_tilgung.values ,
+        "pmTilg1pj"  : dfffs.loc[(dfffs["hhj"] == hhj -1)].pm_tilgung.values ,
+        "pmTilg2pj"  : dfffs.loc[(dfffs["hhj"] == hhj -2)].pm_tilgung.values ,
+        "pmTilg3pj"  : dfffs.loc[(dfffs["hhj"] == hhj -3)].pm_tilgung.values ,
         
         # Eigenkapitalentwicklung
         "img_ek_entwicklung" : img_ek_entwicklung,

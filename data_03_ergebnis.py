@@ -191,7 +191,7 @@ def gesamtplan_fin(df):
       "ffs_2pj" : ordslzpl2 - df.loc[(df["sk"]<800000) & (df["sk"]>790000)]["plan2"].sum(),
       "ffs_3pj" : ordslzpl3 - df.loc[(df["sk"]<800000) & (df["sk"]>790000)]["plan3"].sum(),
    }
-   findic
+   return findic
 
 def gesamtplan_vvj(df):
    dic = {
