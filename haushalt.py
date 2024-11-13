@@ -168,7 +168,7 @@ if __name__ == "__main__":
     docbuilder.builddocx(tpl=hhs, context=contexthhsatzung, filename="00-Haushaltssatzung", gde=gde, hhj=hhj)
     print(f"... Haushaltssatzung erstellt in Ordner: 'Ausgabe/{gde}/{hhj}")
     
-    # build "02_Vorbericht" 1. Abschnitt: Allgemeines
+    # build "01_Vorbericht" 1. Abschnitt: Allgemeines
     print(" ")
     print("----------------------------")
  
@@ -189,7 +189,7 @@ if __name__ == "__main__":
     docbuilder.builddocx(tpl=vorb01tpl_instanz, context=contextvorb1, filename="01-Vorb_Allgemeines", gde=gde, hhj=hhj)
     print(f"Vorbericht 01 - Allgemeines erzeugt in Ordner: 'Ausgabe/{gde}/{hhj}")
 
-    # build "03_Vorbericht" Information about closed year
+    # build "02_Vorbericht" Information about closed year
 
     vorb02tpl_instanz = docbuilder.create_tpl_instance(vorb02tpl)
     print(" ")

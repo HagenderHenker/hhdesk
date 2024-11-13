@@ -60,6 +60,7 @@ def hh_vorbericht_01_Allgemeines(dfhhs, dfgdegrunddaten, dfewentwicklung, dfewal
     #print(type(ew_akt))
     flaeche = dfflaeche["km²"].sum()
     bild1 = str(pathlib.Path.cwd() / "hhdaten/plots/bev-entw.png")
+    bild2 = str(pathlib.Path.cwd() / "hhdaten/plots/flaechennutzung.png")
     #print(bild1)
     conhh_vorb_allg = {
     "gde_bez" : dfgdegrunddaten.gde_bez.values[0], 	#Gemeindebezeichnung: zusammenfassung der Felder Gemeindetyp und 
@@ -74,8 +75,8 @@ def hh_vorbericht_01_Allgemeines(dfhhs, dfgdegrunddaten, dfewentwicklung, dfewal
  #   "img_struktur_altersgruppebis20" : docxtpl.InlineImage(doc, pathlib.Path.cwd() / "hhdaten/plots/bev-entw.png"),             #Graph der Einwohnerentwicklung bis 20 Jahre
  #   "quelleewdaten" : quelleewdaten,                 #Woher stammen die Einwohnerdaten
     "flaeche" : flaeche,			                #Gesamtfläche der Gemeinde in km²
-   # "img_flaeche" : docxtpl.InlineImage(doc, pathlib.Path.cwd() / "hhdaten/plots/bev-entw.png"),			                        #Graph der Flächennutzung
-    #"quelleflaeche" : quelleflaeche                 #Woher stammen die Flächendaten
+    "img_flaeche" : docxtpl.InlineImage(doc, bild2),			                        #Graph der Flächennutzung
+    "quelleflaeche" : quelleflaeche                 #Woher stammen die Flächendaten
 
     }
     return conhh_vorb_allg
@@ -441,25 +442,35 @@ def hh_vorbericht_11_Pflichtanlagen(hhj, gde, doc,  dfffs, dferg, dfek):
         "summeErg" : summeErg,
         
         # Finanzhaushalt
-        "o_ao_zahl5vj"  : dfffs.loc[(dfffs["hhj"] == hhj -5)].saldo_ord.values ,
-        "o_ao_zahl4vj"  : dfffs.loc[(dfffs["hhj"] == hhj -4)].saldo_ord.values ,
-        "o_ao_zahl3vj"  : dfffs.loc[(dfffs["hhj"] == hhj -3)].saldo_ord.values ,
-        "o_ao_zahl2vj"  : dfffs.loc[(dfffs["hhj"] == hhj -2)].saldo_ord.values ,
-        "o_ao_zahl1vj" : dfffs.loc[(dfffs["hhj"] == hhj -1)].saldo_ord.values ,
-        "o_ao_zahlhhj" : dfffs.loc[(dfffs["hhj"] == hhj )].saldo_ord.values ,
-        "o_ao_zahl1pj"  : dfffs.loc[(dfffs["hhj"] == hhj +1)].saldo_ord.values ,
-        "o_ao_zahl2pj"  : dfffs.loc[(dfffs["hhj"] == hhj +2)].saldo_ord.values ,
-        "o_ao_zahl3pj"  : dfffs.loc[(dfffs["hhj"] == hhj +3)].saldo_ord.values ,
+        "o_ao_zahl5vj"  : dfffs.loc[(dfffs["hhj"] == hhj -5)].saldo_ord.values.item() ,
+        "o_ao_zahl4vj"  : dfffs.loc[(dfffs["hhj"] == hhj -4)].saldo_ord.values.item() ,
+        "o_ao_zahl3vj"  : dfffs.loc[(dfffs["hhj"] == hhj -3)].saldo_ord.values.item() ,
+        "o_ao_zahl2vj"  : dfffs.loc[(dfffs["hhj"] == hhj -2)].saldo_ord.values.item() ,
+        "o_ao_zahl1vj" :  dfffs.loc[(dfffs["hhj"] == hhj -1)].saldo_ord.values.item() ,
+        "o_ao_zahlhhj" :  dfffs.loc[(dfffs["hhj"] == hhj )].saldo_ord.values.item() ,
+        "o_ao_zahl1pj"  : dfffs.loc[(dfffs["hhj"] == hhj +1)].saldo_ord.values.item() ,
+        "o_ao_zahl2pj"  : dfffs.loc[(dfffs["hhj"] == hhj +2)].saldo_ord.values.item() ,
+        "o_ao_zahl3pj"  : dfffs.loc[(dfffs["hhj"] == hhj +3)].saldo_ord.values.item() ,
 
-        "pmTilg5vj"  : dfffs.loc[(dfffs["hhj"] == hhj -5)].pm_tilgung.values ,
-        "pmTilg4vj"  : dfffs.loc[(dfffs["hhj"] == hhj -4)].pm_tilgung.values ,
-        "pmTilg3vj"  : dfffs.loc[(dfffs["hhj"] == hhj -3)].pm_tilgung.values ,
-        "pmTilg2vj"  : dfffs.loc[(dfffs["hhj"] == hhj -2)].pm_tilgung.values ,
-        "pmTilg1vj"  : dfffs.loc[(dfffs["hhj"] == hhj -1)].pm_tilgung.values ,
-        "pmTilghhj" : dfffs.loc[(dfffs["hhj"] == hhj )].pm_tilgung.values ,
-        "pmTilg1pj"  : dfffs.loc[(dfffs["hhj"] == hhj -1)].pm_tilgung.values ,
-        "pmTilg2pj"  : dfffs.loc[(dfffs["hhj"] == hhj -2)].pm_tilgung.values ,
-        "pmTilg3pj"  : dfffs.loc[(dfffs["hhj"] == hhj -3)].pm_tilgung.values ,
+        "pmTilg5vj"  : dfffs.loc[(dfffs["hhj"] == hhj -5)].pm_tilgung.values.item() ,
+        "pmTilg4vj"  : dfffs.loc[(dfffs["hhj"] == hhj -4)].pm_tilgung.values.item() ,
+        "pmTilg3vj"  : dfffs.loc[(dfffs["hhj"] == hhj -3)].pm_tilgung.values.item() ,
+        "pmTilg2vj"  : dfffs.loc[(dfffs["hhj"] == hhj -2)].pm_tilgung.values.item() ,
+        "pmTilg1vj"  : dfffs.loc[(dfffs["hhj"] == hhj -1)].pm_tilgung.values.item() ,
+        "pmTilghhj" : dfffs.loc[(dfffs["hhj"] == hhj )].pm_tilgung.values.item() ,
+        "pmTilg1pj"  : dfffs.loc[(dfffs["hhj"] == hhj -1)].pm_tilgung.values.item() ,
+        "pmTilg2pj"  : dfffs.loc[(dfffs["hhj"] == hhj -2)].pm_tilgung.values.item() ,
+        "pmTilg3pj"  : dfffs.loc[(dfffs["hhj"] == hhj -3)].pm_tilgung.values.item() ,
+
+        "finvortr5vj"  :dfffs.loc[(dfffs["hhj"] == hhj -5)].saldo_ord.values.item() -  dfffs.loc[(dfffs["hhj"] == hhj -5)].pm_tilgung.values.item() ,
+        "finvortr4vj"  :dfffs.loc[(dfffs["hhj"] == hhj -4)].saldo_ord.values.item() -  dfffs.loc[(dfffs["hhj"] == hhj -4)].pm_tilgung.values.item() ,
+        "finvortr3vj"  :dfffs.loc[(dfffs["hhj"] == hhj -3)].saldo_ord.values.item() -  dfffs.loc[(dfffs["hhj"] == hhj -3)].pm_tilgung.values.item() ,
+        "finvortr2vj"  :dfffs.loc[(dfffs["hhj"] == hhj -2)].saldo_ord.values.item() -  dfffs.loc[(dfffs["hhj"] == hhj -2)].pm_tilgung.values.item() ,
+        "finvortr1vj"  :dfffs.loc[(dfffs["hhj"] == hhj -1)].saldo_ord.values.item() -  dfffs.loc[(dfffs["hhj"] == hhj -1)].pm_tilgung.values.item() ,
+        "finvortrhhj" : dfffs.loc[(dfffs["hhj"] == hhj )].saldo_ord.values.item() - dfffs.loc[(dfffs["hhj"] == hhj )].pm_tilgung.values.item() ,
+        "finvortr1pj"  :dfffs.loc[(dfffs["hhj"] == hhj +1)].saldo_ord.values.item() -  dfffs.loc[(dfffs["hhj"] == hhj -1)].pm_tilgung.values.item() ,
+        "finvortr2pj"  :dfffs.loc[(dfffs["hhj"] == hhj +2)].saldo_ord.values.item() -  dfffs.loc[(dfffs["hhj"] == hhj -2)].pm_tilgung.values.item() ,
+        "finvortr3pj"  :dfffs.loc[(dfffs["hhj"] == hhj +3)].saldo_ord.values.item() -  dfffs.loc[(dfffs["hhj"] == hhj -3)].pm_tilgung.values.item() ,
         
         # Eigenkapitalentwicklung
         "img_ek_entwicklung" : img_ek_entwicklung,
