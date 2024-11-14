@@ -4,7 +4,8 @@ import pathlib
 
 
 def gesamtplan_erg(df):
-        
+    print(f"Dataframe {df}")
+    print(type(df))    
     # Summenermittlung für den Gesamtplan
     dic = {
     "e_p_steuern"	: df.loc[(df["sk"]<410000)]["anshhj"].sum(),
@@ -19,15 +20,15 @@ def gesamtplan_erg(df):
     "e_p_oerLeist" : df.loc[(df["sk"]<440000) & (df["sk"]>430000)]["anshhj"].sum(),
     "e_v_oerLeist" : df.loc[(df["sk"]<440000) & (df["sk"]>430000)]["ansvj"].sum(),	
     "e_re_oerLeist" : df.loc[(df["sk"]<440000) & (df["sk"]>430000)]["rgergvvj"].sum(),
-    "e_p_prLeist"	: df.loc[(df["sk"]<420000) & (df["sk"]>410000)]["anshhj"].sum(),
-    "e_v_prLeist"	: df.loc[(df["sk"]<420000) & (df["sk"]>410000)]["ansvj"].sum(),
-    "e_re_prLeist" : df.loc[(df["sk"]<420000) & (df["sk"]>410000)]["rgergvvj"].sum(),
-    "e_p_koste"	: df.loc[(df["sk"]<420000) & (df["sk"]>410000)]["anshhj"].sum(),
-    "e_v_koste"	: df.loc[(df["sk"]<420000) & (df["sk"]>410000)]["ansvj"].sum(),
-    "e_re_koste": df.loc[(df["sk"]<420000) & (df["sk"]>410000)]["rgergvvj"].sum(),
-    "e_p_sonstE"	: df.loc[(df["sk"]<420000) & (df["sk"]>410000)]["anshhj"].sum(),
-    "e_v_sonstE" : df.loc[(df["sk"]<420000) & (df["sk"]>410000)]["ansvj"].sum(),
-    "e_re_sonstE" : df.loc[(df["sk"]<420000) & (df["sk"]>410000)]["rgergvvj"].sum(),
+    "e_p_prLeist"	: df.loc[(df["sk"]<442000) & (df["sk"]>440000)| (df["sk"]<450000) & (df["sk"]>443000)]["anshhj"].sum(),
+    "e_v_prLeist"	: df.loc[(df["sk"]<442000) & (df["sk"]>440000)| (df["sk"]<450000) & (df["sk"]>443000)]["ansvj"].sum(),
+    "e_re_prLeist" : df.loc[(df["sk"]<442000) & (df["sk"]>440000)| (df["sk"]<450000) & (df["sk"]>443000)]["rgergvvj"].sum(),
+    "e_p_koste"	: df.loc[(df["sk"]<443000) & (df["sk"]>442000)]["anshhj"].sum(),
+    "e_v_koste"	: df.loc[(df["sk"]<443000) & (df["sk"]>442000)]["ansvj"].sum(),
+    "e_re_koste": df.loc[(df["sk"]<443000) & (df["sk"]>442000)]["rgergvvj"].sum(),
+    "e_p_sonstE"	: df.loc[(df["sk"]<470000) & (df["sk"]>460000)]["anshhj"].sum(),
+    "e_v_sonstE" : df.loc[(df["sk"]<470000) & (df["sk"]>460000)]["ansvj"].sum(),
+    "e_re_sonstE" : df.loc[(df["sk"]<470000) & (df["sk"]>460000)]["rgergvvj"].sum(),
     "e_p_summeE" : df.loc[(df["sk"]<470000)]["anshhj"].sum(),
     "e_v_summeE" : df.loc[(df["sk"]<470000)]["ansvj"].sum(),
     "e_re_summeE" : df.loc[(df["sk"]<470000)]["rgergvvj"].sum(),
@@ -71,7 +72,7 @@ def gesamtplan_erg(df):
     "e_v_je" : df.loc[(df["sk"]<500000) & (df["sk"]>400000)]["ansvj"].sum() - df.loc[(df["sk"]<600000) & (df["sk"]>500000)]["ansvj"].sum(),
     "e_re_je" : df.loc[(df["sk"]<500000) & (df["sk"]>400000)]["rgergvvj"].sum() - df.loc[(df["sk"]<600000) & (df["sk"]>500000)]["rgergvvj"].sum(),
     }
-
+    print(dic)
     return(dic)
 
 def gesamtplan_fin(df):

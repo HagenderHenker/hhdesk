@@ -102,8 +102,11 @@ def hh_vorbericht_03_verlaufvj(df):
     pass
 
 
-def hh_vorbericht_05_UebersichtErgHH(df):
+def hh_vorbericht_05_UebersichtErgHH(df, hhj, gde_bez):
+    
     ergdict = erg.gesamtplan_erg(df)
+    ergdict["hhj"] = hhj
+    ergdict["gde_bez"] =gde_bez
     return ergdict
 
 def hh_vorbericht_06_Ertraege(df, dferl, dfstk, dfod, dflfaghhj, dfew, hhj, mindiff, doc):
@@ -402,7 +405,7 @@ def hh_vorbericht_10_kredit(dfbew, dfschulden, dfliq, hhj, gde, doc):
 
     return krdict
 
-def hh_vorbericht_11_Pflichtanlagen(hhj, gde, doc,  dfffs, dferg, dfek):
+def hh_vorbericht_11_Pflichtanlagen(hhj, gde, doc,  dfffs, dferg, dfek, gdebez):
     
     img_je_entwicklung = str(pathlib.Path.cwd() / "hhdaten/plots/img_je_entwicklung.png")
     img_ek_entwicklung = str(pathlib.Path.cwd() / "hhdaten/plots/img_ek_entwicklung.png")
@@ -426,7 +429,7 @@ def hh_vorbericht_11_Pflichtanlagen(hhj, gde, doc,  dfffs, dferg, dfek):
     pfldict = {
         "hhj" : hhj,
         "gde" : gde,
-        "gde_bez" : "Testgemeinde",
+        "gde_bez" : gdebez,
         # Ergebnisentwicklung
         "img_je_entwicklung" : docxtpl.InlineImage(doc, img_je_entwicklung),
         "je_hhj5vj" : je_hhj5vj, 
@@ -457,21 +460,40 @@ def hh_vorbericht_11_Pflichtanlagen(hhj, gde, doc,  dfffs, dferg, dfek):
         "pmTilg3vj"  : dfffs.loc[(dfffs["hhj"] == hhj -3)].pm_tilgung.values.item() ,
         "pmTilg2vj"  : dfffs.loc[(dfffs["hhj"] == hhj -2)].pm_tilgung.values.item() ,
         "pmTilg1vj"  : dfffs.loc[(dfffs["hhj"] == hhj -1)].pm_tilgung.values.item() ,
-        "pmTilghhj" : dfffs.loc[(dfffs["hhj"] == hhj )].pm_tilgung.values.item() ,
-        "pmTilg1pj"  : dfffs.loc[(dfffs["hhj"] == hhj -1)].pm_tilgung.values.item() ,
-        "pmTilg2pj"  : dfffs.loc[(dfffs["hhj"] == hhj -2)].pm_tilgung.values.item() ,
-        "pmTilg3pj"  : dfffs.loc[(dfffs["hhj"] == hhj -3)].pm_tilgung.values.item() ,
+        "pmTilghhj" : dfffs.loc[(dfffs["hhj"] == hhj )].pm_tilgung.values.item() +dfffs.loc[(dfffs["hhj"] == hhj )].tilgungplan.values.item(),
+        "pmTilg1pj"  : dfffs.loc[(dfffs["hhj"] == hhj +1)].pm_tilgung.values.item() +dfffs.loc[(dfffs["hhj"] == hhj+1 )].tilgungplan.values.item(),
+        "pmTilg2pj"  : dfffs.loc[(dfffs["hhj"] == hhj +2)].pm_tilgung.values.item() +dfffs.loc[(dfffs["hhj"] == hhj+2 )].tilgungplan.values.item(),
+        "pmTilg3pj"  : dfffs.loc[(dfffs["hhj"] == hhj +3)].pm_tilgung.values.item() +dfffs.loc[(dfffs["hhj"] == hhj+3 )].tilgungplan.values.item(),
 
-        "finvortr5vj"  :dfffs.loc[(dfffs["hhj"] == hhj -5)].saldo_ord.values.item() -  dfffs.loc[(dfffs["hhj"] == hhj -5)].pm_tilgung.values.item() ,
-        "finvortr4vj"  :dfffs.loc[(dfffs["hhj"] == hhj -4)].saldo_ord.values.item() -  dfffs.loc[(dfffs["hhj"] == hhj -4)].pm_tilgung.values.item() ,
-        "finvortr3vj"  :dfffs.loc[(dfffs["hhj"] == hhj -3)].saldo_ord.values.item() -  dfffs.loc[(dfffs["hhj"] == hhj -3)].pm_tilgung.values.item() ,
-        "finvortr2vj"  :dfffs.loc[(dfffs["hhj"] == hhj -2)].saldo_ord.values.item() -  dfffs.loc[(dfffs["hhj"] == hhj -2)].pm_tilgung.values.item() ,
-        "finvortr1vj"  :dfffs.loc[(dfffs["hhj"] == hhj -1)].saldo_ord.values.item() -  dfffs.loc[(dfffs["hhj"] == hhj -1)].pm_tilgung.values.item() ,
-        "finvortrhhj" : dfffs.loc[(dfffs["hhj"] == hhj )].saldo_ord.values.item() - dfffs.loc[(dfffs["hhj"] == hhj )].pm_tilgung.values.item() ,
-        "finvortr1pj"  :dfffs.loc[(dfffs["hhj"] == hhj +1)].saldo_ord.values.item() -  dfffs.loc[(dfffs["hhj"] == hhj -1)].pm_tilgung.values.item() ,
-        "finvortr2pj"  :dfffs.loc[(dfffs["hhj"] == hhj +2)].saldo_ord.values.item() -  dfffs.loc[(dfffs["hhj"] == hhj -2)].pm_tilgung.values.item() ,
-        "finvortr3pj"  :dfffs.loc[(dfffs["hhj"] == hhj +3)].saldo_ord.values.item() -  dfffs.loc[(dfffs["hhj"] == hhj -3)].pm_tilgung.values.item() ,
+        "finvortr5vj"  :dfffs.loc[(dfffs["hhj"] == hhj -5)].ffs2.values.item() ,
+        "finvortr4vj"  :dfffs.loc[(dfffs["hhj"] == hhj -4)].ffs2.values.item() ,
+        "finvortr3vj"  :dfffs.loc[(dfffs["hhj"] == hhj -3)].ffs2.values.item() ,
+        "finvortr2vj"  :dfffs.loc[(dfffs["hhj"] == hhj -2)].ffs2.values.item() ,
+        "finvortr1vj"  :dfffs.loc[(dfffs["hhj"] == hhj -1)].ffs2.values.item() ,
+        "finvortrhhj"  :dfffs.loc[(dfffs["hhj"] == hhj )].ffs2.values.item()  ,
+        "finvortr1pj"  :dfffs.loc[(dfffs["hhj"] == hhj +1)].ffs2.values.item() ,
+        "finvortr2pj"  :dfffs.loc[(dfffs["hhj"] == hhj +2)].ffs2.values.item() ,
+        "finvortr3pj"  :dfffs.loc[(dfffs["hhj"] == hhj +3)].ffs2.values.item() ,
         
+        "opfinvortrhhj"  :dfffs.loc[(dfffs["hhj"] == hhj )].ffs1.values.item(),  
+        "opfinvortr1pj"  :dfffs.loc[(dfffs["hhj"] == hhj +1)].ffs1.values.item() ,
+        "opfinvortr2pj"  :dfffs.loc[(dfffs["hhj"] == hhj +2)].ffs1.values.item(), 
+        "opfinvortr3pj"  :dfffs.loc[(dfffs["hhj"] == hhj +3)].ffs1.values.item() ,
+        
+        "pmTilghhj_neu" : dfffs.loc[(dfffs["hhj"] == hhj )].tilgungplan.values.item(),
+        "pmTilg1pj_neu"	: dfffs.loc[(dfffs["hhj"] == hhj +1)].tilgungplan.values.item(),
+        "pmTilg2pj_neu"	: dfffs.loc[(dfffs["hhj"] == hhj +2)].tilgungplan.values.item(), 
+        "pmTilg3pj_neu" : dfffs.loc[(dfffs["hhj"] == hhj +3)].tilgungplan.values.item(),
+
+        "pmTilghhj_alt" : dfffs.loc[(dfffs["hhj"] == hhj )].pm_tilgung.values.item() ,  
+        "pmTilg1pj_alt"	: dfffs.loc[(dfffs["hhj"] == hhj +1)].pm_tilgung.values.item() ,
+        "pmTilg2pj_alt"	: dfffs.loc[(dfffs["hhj"] == hhj +2)].pm_tilgung.values.item(), 
+        "pmTilg3pj_alt" : dfffs.loc[(dfffs["hhj"] == hhj +3)].pm_tilgung.values.item() ,
+
+        "zwsummfinvortr" : dfffs.loc[(dfffs["hhj"] <= hhj ) & (dfffs["hhj"] >= hhj -5)].ffs2.sum(),
+        "summfinvortr" : dfffs.loc[(dfffs["hhj"] <= hhj+3 ) & (dfffs["hhj"] >= hhj -5)].ffs2.sum(),
+
+
         # Eigenkapitalentwicklung
         "img_ek_entwicklung" : img_ek_entwicklung,
         "ek_hhjv3" : dfek.loc[(dfek["hhj"]==hhj-3)].EK.values.item(),
@@ -482,6 +504,9 @@ def hh_vorbericht_11_Pflichtanlagen(hhj, gde, doc,  dfffs, dferg, dfek):
         "ek_hhjn2" : dfek.loc[(dfek["hhj"]==hhj+2)].EK.values.item(),
         "ek_hhjn3" : dfek.loc[(dfek["hhj"]==hhj+3)].EK.values.item()
     }
+
+    
+
     return pfldict
 
 if __name__ == "__main__":

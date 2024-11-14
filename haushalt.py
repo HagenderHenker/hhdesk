@@ -17,6 +17,7 @@ hhstpl = env.hhstpl
 vorb01tpl = env.vorb01tpl
 vorb02tpl = env.vorb02tpl
 vorb03tpl = env.vorb03tpl
+vorb04tpl = env.vorb04tpl
 vorb05tpl = env.vorb05tpl
 vorb06tpl = env.vorb06tpl
 vorb07tpl = env.vorb07tpl
@@ -25,6 +26,7 @@ vorb10tpl = env.vorb10tpl
 vorb11tpl = env.vorb11tpl
 quelleewdaten = env.quelleewdaten
 quelleflaechendaten = env.quelleflaechendaten
+
 
 if __name__ == "__main__":
 
@@ -100,6 +102,8 @@ if __name__ == "__main__":
     #Freie Finanzspitze
     dfffs = stat.ffs(dfbew=dfbew, dffinanz=dffinanz, hhj=hhj, gde=gde, tilgung_plandarlehen=env.tilgung_plandarlehen)
     print("... freie Finanzspitze")
+
+    gdebez = dfgde.gde_bez.values.item()
 
     # plotting graphs
     print("")
@@ -219,7 +223,14 @@ if __name__ == "__main__":
 
     # build "05_Vorbericht" Gesamtergebnisplan
 
-    #vorb04tpl_instanz = docbuilder.create_tpl_instance(vorb04tpl)
+    vorb04tpl_instanz = docbuilder.create_tpl_instance(vorb04tpl)
+    print(" ")
+    print("----------------------------")
+    print("*** Templateinstanz Vorbericht 04 Übersicht Ergebnisplan erzeugt")
+    contextvorb04 = ctx.hh_vorbericht_05_UebersichtErgHH(df=dfbew, gde_bez=gdebez, hhj=hhj)
+    print("...Daten für Vorbericht 05 'Übersicht Ergebnisplan' sind zusammengestellt")
+    docbuilder.builddocx(tpl=vorb04tpl_instanz, context=contextvorb04, filename="05-Vorb_Uebersicht_Ergebnisplan", gde=gde, hhj=hhj)
+    print(f"...Vorbericht 05 - Übersicht Ergebnisplan: Ausgabe/{gde}/{hhj}")
 
     
 
@@ -294,7 +305,8 @@ if __name__ == "__main__":
                                                         doc=vorb11tpl_instanz, 
                                                         dferg=stat.ergstat(bewegungsdaten=dfbew, grunddaten=dfergebnis, gde=gde, hhj=hhj),
                                                         dfffs=dfffs, 
-                                                        dfek = stat.ekstat(bewegungsdaten=dfbew, grunddaten=dfergebnis, hhj=hhj, gde=gde), )
+                                                        dfek = stat.ekstat(bewegungsdaten=dfbew, grunddaten=dfergebnis, hhj=hhj, gde=gde),
+                                                        gdebez= gdebez )
     print("Daten für Vorbericht 11 'Pflichtanlagen' sind zusammengestellt ")
     docbuilder.builddocx(tpl=vorb11tpl_instanz, context=contextvorb11, filename="11-Vorb_Pflichtanlagen", gde=gde, hhj=hhj)
     print(f"Vorbericht 11- Pflichtanlagen: 'Ausgabe/{gde}/{hhj}")
