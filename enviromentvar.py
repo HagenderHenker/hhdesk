@@ -31,6 +31,20 @@ bewDat = str(pathlib.Path.cwd() / "hhdaten/bewegungsdaten.xlsx")
 # Datei für die Grunddaten des Haushaltsplans
 grunddaten = str(pathlib.Path.cwd() / "hhdaten/grunddaten.xlsx")
 
+# Umlagesätze
+umlagesaetze = {
+    "Kreisumlage" : 44,
+    "Verbandsgemeindeumlage" : 28,
+    "SonderumlageGS" : 5.7263,
+}
+
+umlageplanungsstellen = {
+    "Kreisumlage" : "6.1.1.0.544210",
+    "Verbandsgemeindeumlage" : "6.1.1.0.544230",
+    "SonderumlageGS" : "2.1.1.1.541430",
+    "Gewerbesteuerumlage" : "6.1.1.0.543100"
+}
+
 # Templates Haushaltssatzung und Vorbericht
 hhstpl = str(pathlib.Path.cwd() / "wordtemplates/hhs.docx")
 vorb01tpl = str(pathlib.Path.cwd() / "wordtemplates/02_Vorbericht_Allgemeines.docx")

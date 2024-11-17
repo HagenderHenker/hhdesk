@@ -260,7 +260,7 @@ if __name__ == "__main__":
     }
 
     #print(kfadict)
-    contextvorb06 = ctx.hh_vorbericht_07_aufwand(df=dfbew, dferl=dferl, mindiff=env.mindiff, dfumlagen=dfstkraft, kfadict=kfadict, doc=vorb06tpl_instanz)
+    contextvorb06 = ctx.hh_vorbericht_07_aufwand(df=dfbew, dferl=dferl, mindiff=env.mindiff, dfumlagen=dfstkraft, kfadict=kfadict, doc=vorb06tpl_instanz, umlagesaetze = env.umlagesaetze, umlageplanungsstellen=env.umlageplanungsstellen)
     print("...Daten für Vorbericht 07 'Veränderungen in den Aufwendungen' sind zusammengestellt ")
     docbuilder.builddocx(tpl=vorb06tpl_instanz, context=contextvorb06, filename="07-Vorb_Aufwand", gde=gde, hhj=hhj)
     print(f"...Vorbericht 07 - Veränderung in den Aufwendungen: Ausgabe/{gde}/{hhj}")

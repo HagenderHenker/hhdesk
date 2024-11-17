@@ -165,7 +165,7 @@ def hh_vorbericht_06_Ertraege(df, dferl, dfstk, dfod, dflfaghhj, dfew, hhj, mind
     return ertrdict
 
 
-def hh_vorbericht_07_aufwand(df, dferl, mindiff, doc, dfumlagen, kfadict):
+def hh_vorbericht_07_aufwand(df, dferl, mindiff, doc, dfumlagen, umlagesaetze, kfadict, umlageplanungsstellen):
 
     """
     hhj:        Haushaltsjahr, Quelle environmentvar.py
@@ -202,7 +202,8 @@ def hh_vorbericht_07_aufwand(df, dferl, mindiff, doc, dfumlagen, kfadict):
     gde = env.gde
     #print(afa)
     #print(type(afa))
-   
+    
+
     aufwdict = {
                 "msdtbl" : msdtbl,
                 "umltranstbl" : umltranstbl,
@@ -223,14 +224,15 @@ def hh_vorbericht_07_aufwand(df, dferl, mindiff, doc, dfumlagen, kfadict):
                 "sza" : sza, 
                 "szzo" : szzo,
                 "umlgrl" : stk+sza+szzo,
-                "umlSaKU" : "dödel"	,
-                "umlLastKU" : "dadel",
-                "umlSaVGU"	: 123,
-                "umlLastVGU" : 456,
-                "umlSaSoU"	: 789,
-                "umlLastSoU" : 101112,
+                "umlSaKU" : umlagesaetze["Kreisumlage"]	,
+                "umlLastKU" : df.loc[(df["hhs"] == umlageplanungsstellen["Kreisumlage"])] ["anshhj"].values.item(),
+                "umlSaVGU"	: umlagesaetze["Verbandsgemeindeumlage"],
+                "umlLastVGU" : df.loc[(df["hhs"] == umlageplanungsstellen["Verbandsgemeindeumlage"])]["anshhj"].values.item(),
+                "umlSaSoU"	: umlagesaetze["SonderumlageGS"],
+                "umlLastSoU" : df.loc[(df["hhs"] == umlageplanungsstellen["SonderumlageGS"])]["anshhj"].values.item(),
 
                 }
+    
                 
     #print(aufwdict["abschreibungen"])
     return aufwdict
